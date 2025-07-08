@@ -240,9 +240,6 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.10
         version: 0.6.10(prettier@3.5.3)
-      prisma-merge:
-        specifier: ^0.2.0
-        version: 0.2.0
       release-it:
         specifier: ^18.1.1
         version: 18.1.1(@types/node@22.15.18)(typescript@5.7.3)
@@ -5468,11 +5465,6 @@ packages:
   pretty-ms@9.2.0:
     resolution: {integrity: sha512-4yf0QO/sllf/1zbZWYnvWw3NxCQwLXKzIj0G849LSufP15BXKM0rbD2Z3wVnkMfjdn/CB0Dpp444gYAACdsplg==}
     engines: {node: '>=18'}
-
-  prisma-merge@0.2.0:
-    resolution: {integrity: sha512-+JUtw7P4ebcprjg0/KsgZukPBJuVPuo/Dv63NaZO7vsk4mufc+ekkhnm0n31HvnuYp3TAiPSarxUpbdpd0Ixcw==}
-    engines: {node: '>=8.0.0'}
-    hasBin: true
 
   prisma@6.2.1:
     resolution: {integrity: sha512-hhyM0H13pQleQ+br4CkzGizS5I0oInoeTw3JfLw1BRZduBSQxPILlJLwi+46wZzj9Je7ndyQEMGw/n5cN2fknA==}
@@ -12185,16 +12177,6 @@ snapshots:
   pretty-ms@9.2.0:
     dependencies:
       parse-ms: 4.0.0
-
-  prisma-merge@0.2.0:
-    dependencies:
-      '@oclif/command': 1.8.36(@oclif/config@1.18.17)
-      '@oclif/config': 1.18.17
-      '@oclif/plugin-help': 3.3.1
-      glob: 7.2.3
-      tslib: 1.14.1
-    transitivePeerDependencies:
-      - supports-color
 
   prisma@6.2.1:
     dependencies:

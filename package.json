@@ -3,9 +3,7 @@
   "version": "1.7.0",
   "private": true,
   "scripts": {
-    "prisma:merge": "prisma-merge -b prisma/base.prisma -s prisma/modules/*.prisma -o prisma/schema.prisma",
-    "prisma:generate": "npm run prisma:merge && prisma generate",
-    "dev": "npm run prisma:generate && next dev --turbo",
+    "dev": "prisma generate && next dev --turbo",
     "dev:email": "email dev -p 9000",
     "dev:content": "velite build --watch",
     "build:content": "velite build --clean",
@@ -96,7 +94,6 @@
     "lefthook": "^1.10.7",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.10",
-    "prisma-merge": "^0.2.0",
     "release-it": "^18.1.1",
     "release-it-pnpm": "^4.6.4",
     "serwist": "^9.0.11",
@@ -106,5 +103,8 @@
     "typescript": "5.7.3",
     "velite": "0.2.2"
   },
-  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971",
+  "prisma": {
+    "schema": "./prisma/schema"
+  }
 }
