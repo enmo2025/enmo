@@ -37,9 +37,7 @@ export const PROTECTED_ROUTES = {
 /**
  * All routes that require authentication
  */
-export const PROTECTED_ROUTE_PATTERNS = [
-  PROTECTED_ROUTES.DASHBOARD,
-] as const;
+export const PROTECTED_ROUTE_PATTERNS = [PROTECTED_ROUTES.DASHBOARD] as const;
 
 /**
  * All routes that should redirect to dashboard if authenticated
@@ -81,27 +79,21 @@ export const RouteHelpers = {
    * Check if a path is a protected route
    */
   isProtectedRoute: (pathname: string): boolean => {
-    return PROTECTED_ROUTE_PATTERNS.some(route => 
-      pathname.startsWith(route)
-    );
+    return PROTECTED_ROUTE_PATTERNS.some((route) => pathname.startsWith(route));
   },
 
   /**
    * Check if a path is an auth route
    */
   isAuthRoute: (pathname: string): boolean => {
-    return AUTH_ROUTE_PATTERNS.some(route => 
-      pathname.startsWith(route)
-    );
+    return AUTH_ROUTE_PATTERNS.some((route) => pathname.startsWith(route));
   },
 
   /**
    * Check if a path should be ignored by middleware
    */
   isIgnoredRoute: (pathname: string): boolean => {
-    return IGNORED_ROUTES.some(route => 
-      pathname.startsWith(route)
-    );
+    return IGNORED_ROUTES.some((route) => pathname.startsWith(route));
   },
 
   /**
@@ -117,7 +109,10 @@ export const RouteHelpers = {
   /**
    * Build URL with query parameters
    */
-  buildUrlWithQuery: (baseUrl: string, params: Record<string, string>): string => {
+  buildUrlWithQuery: (
+    baseUrl: string,
+    params: Record<string, string>
+  ): string => {
     const url = new URL(baseUrl, "http://localhost:3000");
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value);
@@ -128,8 +123,11 @@ export const RouteHelpers = {
   /**
    * Get redirect URL from query params or default
    */
-  getRedirectUrl: (searchParams: URLSearchParams, defaultUrl: string = DEFAULT_REDIRECTS.AFTER_LOGIN): string => {
+  getRedirectUrl: (
+    searchParams: URLSearchParams,
+    defaultUrl: string = DEFAULT_REDIRECTS.AFTER_LOGIN
+  ): string => {
     const redirect = searchParams.get(QUERY_PARAMS.REDIRECT);
     return redirect && redirect.startsWith("/") ? redirect : defaultUrl;
   },
-} as const; 
+} as const;

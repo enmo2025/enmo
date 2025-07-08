@@ -8,11 +8,11 @@ import { AUTH_ROUTES, PROTECTED_ROUTES } from "~/constants/routes";
  */
 export async function requireAuth() {
   const { session, user } = await getCurrentSession();
-  
+
   if (!session || !user) {
     redirect(AUTH_ROUTES.LOGIN);
   }
-  
+
   return { session, user };
 }
 
@@ -22,11 +22,11 @@ export async function requireAuth() {
  */
 export async function requireGuest() {
   const { session, user } = await getCurrentSession();
-  
+
   if (session && user) {
     redirect(PROTECTED_ROUTES.DASHBOARD);
   }
-  
+
   return { session: null, user: null };
 }
 
@@ -36,11 +36,11 @@ export async function requireGuest() {
  */
 export async function getOptionalUser() {
   const { session, user } = await getCurrentSession();
-  
+
   if (!session || !user) {
     return { session: null, user: null };
   }
-  
+
   return { session, user };
 }
 
@@ -49,12 +49,12 @@ export async function getOptionalUser() {
  */
 export async function requireRole(role: string) {
   const { session, user } = await requireAuth();
-  
+
   // For now, just return user. In future, check user.role
   // if (user.role !== role) {
   //   redirect("/unauthorized");
   // }
-  
+
   return { session, user };
 }
 
@@ -63,10 +63,10 @@ export async function requireRole(role: string) {
  */
 export async function requireOwnership(resourceUserId: string) {
   const { session, user } = await requireAuth();
-  
+
   if (user.id !== resourceUserId) {
     redirect("/unauthorized");
   }
-  
+
   return { session, user };
-} 
+}

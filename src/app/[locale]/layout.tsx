@@ -84,9 +84,7 @@ export default async function RootLayout({
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>

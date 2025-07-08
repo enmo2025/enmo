@@ -1,10 +1,10 @@
 import { createI18nMiddleware } from "next-international/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 import { validateSessionToken } from "~/lib/server/auth/session";
-import { 
-  AUTH_ROUTES, 
+import {
+  AUTH_ROUTES,
   PROTECTED_ROUTES,
-  RouteHelpers
+  RouteHelpers,
 } from "~/constants/routes";
 import { COOKIES, QUERY_PARAMS } from "./constants/common";
 
@@ -15,7 +15,7 @@ const I18nMiddleware = createI18nMiddleware({
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
   // Extract locale from pathname
   const pathnameWithoutLocale = RouteHelpers.removeLocalePrefix(pathname);
 

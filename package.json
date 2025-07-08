@@ -78,6 +78,8 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "22.15.18",
@@ -89,6 +91,7 @@
     "eslint": "9.24.0",
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^10.1.1",
+
     "lefthook": "^1.10.7",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.10",

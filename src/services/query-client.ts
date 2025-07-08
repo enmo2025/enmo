@@ -18,7 +18,12 @@ const getErrorMessage = (error: unknown): string => {
  * Check if error requires logout (401 unauthorized)
  */
 const isUnauthorized = (error: unknown): boolean => {
-  return !!(error && typeof error === "object" && "status" in error && error.status === 401);
+  return !!(
+    error &&
+    typeof error === "object" &&
+    "status" in error &&
+    error.status === 401
+  );
 };
 
 /**
@@ -26,7 +31,7 @@ const isUnauthorized = (error: unknown): boolean => {
  */
 const handleLogout = (): void => {
   if (typeof window === "undefined") return;
-  
+
   logoutAction().catch((error) => {
     console.error("Logout failed:", error);
     // Fallback: manual cleanup
@@ -52,7 +57,7 @@ const showErrorToast = (error: unknown): void => {
  */
 const handleError = (error: unknown): void => {
   console.error("Query/Mutation error:", error);
-  
+
   if (isUnauthorized(error)) {
     handleLogout();
   } else {
@@ -63,7 +68,11 @@ const handleError = (error: unknown): void => {
 /**
  * Retry logic for queries and mutations
  */
-const shouldRetry = (failureCount: number, maxRetries: number, error: unknown): boolean => {
+const shouldRetry = (
+  failureCount: number,
+  maxRetries: number,
+  error: unknown
+): boolean => {
   if (isUnauthorized(error)) return false;
   return failureCount < maxRetries;
 };
