@@ -1,0 +1,15 @@
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model EmailVerificationCode {
+  id        String   @id @default(cuid())
+  code      String
+  userId    String
+  email     String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+} 

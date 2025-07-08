@@ -3,7 +3,9 @@
   "version": "1.7.0",
   "private": true,
   "scripts": {
-    "dev": "prisma generate && next dev --turbo",
+    "prisma:merge": "prisma-merge -b prisma/base.prisma -s prisma/modules/*.prisma -o prisma/schema.prisma",
+    "prisma:generate": "npm run prisma:merge && prisma generate",
+    "dev": "npm run prisma:generate && next dev --turbo",
     "dev:email": "email dev -p 9000",
     "dev:content": "velite build --watch",
     "build:content": "velite build --clean",
@@ -91,11 +93,10 @@
     "eslint": "9.24.0",
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^10.1.1",
-
     "lefthook": "^1.10.7",
     "prettier": "3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.10",
-    "prisma": "^6.2.1",
+    "prisma-merge": "^0.2.0",
     "release-it": "^18.1.1",
     "release-it-pnpm": "^4.6.4",
     "serwist": "^9.0.11",

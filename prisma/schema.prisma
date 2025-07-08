@@ -1,3 +1,5 @@
+//******** AUTO GENERATED FILE, DO NOT EDIT.  *********
+
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
@@ -7,8 +9,8 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DB_PRISMA_URL") // uses connection pooling
-  directUrl = env("DB_URL_NON_POOLING") // uses a direct connection
 }
+
 
 model Session {
   id        String   @id @default(cuid())
@@ -24,7 +26,17 @@ model EmailVerificationCode {
   email     String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
-}
+} 
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  domain    String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+} 
 
 model User {
   id                     String                  @id @unique @default(cuid())
@@ -43,14 +55,4 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model Project {
-  id        String   @id @default(cuid())
-  name      String
-  domain    String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+} 
