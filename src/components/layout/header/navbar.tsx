@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Session } from "@prisma/client";
-import { MenuIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import LogoutButton from "~/components/shared/logout-button";
-import { buttonVariants } from "~/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
-import { cn } from "~/lib/utils";
+import { Session } from '@prisma/client';
+import { MenuIcon } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useState } from 'react';
+import LogoutButton from '~/components/shared/logout-button';
+import { buttonVariants } from '~/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
+import { cn } from '~/lib/utils';
 export default function Navbar({
   session,
   headerText,
@@ -37,16 +37,10 @@ export default function Navbar({
       </Link>
       <div className="hidden items-center gap-12 lg:flex 2xl:gap-16">
         <div className="space-x-4 text-center text-sm leading-loose text-muted-foreground md:text-left">
-          <Link
-            href="/changelog"
-            className="font-semibold hover:underline hover:underline-offset-4"
-          >
+          <Link href="/changelog" className="font-semibold hover:underline hover:underline-offset-4">
             {headerText.changelog}
           </Link>
-          <Link
-            href="/about"
-            className="font-semibold hover:underline hover:underline-offset-4"
-          >
+          <Link href="/about" className="font-semibold hover:underline hover:underline-offset-4">
             {headerText.about}
           </Link>
         </div>
@@ -54,10 +48,7 @@ export default function Navbar({
           {session ? (
             <Link
               href="/dashboard"
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "bg-secondary"
-              )}
+              className={cn(buttonVariants({ variant: 'outline' }), 'bg-secondary')}
               onClick={() => setIsModalOpen(false)}
             >
               {headerText.dashboard}
@@ -103,11 +94,7 @@ export default function Navbar({
                   <LogoutButton className="!mt-20" />
                 </>
               ) : (
-                <Link
-                  href="/login"
-                  className={buttonVariants()}
-                  onClick={() => setIsModalOpen(false)}
-                >
+                <Link href="/login" className={buttonVariants()} onClick={() => setIsModalOpen(false)}>
                   {headerText.login}
                 </Link>
               )}

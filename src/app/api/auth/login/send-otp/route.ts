@@ -1,6 +1,6 @@
-import { generateEmailVerificationCode } from "~/lib/server/auth";
-import { prisma } from "~/lib/server/db";
-import { sendOTP } from "~/lib/server/mail";
+import { generateEmailVerificationCode } from '~/lib/server/auth';
+import { prisma } from '~/lib/server/db';
+import { sendOTP } from '~/lib/server/mail';
 
 export const POST = async (req: Request) => {
   const body = await req.json();
@@ -21,14 +21,14 @@ export const POST = async (req: Request) => {
     await sendOTP({
       toMail: body.email,
       code: otp,
-      userName: user.name?.split(" ")[0] || "",
+      userName: user.name?.split(' ')[0] || '',
     });
 
     return new Response(null, {
       status: 200,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return new Response(null, {
       status: 500,

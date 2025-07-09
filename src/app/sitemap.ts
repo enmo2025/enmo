@@ -1,12 +1,12 @@
-import { type MetadataRoute } from "next";
-import { siteUrl } from "~/config/site";
+import { type MetadataRoute } from 'next';
+import { siteUrl } from '~/config/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: siteUrl || "",
+      url: siteUrl || '',
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
       priority: 1,
       alternates: {
         languages: {
@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/login`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
       priority: 0.5,
       alternates: {
         languages: {
@@ -30,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
       priority: 0.5,
       alternates: {
         languages: {
@@ -42,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${siteUrl}/changelog`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
+      changeFrequency: 'weekly',
       priority: 0.5,
       alternates: {
         languages: {

@@ -1,11 +1,8 @@
-import { sha256 } from "@oslojs/crypto/sha2";
-import {
-  encodeBase32LowerCaseNoPadding,
-  encodeHexLowerCase,
-} from "@oslojs/encoding";
-import type { Session, User } from "@prisma/client";
-import { cookies } from "next/headers";
-import { prisma } from "~/lib/server/db";
+import { sha256 } from '@oslojs/crypto/sha2';
+import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
+import type { Session, User } from '@prisma/client';
+import { cookies } from 'next/headers';
+import { prisma } from '~/lib/server/db';
 
 export function generateSessionToken(): string {
   const bytes = new Uint8Array(20);
@@ -14,10 +11,7 @@ export function generateSessionToken(): string {
   return token;
 }
 
-export async function createSession(
-  token: string,
-  userId: string
-): Promise<Session> {
+export async function createSession(token: string, userId: string): Promise<Session> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const session: Session = {
     id: sessionId,
@@ -30,9 +24,7 @@ export async function createSession(
   return session;
 }
 
-export async function validateSessionToken(
-  token: string
-): Promise<SessionValidationResult> {
+export async function validateSessionToken(token: string): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await prisma.session.findUnique({
     where: {
@@ -66,7 +58,7 @@ export async function validateSessionToken(
 
 export const getCurrentSession = async (): Promise<SessionValidationResult> => {
   const cookieStore = await cookies();
-  const token = cookieStore.get("session")?.value ?? null;
+  const token = cookieStore.get('session')?.value ?? null;
   if (token === null) {
     return { session: null, user: null };
   }
@@ -81,6 +73,4 @@ export async function invalidateAllSessions(userId: string): Promise<void> {
   await prisma.session.deleteMany({ where: { userId } });
 }
 
-export type SessionValidationResult =
-  | { session: Session; user: User }
-  | { session: null; user: null };
+export type SessionValidationResult = { session: Session; user: User } | { session: null; user: null };

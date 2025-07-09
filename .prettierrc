@@ -1,8 +1,20 @@
 {
-  "semi": true,
-  "trailingComma": "es5",
-  "singleQuote": false,
-  "printWidth": 80,
-  "tabWidth": 2,
-  "plugins": ["prettier-plugin-tailwindcss"]
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "printWidth": 120,
+    "jsxSingleQuote": false,
+    "bracketSpacing": true,
+    "endOfLine": "auto",
+    "plugins": [
+        "prettier-plugin-sort-json",
+        "prettier-plugin-tailwindcss"
+    ],
+    "jsonRecursiveSort": false,
+    "jsonSortOrder": "{\"*\": \"lexical\"}",
+    "tailwindStylesheet": "./app/app.css",
+    "tailwindFunctions": [
+        "clsx"
+    ]
 }

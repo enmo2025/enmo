@@ -1,23 +1,23 @@
-"use client";
-import { CheckIcon, LanguagesIcon } from "lucide-react";
+'use client';
+import { CheckIcon, LanguagesIcon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
-import { useChangeLocale, useCurrentLocale } from "~/locales/client";
-import { Button } from "../ui/button";
+} from '~/components/ui/dropdown-menu';
+import { useChangeLocale, useCurrentLocale } from '~/locales/client';
+import { Button } from '../ui/button';
 
 const locales = [
   {
-    name: "English",
-    value: "en",
+    name: 'English',
+    value: 'en',
   },
   {
-    name: "French",
-    value: "fr",
+    name: 'French',
+    value: 'fr',
   },
 ];
 

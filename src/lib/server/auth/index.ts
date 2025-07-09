@@ -1,14 +1,11 @@
-import { generateRandomString, RandomReader } from "@oslojs/crypto/random";
-import { createMiddleware } from "next-safe-action";
-import { prisma } from "~/lib/server/db";
-import { getCurrentSession } from "./session";
+import { generateRandomString, RandomReader } from '@oslojs/crypto/random';
+import { createMiddleware } from 'next-safe-action';
+import { prisma } from '~/lib/server/db';
+import { getCurrentSession } from './session';
 
-const digits = "0123456789";
+const digits = '0123456789';
 
-export async function generateEmailVerificationCode(
-  userId: string,
-  email: string
-): Promise<string> {
+export async function generateEmailVerificationCode(userId: string, email: string): Promise<string> {
   await prisma.emailVerificationCode.deleteMany({
     where: {
       userId,
@@ -31,10 +28,7 @@ export async function generateEmailVerificationCode(
   return code;
 }
 
-export async function verifyVerificationCode(
-  user: { id: string; email: string },
-  code: string
-): Promise<boolean> {
+export async function verifyVerificationCode(user: { id: string; email: string }, code: string): Promise<boolean> {
   return await prisma.$transaction(async (tx) => {
     const databaseCode = await tx.emailVerificationCode.findFirst({
       where: {
@@ -56,18 +50,14 @@ export async function verifyVerificationCode(
       return false;
     }
 
-    if (databaseCode.email !== user.email) {
-      return false;
-    }
-
-    return true;
+    return databaseCode.email === user.email;
   });
 }
 
 export const authMiddleware = createMiddleware().define(async ({ next }) => {
   const { session, user } = await getCurrentSession();
   if (!session) {
-    throw new Error("Unauthorized");
+    throw new Error('Unauthorized');
   }
   return next({ ctx: { userId: user.id, sessionId: session.id } });
 });

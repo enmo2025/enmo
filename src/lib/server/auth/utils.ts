@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
-import { getCurrentSession } from "./session";
-import { AUTH_ROUTES, PROTECTED_ROUTES } from "~/constants/routes";
+import { redirect } from 'next/navigation';
+import { getCurrentSession } from './session';
+import { AUTH_ROUTES, PROTECTED_ROUTES } from '~/constants/routes';
 
 /**
  * Server component utility to ensure user is authenticated
@@ -65,7 +65,7 @@ export async function requireOwnership(resourceUserId: string) {
   const { session, user } = await requireAuth();
 
   if (user.id !== resourceUserId) {
-    redirect("/unauthorized");
+    redirect('/unauthorized');
   }
 
   return { session, user };

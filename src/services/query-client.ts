@@ -1,43 +1,38 @@
-import { QueryClient, QueryCache, MutationCache } from "@tanstack/react-query";
-import { toast } from "~/hooks/use-toast";
-import { logout as logoutAction } from "~/app/[locale]/actions";
+import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query';
+import { toast } from '~/hooks/use-toast';
+import { logout as logoutAction } from '~/app/[locale]/actions';
 
 /**
  * Extract error message from various error formats
  */
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
-  if (typeof error === "string") return error;
-  if (error && typeof error === "object" && "message" in error) {
+  if (typeof error === 'string') return error;
+  if (error && typeof error === 'object' && 'message' in error) {
     return (error as { message: string }).message;
   }
-  return "An unexpected error occurred";
+  return 'An unexpected error occurred';
 };
 
 /**
  * Check if error requires logout (401 unauthorized)
  */
 const isUnauthorized = (error: unknown): boolean => {
-  return !!(
-    error &&
-    typeof error === "object" &&
-    "status" in error &&
-    error.status === 401
-  );
+  return !!(error && typeof error === 'object' && 'status' in error && error.status === 401);
 };
 
 /**
  * Logout user using the proper logout action
  */
 const handleLogout = (): void => {
-  if (typeof window === "undefined") return;
+  if (typeof window === 'undefined') return;
 
   logoutAction().catch((error) => {
-    console.error("Logout failed:", error);
+    console.error('Logout failed:', error);
     // Fallback: manual cleanup
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = "/login";
+    window.location.href = '/login';
   });
 };
 
@@ -46,9 +41,9 @@ const handleLogout = (): void => {
  */
 const showErrorToast = (error: unknown): void => {
   toast({
-    title: "Error",
+    title: 'Error',
     description: getErrorMessage(error),
-    variant: "destructive",
+    variant: 'destructive',
   });
 };
 
@@ -56,7 +51,7 @@ const showErrorToast = (error: unknown): void => {
  * Global error handler for queries and mutations
  */
 const handleError = (error: unknown): void => {
-  console.error("Query/Mutation error:", error);
+  console.error('Query/Mutation error:', error);
 
   if (isUnauthorized(error)) {
     handleLogout();
@@ -68,11 +63,7 @@ const handleError = (error: unknown): void => {
 /**
  * Retry logic for queries and mutations
  */
-const shouldRetry = (
-  failureCount: number,
-  maxRetries: number,
-  error: unknown
-): boolean => {
+const shouldRetry = (failureCount: number, maxRetries: number, error: unknown): boolean => {
   if (isUnauthorized(error)) return false;
   return failureCount < maxRetries;
 };

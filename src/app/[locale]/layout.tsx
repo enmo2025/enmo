@@ -1,13 +1,13 @@
-import { type Metadata } from "next";
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
-import Header from "~/components/layout/header";
-import ThemeProvider from "~/components/shared/theme-provider";
-import { Toaster } from "~/components/ui/toaster";
-import { QueryProvider } from "~/services/query-provider";
-import { cn } from "~/lib/utils";
-import "../globals.css";
-import { siteConfig, siteUrl } from "~/config/site";
+import { type Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
+import Header from '~/components/layout/header';
+import ThemeProvider from '~/components/shared/theme-provider';
+import { Toaster } from '~/components/ui/toaster';
+import { QueryProvider } from '~/services/query-provider';
+import { cn } from '~/lib/utils';
+import '../globals.css';
+import { siteConfig, siteUrl } from '~/config/site';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = p.locale;
   const site = siteConfig(locale);
 
-  const siteOgImage = `${siteUrl}/api/og?locale=${locale}`;
+  // const siteOgImage = `${siteUrl}/api/og?locale=${locale}`;
 
   return {
     title: {
@@ -27,22 +27,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       template: `%s - ${site.name}`,
     },
     icons: {
-      icon: "/favicon.ico",
-      shortcut: "/favicon-16x16.png",
-      apple: "/apple-touch-icon.png",
+      icon: '/favicon.ico',
+      shortcut: '/favicon-16x16.png',
+      apple: '/apple-touch-icon.png',
     },
     manifest: `${siteUrl}/manifest.json`,
     metadataBase: new URL(site.url),
     alternates: {
-      canonical: "/",
+      canonical: '/',
       languages: {
-        en: "/en",
-        fr: "/fr",
+        en: '/en',
+        fr: '/fr',
       },
     },
     appleWebApp: {
       capable: true,
-      statusBarStyle: "default",
+      statusBarStyle: 'default',
       title: site.name,
     },
   };
@@ -51,19 +51,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const viewport = {
   width: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
 };
 
 const fontSans = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
+  subsets: ['latin'],
+  variable: '--font-sans',
 });
 
 const fontHeading = localFont({
-  src: "../../assets/fonts/CalSans-SemiBold.woff2",
-  variable: "--font-heading",
+  src: '../../assets/fonts/CalSans-SemiBold.woff2',
+  variable: '--font-heading',
 });
 
 export default async function RootLayout({
@@ -76,14 +76,7 @@ export default async function RootLayout({
   const { locale } = await params;
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body
-        className={cn(
-          "font-sans antialiased",
-          fontSans.variable,
-          fontHeading.variable
-        )}
-      >
-        
+      <body className={cn('font-sans antialiased', fontSans.variable, fontHeading.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
             <Header />

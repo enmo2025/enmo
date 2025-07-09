@@ -1,12 +1,8 @@
-import { revalidatePath } from "next/cache";
-import { verifyVerificationCode } from "~/lib/server/auth";
-import { setSessionTokenCookie } from "~/lib/server/auth/cookies";
-import {
-  createSession,
-  generateSessionToken,
-  invalidateAllSessions,
-} from "~/lib/server/auth/session";
-import { prisma } from "~/lib/server/db";
+import { revalidatePath } from 'next/cache';
+import { verifyVerificationCode } from '~/lib/server/auth';
+import { setSessionTokenCookie } from '~/lib/server/auth/cookies';
+import { createSession, generateSessionToken, invalidateAllSessions } from '~/lib/server/auth/session';
+import { prisma } from '~/lib/server/db';
 
 export const POST = async (req: Request, response: Response) => {
   const body = await req.json();
@@ -24,18 +20,15 @@ export const POST = async (req: Request, response: Response) => {
     });
 
     if (!user) {
-      return new Response("User not found", {
+      return new Response('User not found', {
         status: 400,
       });
     }
 
-    const isValid = await verifyVerificationCode(
-      { id: user.id, email: user.email! },
-      body.code
-    );
+    const isValid = await verifyVerificationCode({ id: user.id, email: user.email! }, body.code);
 
     if (!isValid) {
-      return new Response("Invalid OTP", {
+      return new Response('Invalid OTP', {
         status: 400,
       });
     }
@@ -55,12 +48,13 @@ export const POST = async (req: Request, response: Response) => {
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, user.id);
     await setSessionTokenCookie(sessionToken, session.expiresAt);
-    revalidatePath("/", "layout");
+    revalidatePath('/', 'layout');
     return new Response(null, {
       status: 200,
     });
   } catch (error) {
-    return new Response("Internal Server Error", {
+    console.error(error);
+    return new Response('Internal Server Error', {
       status: 500,
     });
   }

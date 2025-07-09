@@ -1,3 +1,9 @@
-ui/
-*.d.ts
-*.config.*
+.next
+node_modules
+build
+dist
+public
+coverage
+*.config.js
+next-env.d.ts
+components/ui/* 

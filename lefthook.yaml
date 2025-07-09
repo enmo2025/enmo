@@ -7,5 +7,4 @@ pre-commit:
   commands:
     lint:
       run: pnpm lint
-    format:
-      run: pnpm format 
+    
