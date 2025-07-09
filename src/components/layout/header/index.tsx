@@ -10,11 +10,5 @@ export default async function Header() {
     dashboard: 'Dashboard',
   };
 
-  return (
-    <header className="h-20 w-full">
-      <div className="container h-full">
-        <Navbar headerText={headerText} session={session!} />
-      </div>
-    </header>
-  );
+  return <Navbar headerText={headerText} session={session!} />;
 }

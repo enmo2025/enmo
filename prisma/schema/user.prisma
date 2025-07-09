@@ -1,10 +1,8 @@
 model User {
   id                     String                  @id @unique @default(cuid())
-  username               String?
   fullName               String?
-  firstName              String?
+  fullNameKana           String?
   email                  String?                 @unique
-  emailVerified          Boolean?                @default(false)
   dateOfBirth            DateTime?
   gender                 Gender?
   picture                String?

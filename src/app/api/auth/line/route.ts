@@ -6,7 +6,7 @@ export const GET = async (request: Request) => {
   const url = new URL(request.url);
   const redirect = url.searchParams.get('redirect');
   // Ensure redirect is a valid internal URL
-  const safeRedirect = redirect && redirect.startsWith('/') ? redirect : '/dashboard';
+  const safeRedirect = redirect && redirect.startsWith('/') ? redirect : '/';
 
   const state = generateState();
   const codeVerifier = generateCodeVerifier();

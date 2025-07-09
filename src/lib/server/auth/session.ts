@@ -72,5 +72,4 @@ export async function invalidateSession(sessionId: string): Promise<void> {
 export async function invalidateAllSessions(userId: string): Promise<void> {
   await prisma.session.deleteMany({ where: { userId } });
 }
-
 export type SessionValidationResult = { session: Session; user: User } | { session: null; user: null };

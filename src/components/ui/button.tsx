@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        solid: "bg-red-500 text-red-900 hover:bg-red-300 hover:text-red-700 disabled:bg-grey-100 disabled:text-grey-500 focus:bg-red-900 focus:text-red-200",
+        solid: "bg-primary text-red-900 hover:bg-red-300 hover:text-red-700 disabled:bg-grey-100 disabled:text-grey-500 focus:bg-red-900 focus:text-red-200",
         outline: "border border-brown-700 text-brown-700 hover:bg-yellow-200 hover:text-yellow-700 hover:border-brown-500 disabled:text-grey-400 disabled:border-grey-200",
         ghost: "bg-transparent text-brown-700 hover:bg-yellow-100 hover:text-brown-600 disabled:text-grey-400",
         link: "bg-transparent text-brown-700 hover:text-brown-600 hover:underline disabled:text-grey-400",

@@ -8,6 +8,7 @@ import { QueryProvider } from '~/services/query-provider';
 import { cn } from '~/lib/utils';
 import '../globals.css';
 import { siteConfig, siteUrl } from '~/config/site';
+import AuthProvider from '~/providers/auth-provider';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -71,15 +72,16 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={cn('font-sans antialiased', fontSans.variable, fontHeading.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
-            <Header />
-            <main>{children}</main>
-            <Toaster />
+            <AuthProvider>
+              <Header />
+              <main>{children}</main>
+              <Toaster />
+            </AuthProvider>
           </QueryProvider>
         </ThemeProvider>
       </body>

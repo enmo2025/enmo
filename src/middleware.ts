@@ -1,44 +1,18 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { validateSessionToken } from '~/lib/server/auth/session';
-import { PATH, PUBLIC_PAGES } from '~/constants/routes';
-import { COOKIES, QUERY_PARAMS } from './constants/common';
+import { COOKIES } from './constants/common';
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // Check if route needs protection
-  const isPublicRoute = PUBLIC_PAGES.some((route) => pathname.startsWith(route));
-  const isAuthRoute = [PATH.LOGIN, PATH.REGISTER].includes(pathname as typeof PATH.LOGIN | typeof PATH.REGISTER);
+  const response = NextResponse.next();
 
   // Get session token from cookies
   const sessionToken = request.cookies.get(COOKIES.SESSION)?.value;
-  let isAuthenticated = false;
 
+  // Add session token to headers if it exists
   if (sessionToken) {
-    try {
-      const { session, user } = await validateSessionToken(sessionToken);
-      isAuthenticated = !!(session && user);
-    } catch (error) {
-      // Invalid session, clear cookie
-      console.error('Session validation failed:', error);
-      isAuthenticated = false;
-    }
+    response.headers.set('x-session-token', sessionToken);
   }
 
-  // Handle protected routes
-  if (!isPublicRoute && !isAuthenticated) {
-    const loginUrl = new URL(PATH.LOGIN, request.url);
-    loginUrl.searchParams.set(QUERY_PARAMS.REDIRECT, pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // Handle auth routes (redirect to home if already logged in)
-  if (isAuthRoute && isAuthenticated) {
-    const homeUrl = new URL(PATH.HOME, request.url);
-    return NextResponse.redirect(homeUrl);
-  }
-
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
