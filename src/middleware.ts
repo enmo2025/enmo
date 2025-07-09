@@ -1,11 +1,7 @@
 import { createI18nMiddleware } from "next-international/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 import { validateSessionToken } from "~/lib/server/auth/session";
-import {
-  AUTH_ROUTES,
-  PROTECTED_ROUTES,
-  RouteHelpers,
-} from "~/constants/routes";
+import { PATH, PUBLIC_PAGES, RouteHelpers } from "~/constants/routes";
 import { COOKIES, QUERY_PARAMS } from "./constants/common";
 
 const I18nMiddleware = createI18nMiddleware({
@@ -20,8 +16,8 @@ export async function middleware(request: NextRequest) {
   const pathnameWithoutLocale = RouteHelpers.removeLocalePrefix(pathname);
 
   // Check if route needs protection
-  const isProtectedRoute = RouteHelpers.isProtectedRoute(pathnameWithoutLocale);
-  const isAuthRoute = RouteHelpers.isAuthRoute(pathnameWithoutLocale);
+  const isPublicRoute = PUBLIC_PAGES.some(route => pathnameWithoutLocale.startsWith(route));
+  const isAuthRoute = [PATH.LOGIN, PATH.REGISTER].includes(pathnameWithoutLocale as typeof PATH.LOGIN | typeof PATH.REGISTER);
 
   // Get session token from cookies
   const sessionToken = request.cookies.get(COOKIES.SESSION)?.value;
@@ -38,16 +34,16 @@ export async function middleware(request: NextRequest) {
   }
 
   // Handle protected routes
-  if (isProtectedRoute && !isAuthenticated) {
-    const loginUrl = new URL(AUTH_ROUTES.LOGIN, request.url);
+  if (!isPublicRoute && !isAuthenticated) {
+    const loginUrl = new URL(PATH.LOGIN, request.url);
     loginUrl.searchParams.set(QUERY_PARAMS.REDIRECT, pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  // Handle auth routes (redirect to dashboard if already logged in)
+  // Handle auth routes (redirect to home if already logged in)
   if (isAuthRoute && isAuthenticated) {
-    const dashboardUrl = new URL(PROTECTED_ROUTES.DASHBOARD, request.url);
-    return NextResponse.redirect(dashboardUrl);
+    const homeUrl = new URL(PATH.HOME, request.url);
+    return NextResponse.redirect(homeUrl);
   }
 
   // Apply i18n middleware

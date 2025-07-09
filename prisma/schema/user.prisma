@@ -1,12 +1,18 @@
 model User {
   id                     String                  @id @unique @default(cuid())
-  name                   String?
+  username               String?
+  fullName               String?
+  firstName              String?
   email                  String?                 @unique
   emailVerified          Boolean?                @default(false)
+  dateOfBirth            DateTime?
+  gender                 Gender?
   picture                String?
+  prefectures            String?
   sessions               Session[]
-  projects               Project[]
   emailVerificationCodes EmailVerificationCode[]
+
+  lineId                 String?   @unique
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -16,3 +22,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 } 
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
