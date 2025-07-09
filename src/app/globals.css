@@ -45,9 +45,14 @@
     --gradient-02: linear-gradient(180deg, #FBC2EB 0%, #A18CD1 100%);
     --gradient-03: linear-gradient(135deg, #FCCB90 0%, #D57EEB 100%);
 
+    --radio-default: #F5F5FA;
+
+    --red-50: #FCF5F3;
+    --red-100: #F7E0D8;
     --red-200: #F3D1C6;
     --red-300: #EDBDAB;
     --red-500: #E49C82;
+    --red-600: #CF8E76;
     --red-700: #A26F5C;
     --red-900: #604237;
 
@@ -77,5 +82,11 @@
   input[type="date"] {
     -moz-appearance: textfield;
     appearance: textfield;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 }
