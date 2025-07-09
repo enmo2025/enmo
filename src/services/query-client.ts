@@ -1,6 +1,6 @@
 import { QueryClient, QueryCache, MutationCache } from '@tanstack/react-query';
 import { toast } from '~/hooks/use-toast';
-import { logout as logoutAction } from '~/app/[locale]/actions';
+import { logout as logoutAction } from '~/app/(modules)/actions';
 
 /**
  * Extract error message from various error formats

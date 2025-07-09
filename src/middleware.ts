@@ -1,25 +1,14 @@
-import { createI18nMiddleware } from 'next-international/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 import { validateSessionToken } from '~/lib/server/auth/session';
-import { PATH, PUBLIC_PAGES, RouteHelpers } from '~/constants/routes';
+import { PATH, PUBLIC_PAGES } from '~/constants/routes';
 import { COOKIES, QUERY_PARAMS } from './constants/common';
-
-const I18nMiddleware = createI18nMiddleware({
-  locales: ['en', 'fr'],
-  defaultLocale: 'en',
-});
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Extract locale from pathname
-  const pathnameWithoutLocale = RouteHelpers.removeLocalePrefix(pathname);
-
   // Check if route needs protection
-  const isPublicRoute = PUBLIC_PAGES.some((route) => pathnameWithoutLocale.startsWith(route));
-  const isAuthRoute = [PATH.LOGIN, PATH.REGISTER].includes(
-    pathnameWithoutLocale as typeof PATH.LOGIN | typeof PATH.REGISTER
-  );
+  const isPublicRoute = PUBLIC_PAGES.some((route) => pathname.startsWith(route));
+  const isAuthRoute = [PATH.LOGIN, PATH.REGISTER].includes(pathname as typeof PATH.LOGIN | typeof PATH.REGISTER);
 
   // Get session token from cookies
   const sessionToken = request.cookies.get(COOKIES.SESSION)?.value;
@@ -49,8 +38,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(homeUrl);
   }
 
-  // Apply i18n middleware
-  return I18nMiddleware(request);
+  return NextResponse.next();
 }
 
 export const config = {

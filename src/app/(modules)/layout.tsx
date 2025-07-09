@@ -15,9 +15,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = await params;
-  const locale = p.locale;
-  const site = siteConfig(locale);
+  const site = siteConfig();
 
   // const siteOgImage = `${siteUrl}/api/og?locale=${locale}`;
 
@@ -32,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       apple: '/apple-touch-icon.png',
     },
     manifest: `${siteUrl}/manifest.json`,
-    metadataBase: new URL(site.url),
+    metadataBase: new URL(site.url ?? ''),
     alternates: {
       canonical: '/',
       languages: {
