@@ -12,16 +12,7 @@ const withSerwist = withSerwistInit({
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-  redirects: async () => {
-    return [
-      {
-        source: "/dashboard",
-        destination: "/dashboard/projects",
-        permanent: false,
-      },
-    ];
-  },
-  trailingSlash: true,
+  trailingSlash: false,
   eslint: {
     ignoreDuringBuilds: true,
   },

@@ -4,25 +4,12 @@ export const PATH = {
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
-  WORKPLACE: '/workplace',
-  MESSENGER: '/workplace/messenger',
-  GET_STARTED: '/get-started',
-  INVITE_WORKSPACE: '/get-started/invite-workspace',
-  VERIFY: '/verify',
-  FORGOT_PASSWORD: '/forgot-password',
-  BASE_DOC: '/workplace/base/doc',
-  BASE_HOME: '/workplace/base/home',
+  REGISTER_BASIC_INFO: '/register/basic-info',
 } as const;
 
-export const PUBLIC_PAGES = [
-  PATH.LOGIN,
-  PATH.REGISTER,
-  PATH.HOME,
-  PATH.WORKPLACE,
-  PATH.MESSENGER,
-  PATH.GET_STARTED,
-  PATH.INVITE_WORKSPACE,
-] as const;
+export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER] as const;
+
+export const PATH_AUTH = [PATH.LOGIN, PATH.REGISTER] as const;
 
 /**
  * Helper functions to work with routes

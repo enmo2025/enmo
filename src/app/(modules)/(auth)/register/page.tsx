@@ -1,5 +1,6 @@
 import React from 'react';
+import AuthPanel from '~/components/shared/auth-panel';
 
 export default function page() {
-  return <div>page</div>;
+  return <AuthPanel type="register" />;
 }

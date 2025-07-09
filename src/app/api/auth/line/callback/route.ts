@@ -34,9 +34,6 @@ export const GET = async (request: Request) => {
   try {
     const tokens = await line.validateAuthorizationCode(code, codeVerifier);
 
-    cookieStore.delete('line_oauth_code_verifier');
-    cookieStore.delete('line_redirect_after_login');
-
     const lineUserResponse = await fetch('https://api.line.me/v2/profile', {
       headers: {
         Authorization: `Bearer ${tokens.accessToken()}`,
