@@ -8,7 +8,7 @@ import { useState } from 'react';
 import LogoutButton from '~/components/shared/logout-button';
 import { buttonVariants } from '~/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
-import { PATH_AUTH } from '~/constants/routes';
+import { PATH, PATH_AUTH } from '~/constants/routes';
 import { cn } from '~/lib/utils';
 export default function Navbar({
   session,
@@ -25,7 +25,7 @@ export default function Navbar({
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const path = usePathname();
-  const isAuth = PATH_AUTH.includes(path as (typeof PATH_AUTH)[number]);
+  const isAuth = [...PATH_AUTH, PATH.REGISTER_BASIC_INFO].includes(path as (typeof PATH_AUTH)[number]);
   const style = {
     header: isAuth ? 'bg-primary text-white' : 'bg-white text-primary',
   };

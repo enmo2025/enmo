@@ -55,7 +55,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="flex flex-col gap-1 items-start">
         <label htmlFor={props.id} className={`text-title-md text-black font-bold ${props.disabled ? "opacity-15 pointer-events-none" : ""}`}>{label}</label>
-        <div className="relative">
+        <div className="relative w-full">
           {leadingIcon && <span className="absolute inset-y-0 left-2 flex gap-2 items-center">{leadingIcon}</span>}
           <select
             className={cn(
