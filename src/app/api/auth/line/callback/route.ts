@@ -15,7 +15,7 @@ export const GET = async (request: Request) => {
   const cookieStore = await cookies();
   const storedState = cookieStore.get('line_oauth_state')?.value ?? null;
   const codeVerifier = cookieStore.get('line_oauth_code_verifier')?.value ?? null;
-  const redirect = cookieStore.get('line_redirect_after_login')?.value ?? PATH.WORKPLACE;
+  const redirect = cookieStore.get('line_redirect_after_login')?.value ?? PATH.HOME;
 
   if (!code || !state || !storedState || !codeVerifier || state !== storedState) {
     return new Response(
@@ -77,9 +77,9 @@ export const GET = async (request: Request) => {
     const newUser = await prisma.user.create({
       data: {
         lineId: lineUser.userId,
-        username: lineUser.displayName,
+        fullName: lineUser.displayName,
         picture: lineUser.pictureUrl,
-        emailVerified: true,
+        email: lineUser.email,
       },
     });
 
@@ -92,7 +92,7 @@ export const GET = async (request: Request) => {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: PATH.GET_STARTED,
+        Location: PATH.REGISTER_BASIC_INFO,
       },
     });
   } catch (e) {
