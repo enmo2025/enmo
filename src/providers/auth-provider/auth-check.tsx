@@ -39,7 +39,5 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
     return redirect(PATH.REGISTER_BASIC_INFO);
   }
 
-  console.log(session.user);
-
   return <>{children}</>;
 }

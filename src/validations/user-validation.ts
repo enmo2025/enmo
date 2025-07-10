@@ -15,13 +15,13 @@ export const userValidationSchema = z.object({
   lastNameKana: z
     .string()
     .min(1, { message: '姓（カナ）を入力してください' })
-    .max(50, { message: '姓（カナ）は50文字以内で入力してください' })
-    .regex(/^[ァ-ヶー]+$/, { message: 'カタカナで入力してください' }),
+    .max(50, { message: '姓（カナ）は50文字以内で入力してください' }),
+  // .regex(/^[ァ-ヶー]+$/, { message: 'カタカナで入力してください' }),
   firstNameKana: z
     .string()
     .min(1, { message: '名（カナ）を入力してください' })
-    .max(50, { message: '名（カナ）は50文字以内で入力してください' })
-    .regex(/^[ァ-ヶー]+$/, { message: 'カタカナで入力してください' }),
+    .max(50, { message: '名（カナ）は50文字以内で入力してください' }),
+  // .regex(/^[ァ-ヶー]+$/, { message: 'カタカナで入力してください' }),
 
   // Date of birth (生年月日)
   birthYear: z.string().min(1, { message: '生年を選択してください' }),

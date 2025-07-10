@@ -1,6 +1,6 @@
 import { HTTP_STATUS } from '~/constants/status-code';
 
-const defaultApiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || '/api';
+const defaultApiEndpoint = `${process.env.NEXT_PUBLIC_APP_URL}/api`;
 
 interface ApiClientConfig {
   baseURL?: string;
@@ -29,7 +29,9 @@ class ApiClient {
   }
 
   private buildURL(endpoint: string, params?: Record<string, string>): string {
-    const url = new URL(endpoint, this.baseURL);
+    const normalizedBaseURL = this.baseURL.endsWith('/') ? this.baseURL : `${this.baseURL}/`;
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+    const url = new URL(cleanEndpoint, normalizedBaseURL);
 
     if (params) {
       Object.entries(params).forEach(([key, value]) => {

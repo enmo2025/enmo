@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userValidationSchema, type UserValidationType } from '~/validations/user-validation';
@@ -9,25 +9,15 @@ import { Input } from '~/components/ui/input';
 import { Select } from '~/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Button } from '~/components/ui/button';
-
-interface Prefecture {
-  id: number;
-  name: string;
-  nameJP: string;
-  region: string;
-}
-
-interface BasicInfoFormData {
-  fullName: string;
-  fullNameKana: string;
-  dateOfBirth: string;
-  gender: 'male' | 'female' | 'other';
-  prefectures: string;
-}
+import { useUpdateProfile } from '~/services/profile/profile.api';
+import { UpdateProfileRequest } from '~/services/profile/profile.interface';
+import { toast } from '~/hooks/use-toast';
+import { useGetPrefectures } from '~/services/prefecture/prefecture.api';
+import { PATH } from '~/constants/routes';
 
 export default function BasicInfo() {
-  const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: updateProfile, isPending } = useUpdateProfile();
+  const { data: prefectures } = useGetPrefectures();
 
   const form = useForm<UserValidationType>({
     resolver: zodResolver(userValidationSchema),
@@ -44,21 +34,6 @@ export default function BasicInfo() {
     },
   });
 
-  // Fetch prefectures data
-  useEffect(() => {
-    const fetchPrefectures = async () => {
-      try {
-        const response = await fetch('/api/prefectures');
-        const data = await response.json();
-        setPrefectures(data);
-      } catch (error) {
-        console.error('Failed to fetch prefectures:', error);
-      }
-    };
-
-    fetchPrefectures();
-  }, []);
-
   // Generate years (current year back to 100 years ago)
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
@@ -70,30 +45,22 @@ export default function BasicInfo() {
   const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
   const onSubmit = async (data: UserValidationType) => {
-    setIsLoading(true);
-
-    try {
-      // Transform data to match the required JSON format
-      const transformedData: BasicInfoFormData = {
-        fullName: `${data.lastName} ${data.firstName}`,
-        fullNameKana: `${data.lastNameKana} ${data.firstNameKana}`,
-        dateOfBirth: `${data.birthYear}-${data.birthMonth.padStart(2, '0')}-${data.birthDay.padStart(2, '0')}`,
-        gender: data.gender,
-        prefectures: data.prefecture,
-      };
-
-      console.log('Form data to submit:', transformedData);
-
-      // Here you would typically send the data to your server
-      // await submitBasicInfo(transformedData);
-
-      alert('フォームが正常に送信されました');
-    } catch (error) {
-      console.error('Submit error:', error);
-      alert('送信中にエラーが発生しました');
-    } finally {
-      setIsLoading(false);
-    }
+    const transformedData: UpdateProfileRequest = {
+      fullName: `${data.lastName} ${data.firstName}`,
+      fullNameKana: `${data.lastNameKana} ${data.firstNameKana}`,
+      dateOfBirth: `${data.birthYear}-${data.birthMonth.padStart(2, '0')}-${data.birthDay.padStart(2, '0')}`,
+      gender: data.gender,
+      prefectures: data.prefecture,
+    };
+    updateProfile(transformedData, {
+      onSuccess: () => {
+        toast({
+          title: 'Success',
+          description: 'Profile updated successfully',
+        });
+        window.location.href = PATH.HOME;
+      },
+    });
   };
 
   return (
@@ -265,7 +232,7 @@ export default function BasicInfo() {
                       variant={form.formState.errors.prefecture ? 'warning' : 'default'}
                     >
                       <option value="">選択してください</option>
-                      {prefectures.map((prefecture) => (
+                      {prefectures?.map((prefecture) => (
                         <option key={prefecture.id} value={prefecture.nameJP}>
                           {prefecture.nameJP}
                         </option>
@@ -301,8 +268,8 @@ export default function BasicInfo() {
 
           {/* Submit Button */}
           <div className="flex justify-center pt-6">
-            <Button className="min-w-[250px]" type="submit" size="xl" disabled={isLoading}>
-              {isLoading ? '送信中...' : '次へ'}
+            <Button className="min-w-[250px]" type="submit" size="xl" disabled={isPending}>
+              {isPending ? '送信中...' : '次へ'}
             </Button>
           </div>
         </form>

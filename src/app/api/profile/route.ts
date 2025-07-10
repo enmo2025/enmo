@@ -1,5 +1,6 @@
 import { User } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { HTTP_STATUS } from '~/constants/status-code';
 import { prisma } from '~/lib/server/db';
 import { errorResponse, successResponse, withAuth } from '~/lib/server/utils';
@@ -26,6 +27,8 @@ export const PUT = withAuth(async (request: NextRequest, user: User) => {
         prefectures,
       },
     });
+
+    revalidatePath('/', 'layout');
 
     return NextResponse.json(
       successResponse({ message: 'Basic information updated successfully', data: updatedUser }),
