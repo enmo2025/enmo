@@ -59,9 +59,11 @@ module.exports = {
         'red-700': 'var(--red-700)',
         'red-800': 'var(--red-800)',
         'red-900': 'var(--red-900)',
+        'yellow-50': 'var(--yellow-50)',
         'yellow-100': 'var(--yellow-100)',
         'yellow-200': 'var(--yellow-200)',
         'yellow-700': 'var(--yellow-700)',
+        'brown-300': 'var(--brown-300)',
         'brown-500': 'var(--brown-500)',
         'brown-600': 'var(--brown-600)',
         'brown-700': 'var(--brown-700)',
@@ -89,6 +91,11 @@ module.exports = {
       },
       screens: {
         'xs': '390px',
+      },
+      maxWidth: {
+        '100': '400px',
+        '200': '800px',
+        '300': '1200px'
       },
     },
   },

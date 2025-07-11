@@ -1,4 +1,5 @@
 import Image, { StaticImageData } from "next/image";
+import { useRouter } from "next/navigation";
 
 export interface EventCardProps {
     title: string;
@@ -6,12 +7,20 @@ export interface EventCardProps {
     eventBanner: StaticImageData;
     brandLogo: StaticImageData;
     brandName: string;
-    price: string;
+    participantFee: string;
+    id: string;
 }
 
-export default function EventCard({ title, description, eventBanner, brandLogo, brandName, price }: EventCardProps) {
+export default function EventCard({ title, description, eventBanner, brandLogo, brandName, participantFee, id }: EventCardProps) {
+
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push(`/events/${id}`);
+    }
+
     return (
-        <div className="min-w-[150px] w-full border border-red-600 rounded-[5.81px] overflow-hidden max-xs:h-60 sm:min-w-60 sm:rounded-xl">
+        <div className="min-w-[150px] w-full border border-red-600 rounded-[5.81px] overflow-hidden max-xs:h-60 sm:min-w-60 sm:rounded-xl cursor-pointer" onClick={handleClick}>
             <div className="w-full overflow-hidden">
                 <Image src={eventBanner} alt="Event Card" width={288} height={180} className="object-cover w-full h-full" />
             </div>
@@ -29,7 +38,7 @@ export default function EventCard({ title, description, eventBanner, brandLogo, 
                             <span className="text-body-xs text-red-800 sm:text-body-lg">{brandName}</span>
                         </span>
                         <span className="text-body-xs text-brown-900 sm:text-body-lg">
-                            {price}
+                            {participantFee}
                         </span>
                     </div>
                 </div>
