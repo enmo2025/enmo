@@ -3,16 +3,17 @@ import { CheckCircleIcon, Info } from 'lucide-react';
 import * as React from 'react';
 
 import { cn } from '~/lib/utils';
+import { Label } from './label';
 
 const inputVariants = cva(
-  'flex min-h-12 w-full bg-white py-2 pl-4 pr-2 gap-2 text-body-lg placeholder:text-grey-300 focus:outline-none focus:text-grey-800',
+  'flex min-h-12 w-full bg-white py-2 pl-4 pr-2 gap-2 text-body-lg placeholder:text-grey-300 focus:outline-none focus:text-grey-800  hover:border-grey-500 focus:border-grey-600 disabled:bg-grey-700 disabled:text-black disabled:placeholder:text-black disabled:opacity-15 disabled:pointer-events-none',
   {
     variants: {
       variant: {
-        default:
-          'border border-grey-200 hover:border-grey-500 focus:border-grey-600 disabled:bg-grey-700 disabled:text-black disabled:placeholder:text-black disabled:opacity-15 disabled:pointer-events-none',
+        default: 'border border-grey-200',
         warning: 'border border-warning',
         success: 'border border-success',
+        outline: 'border border-brown-900',
       },
       typeStyle: {
         pill: 'rounded-full',
@@ -32,10 +33,14 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
   helperText?: string;
   leadingIcon?: React.ReactNode;
   trailingIcon?: React.ReactNode;
+  orientation?: 'vertical' | 'horizontal';
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, label, variant, typeStyle, helperText, leadingIcon, trailingIcon, ...props }, ref) => {
+  (
+    { className, type, label, variant, typeStyle, helperText, leadingIcon, trailingIcon, orientation, ...props },
+    ref
+  ) => {
     const getTrailingIcon = () => {
       if (variant === 'warning') return <Info className="h-5 w-5 text-warning" />;
       if (variant === 'success') return <CheckCircleIcon className="h-5 w-5 text-success" />;
@@ -50,13 +55,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="flex flex-col items-start gap-1">
-        <label
-          htmlFor={props.id}
-          className={`text-title-md font-bold text-black ${props.disabled ? 'pointer-events-none opacity-15' : ''}`}
-        >
+      <div
+        className={cn(
+          'flex items-start gap-1',
+          orientation === 'horizontal' ? 'flex-row items-center gap-5' : 'flex-col'
+        )}
+      >
+        <Label htmlFor={props.id} disabled={props.disabled}>
           {label}
-        </label>
+        </Label>
         <div className="relative w-full">
           {leadingIcon && <span className="absolute inset-y-0 left-2 flex items-center gap-2">{leadingIcon}</span>}
           <input
