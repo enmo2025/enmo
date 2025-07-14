@@ -99,6 +99,10 @@ export default {
         200: '800px',
         300: '1200px',
       },
+      spacing: {
+        15: '60px',
+        30: '120px',
+      },
     },
   },
   plugins: [tailwindcssAnimate, tailwindcssTypography],

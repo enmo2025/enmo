@@ -1,0 +1,16 @@
+model Event {
+  id                String   @id @default(uuid())
+  title             String
+  description       String
+  eventDetailBanner String
+  content           String
+  participantFee    String
+  date              DateTime
+  location          String
+  companyName       String
+  companyProfile    String
+  companyLogo       String
+  hostName          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+} 
