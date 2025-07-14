@@ -9,14 +9,7 @@ export default function LogoutButton({ className }: { className?: string }) {
       <Button
         type="submit"
         onClick={async () => {
-          console.log('Logout button clicked');
-          try {
-            console.log('Calling logout function...');
-            const result = await logout();
-            console.log('Logout result:', result);
-          } catch (error) {
-            console.error('Logout error:', error);
-          }
+          await logout();
         }}
         typeStyle="round"
         variant="outline"
