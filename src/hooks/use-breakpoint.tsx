@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-
 export function useIsBreakpoint(breakpoint: number) {
   const [isBreakpoint, setIsBreakpoint] = React.useState<boolean | undefined>(undefined);
 
@@ -12,7 +11,7 @@ export function useIsBreakpoint(breakpoint: number) {
     mql.addEventListener('change', onChange);
     setIsBreakpoint(window.innerWidth < breakpoint);
     return () => mql.removeEventListener('change', onChange);
-  }, []);
+  }, [breakpoint]);
 
   return !!isBreakpoint;
 }

@@ -8,8 +8,10 @@ import { useState } from 'react';
 import LogoutButton from '~/components/shared/logout-button';
 import { buttonVariants } from '~/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
+import { HEADER_HEIGHT } from '~/constants/common';
 import { PATH, PATH_AUTH } from '~/constants/routes';
 import { cn } from '~/lib/utils';
+
 export default function Navbar({
   session,
   headerText,
@@ -31,7 +33,7 @@ export default function Navbar({
   };
 
   return (
-    <header className={cn('h-20 w-full', style.header)}>
+    <header style={{ height: HEADER_HEIGHT }} className={cn(`sticky top-0 w-full`, style.header)}>
       <div className="container h-full">
         <nav className="flex h-full items-center justify-between">
           <Link href="/" className="flex items-center text-4xl font-bold">

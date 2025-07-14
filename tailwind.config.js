@@ -64,6 +64,7 @@ export default {
         'yellow-100': 'var(--yellow-100)',
         'yellow-200': 'var(--yellow-200)',
         'yellow-700': 'var(--yellow-700)',
+        'brown-100': 'var(--brown-100)',
         'brown-300': 'var(--brown-300)',
         'brown-500': 'var(--brown-500)',
         'brown-600': 'var(--brown-600)',
@@ -91,12 +92,12 @@ export default {
         'body-xs': ['10px', { lineHeight: '16px', letterSpacing: '+0.4px' }],
       },
       screens: {
-        'xs': '390px',
+        xs: '390px',
       },
       maxWidth: {
-        '100': '400px',
-        '200': '800px',
-        '300': '1200px'
+        100: '400px',
+        200: '800px',
+        300: '1200px',
       },
     },
   },

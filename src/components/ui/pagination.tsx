@@ -30,6 +30,6 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
     );
   }
 );
-Pagination.displayName = "Pagination";
+Pagination.displayName = 'Pagination';
 
 export { Pagination };

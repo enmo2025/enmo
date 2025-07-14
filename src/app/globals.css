@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --primary: #E49C82;
+    --primary: #e49c82;
 
     --oslo-gray-50: #f6f7f7;
     --oslo-gray-100: #eef1f1;
@@ -31,58 +31,58 @@
 
     --base-white: #ffffff;
     --base-black: #000000;
-    --base-warning: #FF4405;
-    --base-success: #16B364;
+    --base-warning: #ff4405;
+    --base-success: #16b364;
 
-    --blue: #2E90FA;
-    --violet: #875BF7;
-    --fuchsia: #D444F1;
-    --pink: #EE46BC;
-    --red: #F63D68;
-    --orange: #FF4405;
+    --blue: #2e90fa;
+    --violet: #875bf7;
+    --fuchsia: #d444f1;
+    --pink: #ee46bc;
+    --red: #f63d68;
+    --orange: #ff4405;
 
-    --gradient-01: linear-gradient(180deg, #A5C0EE 0%, #FBC5EC 100%);
-    --gradient-02: linear-gradient(180deg, #FBC2EB 0%, #A18CD1 100%);
-    --gradient-03: linear-gradient(135deg, #FCCB90 0%, #D57EEB 100%);
+    --gradient-01: linear-gradient(180deg, #a5c0ee 0%, #fbc5ec 100%);
+    --gradient-02: linear-gradient(180deg, #fbc2eb 0%, #a18cd1 100%);
+    --gradient-03: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
 
-    --radio-default: #F5F5FA;
+    --radio-default: #f5f5fa;
 
-    --red-50: #FCF5F3;
-    --red-100: #F7E0D8;
-    --red-200: #F3D1C6;
-    --red-300: #EDBDAB;
-    --red-500: #E49C82;
-    --red-600: #CF8E76;
-    --red-700: #A26F5C;
-    --red-800: #7D5648;
+    --red-50: #fcf5f3;
+    --red-100: #f7e0d8;
+    --red-200: #f3d1c6;
+    --red-300: #edbdab;
+    --red-500: #e49c82;
+    --red-600: #cf8e76;
+    --red-700: #a26f5c;
+    --red-800: #7d5648;
     --red-900: #604237;
 
-    --yellow-50: #FEFCFA;
-    --yellow-100: #FBF7F0;
-    --yellow-200: #F9F3E8;
-    --yellow-700: #ABA392;
+    --yellow-50: #fefcfa;
+    --yellow-100: #fbf7f0;
+    --yellow-200: #f9f3e8;
+    --yellow-700: #aba392;
 
-    --brown-300: #D9D1C1;
-    --brown-500: #C7BBA3;
-    --brown-600: #B5AA94;
-    --brown-700: #8D8574;
-    --brown-900: #544F44;
+    --brown-300: #d9d1c1;
+    --brown-500: #c7bba3;
+    --brown-600: #b5aa94;
+    --brown-700: #8d8574;
+    --brown-900: #544f44;
   }
 }
 
 @layer base {
-    body {
-      @apply bg-yellow-100 text-brown-900;
-    }
+  body {
+    @apply bg-yellow-100 text-brown-900;
+  }
 }
 
 @layer utilities {
-  input[type="date"]::-webkit-calendar-picker-indicator {
+  input[type='date']::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
   }
 
-  input[type="date"] {
+  input[type='date'] {
     -moz-appearance: textfield;
     appearance: textfield;
   }

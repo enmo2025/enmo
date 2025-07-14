@@ -46,10 +46,13 @@ export default function AuthPanel({ type }: AuthPanelProps) {
         <Button
           onClick={redirectToLine}
           typeStyle={'round'}
+          size="lg"
           className="my-20 w-[70%] bg-green-400 px-2 text-white md:w-[30%]"
         >
           <div className="relative flex w-full items-center justify-start">
-            <span className="">{Icons.line(40)}</span>
+            <span>
+              <Icons.line size={40} />
+            </span>
             <span className="absolute left-1/2 -translate-x-1/2 text-body-lg font-bold">{text[type].button}</span>
           </div>
         </Button>

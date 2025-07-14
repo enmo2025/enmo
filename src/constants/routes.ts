@@ -5,6 +5,9 @@ export const PATH = {
   LOGIN: '/login',
   REGISTER: '/register',
   REGISTER_BASIC_INFO: '/register/basic-info',
+  PROFILE: '/profile',
+  PROFILE_INFO: '/profile/info',
+  PROFILE_SETTING: '/profile/setting',
 } as const;
 
 export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER] as const;
