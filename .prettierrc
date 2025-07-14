@@ -8,10 +8,8 @@
     "bracketSpacing": true,
     "endOfLine": "auto",
     "plugins": [
-        "prettier-plugin-sort-json",
         "prettier-plugin-tailwindcss"
     ],
-    "jsonRecursiveSort": false,
     "jsonSortOrder": "{\"*\": \"lexical\"}",
     "tailwindStylesheet": "./app/app.css",
     "tailwindFunctions": [
