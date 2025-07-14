@@ -31,14 +31,6 @@ export function nFormatter(num: number, digits?: number) {
 export function hasFileNameSpaces(fileName: string) {
   return /\s/.test(fileName);
 }
-export function formatDate(input: string | number): string {
-  const date = new Date(input);
-  return date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
 
 export const isOurCdnUrl = (url: string) => url?.includes('utfs.io') || url?.includes('uploadthing.com');
 
@@ -72,4 +64,12 @@ export function generateId(length = 10): string {
     },
   };
   return generateRandomString(random, alphanumeric, length);
+}
+
+export function formatDate(input: string | Date): string {
+  const date = new Date(input);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${year}年${month}月${day}日`;
 }

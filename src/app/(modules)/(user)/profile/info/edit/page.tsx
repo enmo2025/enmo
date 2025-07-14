@@ -1,11 +1,11 @@
 import React from 'react';
-import InfoDetail from './info-detail';
 import { getCurrentSession } from '~/lib/server/auth/session';
+import PageClient from './page-client';
 
-export default async function InfoPage() {
+export default async function EditPage() {
   const { user } = await getCurrentSession();
   if (!user) {
     return <div>ユーザーが見つかりません</div>;
   }
-  return <InfoDetail user={user} />;
+  return <PageClient user={user} />;
 }

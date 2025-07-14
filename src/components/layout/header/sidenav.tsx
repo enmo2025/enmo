@@ -23,7 +23,7 @@ export default function Sidenav({ title, listNav, className }: SidenavProps) {
   const navigate = useRouter();
 
   const isActive = (href: string) => {
-    return getPathname === href;
+    return getPathname.includes(href);
   };
 
   const getIconColor = (href: string) => {

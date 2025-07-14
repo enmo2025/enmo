@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { EGender } from '~/services/profile/profile.enum';
 
 export const userValidationSchema = z.object({
   // Name fields (氏名)
@@ -32,7 +33,7 @@ export const userValidationSchema = z.object({
   prefecture: z.string().min(1, { message: '都道府県を選択してください' }),
 
   // Gender (性別)
-  gender: z.enum(['male', 'female', 'other'], {
+  gender: z.enum(Object.values(EGender) as [string, ...string[]], {
     required_error: '性別を選択してください',
   }),
 });

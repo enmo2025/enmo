@@ -16,3 +16,16 @@ export interface CustomHookQueryOptionParams {
   refetchInterval?: number | false;
   refetchOnWindowFocus?: boolean;
 }
+
+export interface SuccessResponse<T> {
+  success: true;
+  status: number;
+  message: string;
+  data: T;
+}
+
+export interface ErrorResponse {
+  success: false;
+  status: number;
+  message: string;
+}
