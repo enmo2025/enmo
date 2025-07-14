@@ -1,6 +1,7 @@
-import { LogOutIcon } from 'lucide-react';
+'use client';
 import { logout } from '~/app/(modules)/actions';
 import { Button } from '../ui/button';
+import Icons from './icons';
 
 export default function LogoutButton({ className }: { className?: string }) {
   return (
@@ -8,12 +9,22 @@ export default function LogoutButton({ className }: { className?: string }) {
       <Button
         type="submit"
         onClick={async () => {
-          await logout();
+          console.log('Logout button clicked');
+          try {
+            console.log('Calling logout function...');
+            const result = await logout();
+            console.log('Logout result:', result);
+          } catch (error) {
+            console.error('Logout error:', error);
+          }
         }}
-        variant="destructive"
+        typeStyle="round"
+        variant="outline"
+        className="w-full"
+        size="xl"
       >
-        <LogOutIcon className="mr-2 h-4 w-4" />
-        <span>Log out</span>
+        <Icons.logout />
+        <span className="font-bold text-brown-700">ログアウト</span>
       </Button>
     </div>
   );

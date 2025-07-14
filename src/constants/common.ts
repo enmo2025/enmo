@@ -18,3 +18,5 @@ export const COOKIES = {
   THEME: 'theme',
   LOCALE: 'locale',
 } as const;
+
+export const HEADER_HEIGHT = 80;

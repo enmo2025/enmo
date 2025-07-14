@@ -62,6 +62,7 @@ export default {
         'yellow-100': 'var(--yellow-100)',
         'yellow-200': 'var(--yellow-200)',
         'yellow-700': 'var(--yellow-700)',
+        'brown-100': 'var(--brown-100)',
         'brown-500': 'var(--brown-500)',
         'brown-600': 'var(--brown-600)',
         'brown-700': 'var(--brown-700)',
