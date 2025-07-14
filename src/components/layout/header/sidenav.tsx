@@ -1,70 +1,218 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import Icons, { IconProps } from '~/components/shared/icons';
 import LogoutButton from '~/components/shared/logout-button';
 import { Button } from '~/components/ui/button';
+import { Spinner } from '~/components/ui/spinner';
 import { HEADER_HEIGHT } from '~/constants/common';
+import { useIsMobile } from '~/hooks/use-mobile';
 import { cn } from '~/lib/utils';
+
+// ========== TYPES ==========
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<IconProps>;
+}
 
 interface SidenavProps {
   title: string;
-  listNav: {
-    name: string;
-    href: string;
-    icon: React.ComponentType<IconProps>;
-  }[];
+  listNav: NavItem[];
   className?: string;
+  children?: React.ReactNode;
 }
 
-export default function Sidenav({ title, listNav, className }: SidenavProps) {
-  const getPathname = usePathname();
-  const navigate = useRouter();
+interface SideNavHeaderProps {
+  title: string;
+  isMobile: boolean;
+  openSideNav?: boolean;
+  onToggle?: () => void;
+  children?: React.ReactNode;
+}
 
-  const isActive = (href: string) => {
-    return getPathname.includes(href);
-  };
+// ========== CONSTANTS ==========
+const WIDTH_SIDE_NAV = 350;
 
-  const getIconColor = (href: string) => {
-    return isActive(href) ? 'var(--base-white)' : 'var(--brown-900)';
-  };
+// ========== HOOKS ==========
+const useNavigation = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const isActive = (href: string): boolean => pathname.includes(href);
+  const getIconColor = (href: string): string => (isActive(href) ? 'var(--base-white)' : 'var(--brown-900)');
+  const navigateTo = (href: string): void => router.push(href);
+
+  return { isActive, getIconColor, navigateTo };
+};
+
+// ========== UTILITIES ==========
+const getSidenavStyles = (isMobile: boolean) => ({
+  width: isMobile ? '100%' : `${WIDTH_SIDE_NAV}px`,
+  top: `${HEADER_HEIGHT}px`,
+  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+});
+
+const getMarginStyle = (isMobile: boolean) => (isMobile ? {} : { marginRight: `${WIDTH_SIDE_NAV}px` });
+
+// ========== COMPONENTS ==========
+const SideNavHeader: React.FC<SideNavHeaderProps> = React.memo(
+  ({ title, isMobile, onToggle, children, openSideNav }) => (
+    <div className="flex flex-col items-center gap-2 px-3 md:flex-row md:justify-center">
+      <div className={cn('flex w-full items-center justify-between gap-2 p-4', openSideNav && 'p-0')}>
+        {isMobile && (
+          <button
+            onClick={onToggle}
+            className="cursor-pointer"
+            aria-label={openSideNav ? 'Close sidebar' : 'Open sidebar'}
+          >
+            <Icons.chevronRight />
+          </button>
+        )}
+        <h1 className="text-center text-body-xl font-bold text-brown-900 md:text-display-sm">{title}</h1>
+        {isMobile && <Icons.chevronRight className="opacity-0" />}
+      </div>
+      {children}
+    </div>
+  )
+);
+SideNavHeader.displayName = 'SideNavHeader';
+
+const NavigationList: React.FC<{ listNav: NavItem[]; onToggle?: () => void }> = React.memo(({ listNav, onToggle }) => {
+  const { isActive, getIconColor, navigateTo } = useNavigation();
 
   return (
-    <div className="mr-[20vw]">
-      <div
-        className={cn(
-          `fixed bottom-0 bg-brown-100 top-[${HEADER_HEIGHT}px] h-[calc(100vh-${HEADER_HEIGHT}px)] w-[20vw] overflow-y-auto p-8`,
-          className
-        )}
-      >
-        <h1 className="text-center text-display-sm font-bold text-brown-900">{title}</h1>
-        <div className="flex flex-col gap-4 py-20">
-          {listNav.map((item) => (
-            <div key={item.name}>
-              <Button
-                onClick={() => navigate.push(item.href)}
-                className={cn(
-                  'w-full bg-white text-title-lg font-bold text-brown-900',
-                  isActive(item.href) && 'bg-red-900 text-white'
-                )}
-                leadingIcon={<item.icon color={getIconColor(item.href)} />}
-                size="xl"
-                typeStyle="round"
-              >
-                {item.name}
-              </Button>
-            </div>
-          ))}
-        </div>
-        <div className="mb-4 flex w-full items-center justify-center gap-2">
-          <span>
-            <Icons.informationCircle />
-          </span>
-          <span className="text-body-lg text-brown-700">利用規約</span>
-        </div>
-        <LogoutButton />
-      </div>
+    <div className="flex flex-col gap-4 py-20">
+      {listNav.map((item) => {
+        const isItemActive = isActive(item.href);
+
+        return (
+          <Button
+            key={item.name}
+            onClick={() => {
+              navigateTo(item.href);
+              onToggle?.();
+            }}
+            className={cn(
+              'w-full bg-white text-title-lg font-bold text-brown-900',
+              isItemActive && 'bg-red-900 text-white'
+            )}
+            leadingIcon={<item.icon color={getIconColor(item.href)} />}
+            size="xl"
+            typeStyle="round"
+          >
+            {item.name}
+          </Button>
+        );
+      })}
     </div>
   );
-}
+});
+NavigationList.displayName = 'NavigationList';
+
+const SideNavFooter: React.FC = React.memo(() => (
+  <div className="mt-auto">
+    <div className="mb-4 flex w-full items-center justify-center gap-2">
+      <Icons.informationCircle />
+      <span className="text-body-lg text-brown-700">利用規約</span>
+    </div>
+    <LogoutButton />
+  </div>
+));
+SideNavFooter.displayName = 'SideNavFooter';
+
+const SideNavContent: React.FC<{
+  title: string;
+  listNav: NavItem[];
+  isMobile: boolean;
+  openSideNav?: boolean;
+  onToggle?: () => void;
+}> = ({ title, listNav, isMobile, openSideNav, onToggle }) => (
+  <div className="flex h-full flex-col">
+    <SideNavHeader title={title} isMobile={isMobile} openSideNav={openSideNav} onToggle={onToggle} />
+    <NavigationList listNav={listNav} onToggle={onToggle} />
+    <SideNavFooter />
+  </div>
+);
+
+const SideNavContainer: React.FC<{
+  title: string;
+  listNav: NavItem[];
+  className?: string;
+  isMobile: boolean;
+  openSideNav?: boolean;
+  onToggle?: () => void;
+  children?: React.ReactNode;
+}> = ({ title, listNav, className, isMobile, openSideNav, onToggle, children }) => {
+  const sidenavStyles = getSidenavStyles(isMobile);
+  const marginStyle = getMarginStyle(isMobile);
+
+  return (
+    <div className="flex flex-col md:flex-row">
+      <div style={marginStyle}>
+        <div className={cn('fixed bottom-0 overflow-y-auto bg-brown-100 p-4 md:p-8', className)} style={sidenavStyles}>
+          <SideNavContent
+            title={title}
+            listNav={listNav}
+            isMobile={isMobile}
+            openSideNav={openSideNav}
+            onToggle={onToggle}
+          />
+        </div>
+      </div>
+      <div className="flex-1 p-4 md:p-8 lg:p-16">{!openSideNav && children}</div>
+    </div>
+  );
+};
+
+// ========== MOBILE/DESKTOP VARIANTS ==========
+const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleSidebar = () => setIsOpen((prev) => !prev);
+
+  if (isOpen) {
+    return (
+      <SideNavContainer title={title} listNav={listNav} isMobile openSideNav={isOpen} onToggle={toggleSidebar}>
+        {children}
+      </SideNavContainer>
+    );
+  }
+
+  return (
+    <SideNavHeader openSideNav={isOpen} title={title} isMobile onToggle={toggleSidebar}>
+      {children}
+    </SideNavHeader>
+  );
+};
+
+const SideNavDesktop: React.FC<SidenavProps> = ({ title, listNav, className, children }) => (
+  <SideNavContainer title={title} listNav={listNav} className={className} isMobile={false}>
+    {children}
+  </SideNavContainer>
+);
+
+// ========== MAIN COMPONENT ==========
+const Sidenav: React.FC<SidenavProps> = ({ title, listNav, className, children }) => {
+  const isMobile = useIsMobile();
+
+  if (isMobile === undefined) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
+  return isMobile ? (
+    <SideNavMobile title={title} listNav={listNav}>
+      {children}
+    </SideNavMobile>
+  ) : (
+    <SideNavDesktop title={title} listNav={listNav} className={className}>
+      {children}
+    </SideNavDesktop>
+  );
+};
+
+export default Sidenav;

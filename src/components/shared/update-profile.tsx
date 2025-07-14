@@ -211,68 +211,74 @@ export default function UpdateProfile({
           {/* 生年月日 (Date of Birth) */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-gray-900">生年月日</h3>
-            <div className="flex w-full items-center gap-4">
-              <FormField
-                control={form.control}
-                name="birthYear"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormControl>
-                      <Select {...field} variant={form.formState.errors.birthYear ? 'warning' : 'default'}>
-                        <option value="">-</option>
-                        {years.map((year) => (
-                          <option key={year} value={year.toString()}>
-                            {year}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div>年</div>
-              <FormField
-                control={form.control}
-                name="birthMonth"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormControl>
-                      <Select {...field} variant={form.formState.errors.birthMonth ? 'warning' : 'default'}>
-                        <option value="">-</option>
-                        {months.map((month) => (
-                          <option key={month} value={month.toString()}>
-                            {month}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div>月</div>
+            <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
+              <div className="flex w-full items-center gap-4">
+                <FormField
+                  control={form.control}
+                  name="birthYear"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <Select {...field} variant={form.formState.errors.birthYear ? 'warning' : 'default'}>
+                          <option value="">-</option>
+                          {years.map((year) => (
+                            <option key={year} value={year.toString()}>
+                              {year}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div>年</div>
+              </div>
+              <div className="flex w-full items-center gap-4">
+                <FormField
+                  control={form.control}
+                  name="birthMonth"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <Select {...field} variant={form.formState.errors.birthMonth ? 'warning' : 'default'}>
+                          <option value="">-</option>
+                          {months.map((month) => (
+                            <option key={month} value={month.toString()}>
+                              {month}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div>月</div>
+              </div>
 
-              <FormField
-                control={form.control}
-                name="birthDay"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormControl>
-                      <Select {...field} variant={form.formState.errors.birthDay ? 'warning' : 'default'}>
-                        <option value="">-</option>
-                        {days.map((day) => (
-                          <option key={day} value={day.toString()}>
-                            {day}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div>日</div>
+              <div className="flex w-full items-center gap-4">
+                <FormField
+                  control={form.control}
+                  name="birthDay"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormControl>
+                        <Select {...field} variant={form.formState.errors.birthDay ? 'warning' : 'default'}>
+                          <option value="">-</option>
+                          {days.map((day) => (
+                            <option key={day} value={day.toString()}>
+                              {day}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div>日</div>
+              </div>
             </div>
           </div>
 
@@ -287,9 +293,9 @@ export default function UpdateProfile({
                     <Select
                       {...field}
                       label="都道府県"
+                      placeholder="選択してくださ"
                       variant={form.formState.errors.prefecture ? 'warning' : 'default'}
                     >
-                      <option value="">選択してください</option>
                       {prefectures?.map((prefecture) => (
                         <option key={prefecture.id} value={prefecture.nameJP}>
                           {prefecture.nameJP}
@@ -312,7 +318,11 @@ export default function UpdateProfile({
                 <FormItem>
                   <FormLabel className="text-lg font-semibold text-gray-900">性別</FormLabel>
                   <FormControl>
-                    <RadioGroup value={field.value} onValueChange={field.onChange} className="flex flex-row space-x-6">
+                    <RadioGroup
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      className="flex flex-row flex-wrap space-x-6"
+                    >
                       <RadioGroupItem value={EGender.MALE} id="male" title="男性" />
                       <RadioGroupItem value={EGender.FEMALE} id="female" title="女性" />
                       <RadioGroupItem value={EGender.OTHER} id="other" title="その他" />
@@ -325,13 +335,20 @@ export default function UpdateProfile({
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-center gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {hasCancelButton && (
-              <Button disabled={isPending} onClick={() => router.back()} typeStyle="round" variant="outline" size="xl">
+              <Button
+                className="w-full lg:w-auto"
+                disabled={isPending}
+                onClick={() => router.back()}
+                typeStyle="round"
+                variant="outline"
+                size="xl"
+              >
                 キャンセル
               </Button>
             )}
-            <Button disabled={isPending} typeStyle="round" type="submit" size="xl">
+            <Button className="w-full lg:w-auto" disabled={isPending} typeStyle="round" type="submit" size="xl">
               {titleSubmitButton}
             </Button>
           </div>

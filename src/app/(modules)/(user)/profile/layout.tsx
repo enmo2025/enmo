@@ -20,9 +20,8 @@ const listNav = [
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex">
-      <Sidenav title="プロフィール" listNav={listNav} />
-      <div className="flex-1 p-16">{children}</div>
-    </div>
+    <Sidenav title="プロフィール" listNav={listNav}>
+      {children}
+    </Sidenav>
   );
 }

@@ -1,6 +1,7 @@
 import { generateRandomString, type RandomReader } from '@oslojs/crypto/random';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { EGender } from '~/services/profile/profile.enum';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -73,3 +74,9 @@ export function formatDate(input: string | Date): string {
   const day = date.getDate();
   return `${year}年${month}月${day}日`;
 }
+
+export const genderList = {
+  [EGender.FEMALE]: '男性',
+  [EGender.MALE]: '女性',
+  [EGender.OTHER]: 'その他',
+};

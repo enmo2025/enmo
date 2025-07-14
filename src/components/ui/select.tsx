@@ -35,10 +35,11 @@ export interface SelectProps
   label?: string;
   helperText?: string;
   leadingIcon?: React.ReactNode;
+  placeholder?: string;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, label, variant, typeStyle, helperText, leadingIcon, ...props }, ref) => {
+  ({ className, label, variant, typeStyle, helperText, leadingIcon, placeholder, children, ...props }, ref) => {
     const getTrailingIcon = () => {
       if (variant === 'warning') return <Info className="h-5 w-5 text-warning" />;
       if (variant === 'success') return <CheckCircleIcon className="h-5 w-5 text-success" />;
@@ -66,7 +67,14 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             className={cn(selectVariants({ variant, typeStyle, className }), leadingIcon ? 'pl-10' : '', className)}
             ref={ref}
             {...props}
-          />
+          >
+            {placeholder && (
+              <option value="" disabled selected className="text-grey-300">
+                {placeholder}
+              </option>
+            )}
+            {children}
+          </select>
 
           <span
             className={`pointer-events-none absolute inset-y-0 right-4 flex items-center gap-2 ${props.disabled ? 'opacity-15' : ''}`}
