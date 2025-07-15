@@ -7,7 +7,7 @@ import { Button } from '~/components/ui/button';
 import Icons from '~/components/shared/icons';
 import dynamic from 'next/dynamic';
 import { Textarea } from '~/components/ui/textarea';
-import { apiClient } from '~/services';
+import { apiClient } from '~/services/clientService';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), {
   ssr: false,

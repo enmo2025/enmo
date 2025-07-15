@@ -46,3 +46,9 @@ export interface SendWelcomeEmailProps {
 export interface SendOTPProps extends SendWelcomeEmailProps {
   code: string;
 }
+
+export interface IconProps {
+  size?: number;
+  color?: string;
+  className?: string;
+}

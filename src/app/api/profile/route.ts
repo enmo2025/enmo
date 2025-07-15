@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { HTTP_STATUS } from '~/constants/status-code';
 import { prisma } from '~/lib/server/db';
 import { errorResponse, successResponse, withAuth } from '~/lib/server/utils';
+import dayjs from 'dayjs';
 
 export const PUT = withAuth(async (request: NextRequest, user: User) => {
   try {
@@ -11,9 +12,7 @@ export const PUT = withAuth(async (request: NextRequest, user: User) => {
 
     const { fullName, fullNameKana, dateOfBirth, gender, prefectures } = body;
 
-    const dateOfBirthDate = new Date(dateOfBirth);
-
-    const genderEnum = gender.toUpperCase() as 'MALE' | 'FEMALE' | 'OTHER';
+    const dateOfBirthDate = dayjs(dateOfBirth);
 
     const updatedUser = await prisma.user.update({
       where: {
@@ -22,8 +21,8 @@ export const PUT = withAuth(async (request: NextRequest, user: User) => {
       data: {
         fullName,
         fullNameKana,
-        dateOfBirth: dateOfBirthDate,
-        gender: genderEnum,
+        dateOfBirth: dateOfBirthDate.toDate(),
+        gender: gender.toUpperCase(),
         prefectures,
       },
     });

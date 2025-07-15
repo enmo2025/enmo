@@ -3,8 +3,8 @@
 import * as React from 'react';
 import { useDropzone, type Accept } from 'react-dropzone';
 import { cn } from '~/lib/utils';
-import Icons from '../shared/icons';
 import { Button } from '~/components/ui/button';
+import { PictureLineIcon, PicturePlusLineIcon, XMarkCircleLineIcon } from '../shared/icons';
 
 export interface ImageUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   onFilesAccepted?: (files: File[]) => void;
@@ -78,7 +78,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
             <input {...getInputProps()} ref={inputRef} />
             <div className="flex flex-col items-center gap-1">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-brown-900">
-                <Icons.picturePlusLine className="text-red" />
+                <PicturePlusLineIcon className="text-red" />
               </div>
               <div className="text-sm text-brown-700">
                 <span className="text-sm font-semibold text-brown-900">Click to upload </span>or drag and drop
@@ -95,7 +95,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
               <Button
                 variant="outline"
                 size="sm"
-                leadingIcon={<Icons.xMarkCircleLine />}
+                leadingIcon={<XMarkCircleLineIcon />}
                 className="w-full border-warning text-warning"
                 typeStyle="round"
                 onClick={handleRemove}
@@ -105,7 +105,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
               <Button
                 variant="outline"
                 size="sm"
-                leadingIcon={<Icons.pictureLine />}
+                leadingIcon={<PictureLineIcon />}
                 className="w-full border-brown-900 text-brown-900"
                 typeStyle="round"
                 onClick={handleReplace}

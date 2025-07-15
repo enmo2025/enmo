@@ -4,7 +4,7 @@ import localFont from 'next/font/local';
 import Header from '~/components/layout/header';
 import ThemeProvider from '~/components/shared/theme-provider';
 import { Toaster } from '~/components/ui/toaster';
-import { QueryProvider } from '~/services/query-provider';
+import { QueryProvider } from '~/services/clientService/query-provider';
 import { cn } from '~/lib/utils';
 import '../globals.css';
 import { siteConfig, siteUrl } from '~/config/site';

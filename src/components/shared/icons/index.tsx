@@ -1,0 +1,13 @@
+export { default as LineIcon } from './line';
+export { default as InformationCircleIcon } from './information-circle';
+export { default as LogoutIcon } from './logout';
+export { default as UserIcon } from './user';
+export { default as SettingIcon } from './setting';
+export { default as EditIcon } from './edit';
+export { default as ChevronRightIcon } from './chevron-right';
+export { default as CalendarLineIcon } from './calendar-line';
+export { default as FilePlusLineIcon } from './file-plus-line';
+export { default as LocationLineIcon } from './location-line';
+export { default as PicturePlusLineIcon } from './picture-plus-line';
+export { default as PictureLineIcon } from './picture-line';
+export { default as XMarkCircleLineIcon } from './x-mark-circle-line';
