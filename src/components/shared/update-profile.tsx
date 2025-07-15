@@ -87,8 +87,8 @@ export default function UpdateProfile({
     updateProfile(transformData(data), {
       onSuccess: () => {
         toast({
-          title: 'Success',
-          description: 'Profile updated successfully',
+          title: '更新しました',
+          description: 'プロフィールを更新しました',
         });
         if (successCallback) {
           successCallback();

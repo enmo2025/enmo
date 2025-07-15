@@ -21,7 +21,7 @@ export default function DeleteAccount({ user }: DeleteAccountProps) {
     onSuccess: async () => {
       router.push(PATH.DELETE_ACCOUNT_SUCCESS);
       toast({
-        title: 'Success',
+        title: '削除しました',
         description: 'アカウントが削除されました',
       });
       logoutClient();
