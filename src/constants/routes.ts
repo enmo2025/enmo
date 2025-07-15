@@ -8,9 +8,11 @@ export const PATH = {
   PROFILE: '/profile',
   PROFILE_INFO: '/profile/info',
   PROFILE_SETTING: '/profile/setting',
+  DELETE_ACCOUNT: '/delete-account/confirm',
+  DELETE_ACCOUNT_SUCCESS: '/delete-account/success',
 } as const;
 
-export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER] as const;
+export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER, PATH.DELETE_ACCOUNT_SUCCESS] as const;
 
 export const PATH_AUTH = [PATH.LOGIN, PATH.REGISTER] as const;
 

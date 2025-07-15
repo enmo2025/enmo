@@ -24,13 +24,13 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
     return redirect(PATH.HOME);
   }
 
-  // Redirect unauthenticated users to login
-  if (!isAuthenticated && !isAuthenticationRoute) {
+  // Redirect unauthenticated users to login (except for auth pages and public pages)
+  if (!isAuthenticated && !isAuthenticationRoute && !isPublicRoute) {
     return redirect(PATH.LOGIN);
   }
 
-  // Redirect authenticated users away from public pages
-  if (isAuthenticated && isPublicRoute) {
+  // Redirect authenticated users away from public pages (except for DELETE_ACCOUNT_SUCCESS)
+  if (isAuthenticated && isPublicRoute && currentPath !== PATH.DELETE_ACCOUNT_SUCCESS) {
     return redirect(PATH.LOGIN);
   }
 

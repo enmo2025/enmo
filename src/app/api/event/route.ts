@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createEvent } from '~/services/event/event.service';
+import { createEvent } from '~/services/clientService/event/event.service';
 
 export const POST = async (req: Request) => {
   try {

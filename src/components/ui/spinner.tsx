@@ -41,3 +41,16 @@ export function Spinner({ size, show, children, className }: SpinnerContentProps
     </span>
   );
 }
+
+export function SpinnerSection({ size, show, children, className }: SpinnerContentProps) {
+  return (
+    <div className="relative h-full w-full">
+      {show && (
+        <div className="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-white/50">
+          <Spinner size={size} show={show} className={className} />
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}

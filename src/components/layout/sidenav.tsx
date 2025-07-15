@@ -48,6 +48,13 @@ const useNavigation = () => {
   return { isActive, getIconColor, navigateTo };
 };
 
+const useActiveNavItem = (listNav: NavItem[]) => {
+  const { isActive } = useNavigation();
+
+  const activeItem = listNav.find((item) => isActive(item.href));
+  return activeItem;
+};
+
 // ========== UTILITIES ==========
 const getSidenavStyles = (isMobile: boolean) => ({
   width: isMobile ? '100%' : `${WIDTH_SIDE_NAV}px`,
@@ -171,17 +178,21 @@ const SideNavContainer: React.FC<{
 const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleSidebar = () => setIsOpen((prev) => !prev);
+  const activeNavItem = useActiveNavItem(listNav);
+
+  // Use active nav item's name as title, fallback to original title
+  const mobileTitle = activeNavItem?.name || title;
 
   if (isOpen) {
     return (
-      <SideNavContainer title={title} listNav={listNav} isMobile openSideNav={isOpen} onToggle={toggleSidebar}>
+      <SideNavContainer title={mobileTitle} listNav={listNav} isMobile openSideNav={isOpen} onToggle={toggleSidebar}>
         {children}
       </SideNavContainer>
     );
   }
 
   return (
-    <SideNavHeader openSideNav={isOpen} title={title} isMobile onToggle={toggleSidebar}>
+    <SideNavHeader openSideNav={isOpen} title={mobileTitle} isMobile onToggle={toggleSidebar}>
       {children}
     </SideNavHeader>
   );
