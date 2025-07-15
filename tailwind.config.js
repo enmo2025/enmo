@@ -102,6 +102,7 @@ export default {
       spacing: {
         15: '60px',
         30: '120px',
+        100: '400px',
       },
     },
   },

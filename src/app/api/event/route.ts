@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createEvent } from '~/services/event/event.service';
+import { createEvent } from '~/services/clientService/event/event.service';
 
 export const POST = async (req: Request) => {
   try {
@@ -7,7 +7,7 @@ export const POST = async (req: Request) => {
     const event = await createEvent(body);
     return NextResponse.json({ success: true, event });
   } catch (error) {
-    console.error(error);
+    console.error('Error creating event:', error);
     const errMsg = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json({ success: false, error: errMsg }, { status: 500 });
   }

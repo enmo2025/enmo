@@ -11,3 +11,4 @@ export { default as LocationLineIcon } from './location-line';
 export { default as PicturePlusLineIcon } from './picture-plus-line';
 export { default as PictureLineIcon } from './picture-line';
 export { default as XMarkCircleLineIcon } from './x-mark-circle-line';
+export { default as TagLineIcon } from './tag-line';
