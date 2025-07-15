@@ -1,7 +1,7 @@
 'use client';
 import { logout } from '~/app/(modules)/actions';
 import { Button } from '../ui/button';
-import Icons from './icons';
+import { LogoutIcon } from './icons';
 
 export default function LogoutButton({ className }: { className?: string }) {
   return (
@@ -16,7 +16,7 @@ export default function LogoutButton({ className }: { className?: string }) {
         className="w-full"
         size="xl"
       >
-        <Icons.logout />
+        <LogoutIcon />
         <span className="font-bold text-brown-700">ログアウト</span>
       </Button>
     </div>

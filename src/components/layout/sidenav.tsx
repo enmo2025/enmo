@@ -2,13 +2,14 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import Icons, { IconProps } from '~/components/shared/icons';
+import { ChevronRightIcon, InformationCircleIcon } from '~/components/shared/icons';
 import LogoutButton from '~/components/shared/logout-button';
 import { Button } from '~/components/ui/button';
 import { Spinner } from '~/components/ui/spinner';
 import { HEADER_HEIGHT } from '~/constants/common';
 import { useIsMobile } from '~/hooks/use-mobile';
 import { cn } from '~/lib/utils';
+import { IconProps } from '~/types';
 
 // ========== TYPES ==========
 interface NavItem {
@@ -67,11 +68,11 @@ const SideNavHeader: React.FC<SideNavHeaderProps> = React.memo(
             className="cursor-pointer"
             aria-label={openSideNav ? 'Close sidebar' : 'Open sidebar'}
           >
-            <Icons.chevronRight />
+            <ChevronRightIcon />
           </button>
         )}
         <h1 className="text-center text-body-xl font-bold text-brown-900 md:text-display-sm">{title}</h1>
-        {isMobile && <Icons.chevronRight className="opacity-0" />}
+        {isMobile && <ChevronRightIcon className="opacity-0" />}
       </div>
       {children}
     </div>
@@ -114,7 +115,7 @@ NavigationList.displayName = 'NavigationList';
 const SideNavFooter: React.FC = React.memo(() => (
   <div className="mt-auto">
     <div className="mb-4 flex w-full items-center justify-center gap-2">
-      <Icons.informationCircle />
+      <InformationCircleIcon />
       <span className="text-body-lg text-brown-700">利用規約</span>
     </div>
     <LogoutButton />

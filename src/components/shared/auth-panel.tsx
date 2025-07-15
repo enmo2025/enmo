@@ -1,9 +1,9 @@
 'use client';
 import React from 'react';
 import { Button } from '../ui/button';
-import Icons from './icons';
 import Divider from '../ui/divider';
 import { useRouter } from 'next/navigation';
+import { LineIcon } from './icons';
 
 interface AuthPanelProps {
   type: 'login' | 'register';
@@ -51,7 +51,7 @@ export default function AuthPanel({ type }: AuthPanelProps) {
         >
           <div className="relative flex w-full items-center justify-start">
             <span>
-              <Icons.line size={40} />
+              <LineIcon size={40} />
             </span>
             <span className="absolute left-1/2 -translate-x-1/2 text-body-lg font-bold">{text[type].button}</span>
           </div>

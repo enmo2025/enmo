@@ -3,7 +3,7 @@
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import Icons from '~/components/shared/icons';
+import { EditIcon } from '~/components/shared/icons';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
 import { formatDate, genderList } from '~/lib/utils';
@@ -38,7 +38,7 @@ export default function InfoDetail({ user }: InfoDetailProps) {
           <div className="flex items-center justify-between">
             <h1 className="text-body-xl font-bold text-red-700 md:text-headline-lg">鈴木 美月</h1>
             <Button
-              leadingIcon={<Icons.edit />}
+              leadingIcon={<EditIcon />}
               variant="outline"
               typeStyle="round"
               size="lg"

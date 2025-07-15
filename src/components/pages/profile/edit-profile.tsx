@@ -6,11 +6,11 @@ import { Card, CardContent } from '~/components/ui/card';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
-interface PageClient {
+interface EditProfileProps {
   user: User;
 }
 
-export default function PageClient({ user }: PageClient) {
+export default function EditProfile({ user }: EditProfileProps) {
   const router = useRouter();
   return (
     <Card>
