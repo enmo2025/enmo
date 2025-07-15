@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EGender } from '~/services/profile/profile.enum';
+import { EGender } from '~/services/clientService/profile/profile.enum';
 
 export const userValidationSchema = z.object({
   // Name fields (氏名)

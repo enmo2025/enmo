@@ -1,7 +1,7 @@
 import { generateRandomString, type RandomReader } from '@oslojs/crypto/random';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { EGender } from '~/services/profile/profile.enum';
+import { EGender } from '~/services/clientService/profile/profile.enum';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

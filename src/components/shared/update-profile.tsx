@@ -9,12 +9,12 @@ import { Input } from '~/components/ui/input';
 import { Select } from '~/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '~/components/ui/radio-group';
 import { Button } from '~/components/ui/button';
-import { useUpdateProfile } from '~/services/profile/profile.api';
+import { useUpdateProfile } from '~/services/clientService/profile/profile.api';
 import { toast } from '~/hooks/use-toast';
-import { useGetPrefectures } from '~/services/prefecture/prefecture.api';
+import { useGetPrefectures } from '~/services/clientService/prefecture/prefecture.api';
 import { User } from '@prisma/client';
 import dayjs from 'dayjs';
-import { EGender } from '~/services/profile/profile.enum';
+import { EGender } from '~/services/clientService/profile/profile.enum';
 import { Spinner } from '../ui/spinner';
 import { useRouter } from 'next/navigation';
 
