@@ -6,7 +6,7 @@ export interface CreateEventInput {
   eventDetailBanner: string;
   content: string;
   participantFee: string;
-  date: string;
+  date: Date;
   location: string;
   companyName: string;
   companyProfile: string;
