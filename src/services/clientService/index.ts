@@ -117,6 +117,21 @@ class ApiClient {
 
     return this.handleResponse<T>(response);
   }
+
+  async delete<T>(endpoint: string, options: ApiRequestOptions = {}): Promise<T> {
+    const { params, headers, ...requestOptions } = options;
+    const url = this.buildURL(endpoint, params);
+    const requestHeaders = this.buildHeaders(headers);
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: requestHeaders,
+      credentials: 'include',
+      ...requestOptions,
+    });
+
+    return this.handleResponse<T>(response);
+  }
 }
 
 export const apiClient = new ApiClient();
