@@ -18,7 +18,7 @@ export default function EventDetailPage({ event }: { event: Event }) {
         </div>
         <div className="flex flex-col gap-10">
           <div className="h-full w-full">
-            <Image src={event.eventDetailBanner} alt="host-info" width={700} height={390} />
+            <Image src={event.eventBanner} alt="host-info" width={700} height={390} />
           </div>
           <div
             className="flex flex-col gap-5 text-body-md text-brown-700 md:text-body-lg"

@@ -18,11 +18,13 @@ import 'react-quill-new/dist/quill.snow.css';
 import '~/assets/css/react-quill.css';
 import { REACT_QUILL_TOOLBAR_OPTIONS } from '~/constants';
 import { ImageUpload } from '~/components/ui/image-upload';
+import { IEvent } from '~/types';
+import { useRouter } from 'next/navigation';
 
 const eventFormSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
   description: z.string().min(1, 'Description is required').max(100, 'Description must be less than 100 characters'),
-  eventDetailBanner: z.string().min(1, 'Event detail banner is required'),
+  eventBanner: z.string().min(1, 'Event banner is required'),
   content: z.string().min(1, 'Content is required'),
   participantFee: z.string().min(1, 'Participant fee is required'),
   date: z.string().min(1, 'Date is required'),
@@ -38,54 +40,65 @@ const eventFormSchema = z.object({
 
 type EventFormData = z.infer<typeof eventFormSchema>;
 
-export default function EventForm() {
+export default function EventForm({ event }: { event?: IEvent }) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-
+  const router = useRouter();
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      eventDetailBanner: '',
-      content: '',
-      participantFee: '',
-      date: '',
-      location: '',
-      hostName: '',
-      companyName: '',
-      companyLogo: '',
-      companyProfile: '',
+      title: event?.title || '',
+      description: event?.description || '',
+      eventBanner: event?.eventBanner || '',
+      content: event?.content || '',
+      participantFee: event?.participantFee || '',
+      date: event?.date?.toString() || '',
+      location: event?.location || '',
+      hostName: event?.hostName || '',
+      companyName: event?.companyName || '',
+      companyLogo: event?.companyLogo || '',
+      companyProfile: event?.companyProfile || '',
     },
   });
 
   const onSubmit = async (data: EventFormData) => {
     setIsSubmitting(true);
-    try {
-      const payload = {
-        ...data,
-        date: new Date(data.date),
-      };
-      const res = await apiClient.post<{ success: boolean; event?: any; error?: string }>('/event', payload);
-      if (res.success) {
-        alert('Create event success');
-        // Reset form after successful submission
-        form.reset();
-      } else {
-        alert('Create event failed: ' + (res.error || 'Unknown error'));
+    const payload = {
+      ...data,
+      date: new Date(data.date),
+    };
+    if (event) {
+      try {
+        await apiClient.put<{ success: boolean; event?: any; error?: string }>(`/event/${event.id}`, payload);
+        alert('Update event success');
+        router.push(`/admin/event/${event.id}`);
+      } catch (error: any) {
+        console.error('Error updating event:', error);
+        alert('Update event failed: ' + (error.message || 'Unknown error'));
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (err: any) {
-      console.error('Error submitting form:', err);
-      alert('Create event failed: ' + (err.message || 'Unknown error'));
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      try {
+        await apiClient.post<{ success: boolean; event?: any; error?: string }>('/event', payload);
+        alert('Create event success');
+        router.push('/admin/list-event');
+      } catch (error: any) {
+        console.error('Error creating event:', error);
+        alert('Create event failed: ' + (error.message || 'Unknown error'));
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return (
-    <div className="flex flex-col gap-15 px-20 pb-30 pt-10">
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-20">
-        <div className="flex flex-col gap-10">
-          <div className="flex flex-col gap-10 rounded-xl border border-brown-700 p-10">
+    <div className="flex flex-col gap-8 overflow-x-hidden sm:gap-10 md:gap-15">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="mx-auto flex w-full max-w-[900px] flex-col gap-8 sm:gap-12 md:gap-20"
+      >
+        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
+          <div className="flex flex-col gap-6 rounded-xl border border-brown-700 p-4 sm:gap-8 sm:p-8 md:gap-10 md:p-10">
             <span className="flex justify-center text-title-lg font-bold text-brown-900">
               ライフスタイルウィンドウについて
             </span>
@@ -100,6 +113,7 @@ export default function EventForm() {
                   maxLength={100}
                   helperText={form.formState.errors.title?.message}
                   variant={form.formState.errors.title ? 'warning' : 'default'}
+                  className="w-full"
                 />
               )}
             />
@@ -114,12 +128,13 @@ export default function EventForm() {
                   maxLength={100}
                   helperText={form.formState.errors.description?.message}
                   variant={form.formState.errors.description ? 'warning' : 'default'}
+                  className="w-full"
                 />
               )}
             />
             <Controller
               control={form.control}
-              name="eventDetailBanner"
+              name="eventBanner"
               render={({ field }) => (
                 <div className="flex flex-col gap-1">
                   <ImageUpload
@@ -130,10 +145,10 @@ export default function EventForm() {
                         field.onChange(file.name);
                       }
                     }}
-                    className="h-72 w-[512px]"
+                    className="mx-auto h-40 w-full max-w-[512px] sm:h-60 md:h-72"
                   />
-                  {form.formState.errors.eventDetailBanner && (
-                    <span className="text-sm text-warning">{form.formState.errors.eventDetailBanner.message}</span>
+                  {form.formState.errors.eventBanner && (
+                    <span className="text-sm text-warning">{form.formState.errors.eventBanner.message}</span>
                   )}
                 </div>
               )}
@@ -151,6 +166,7 @@ export default function EventForm() {
                       modules={{
                         toolbar: REACT_QUILL_TOOLBAR_OPTIONS,
                       }}
+                      className="min-h-[120px] w-full sm:min-h-[180px] md:min-h-[220px]"
                     />
                   </div>
                   {form.formState.errors.content && (
@@ -159,7 +175,7 @@ export default function EventForm() {
                 </div>
               )}
             />
-            <div className="flex w-full justify-between gap-5">
+            <div className="flex w-full flex-col gap-4 sm:flex-row sm:gap-5">
               <Controller
                 control={form.control}
                 name="participantFee"
@@ -170,6 +186,7 @@ export default function EventForm() {
                     label="価格"
                     trailingIcon={<TagLineIcon />}
                     helperText={form.formState.errors.participantFee?.message}
+                    className="w-full"
                   />
                 )}
               />
@@ -183,6 +200,7 @@ export default function EventForm() {
                     label="イベントの日付"
                     trailingIcon={<CalendarLineIcon />}
                     helperText={form.formState.errors.date?.message}
+                    className="w-full"
                   />
                 )}
               />
@@ -196,12 +214,13 @@ export default function EventForm() {
                     label="位置"
                     trailingIcon={<LocationLineIcon />}
                     helperText={form.formState.errors.location?.message}
+                    className="w-full"
                   />
                 )}
               />
             </div>
           </div>
-          <div className="flex flex-col gap-10 rounded-xl border border-brown-700 p-10">
+          <div className="flex flex-col gap-6 rounded-xl border border-brown-700 p-4 sm:gap-8 sm:p-8 md:gap-10 md:p-10">
             <span className="flex justify-center text-title-lg font-bold text-brown-900">くらしパートナーについて</span>
             <Controller
               control={form.control}
@@ -212,6 +231,7 @@ export default function EventForm() {
                   variant={form.formState.errors.companyName ? 'warning' : 'outline'}
                   label="会社名"
                   helperText={form.formState.errors.companyName?.message}
+                  className="w-full"
                 />
               )}
             />
@@ -228,7 +248,7 @@ export default function EventForm() {
                         field.onChange(file.name);
                       }
                     }}
-                    className="aspect-square"
+                    className="mx-auto aspect-square w-full max-w-[180px]"
                   />
                   {form.formState.errors.companyLogo && (
                     <span className="text-sm text-warning">{form.formState.errors.companyLogo.message}</span>
@@ -247,6 +267,7 @@ export default function EventForm() {
                   maxLength={100}
                   helperText={form.formState.errors.companyProfile?.message}
                   variant={form.formState.errors.companyProfile ? 'warning' : 'default'}
+                  className="w-full"
                 />
               )}
             />
@@ -260,16 +281,17 @@ export default function EventForm() {
                   label="担当者名"
                   orientation="horizontal"
                   helperText={form.formState.errors.hostName?.message}
+                  className="w-full"
                 />
               )}
             />
           </div>
         </div>
-        <div className="flex justify-center gap-5">
-          <Button type="button" variant="outline" className="w-1/2" typeStyle="round" size="xl">
+        <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-5">
+          <Button type="button" variant="outline" className="w-full sm:w-1/2" typeStyle="round" size="xl">
             キャンセル
           </Button>
-          <Button type="submit" className="w-1/2" typeStyle="round" size="xl" disabled={isSubmitting}>
+          <Button type="submit" className="w-full sm:w-1/2" typeStyle="round" size="xl" disabled={isSubmitting}>
             {isSubmitting ? '作成中...' : '作成する'}
           </Button>
         </div>

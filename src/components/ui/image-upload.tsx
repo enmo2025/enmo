@@ -72,7 +72,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
               isDragActive && 'border-brown-900',
               className
             )}
-            style={{ minHeight: 260 }}
+            style={{ minHeight: 180 }}
             {...props}
           >
             <input {...getInputProps()} ref={inputRef} />
