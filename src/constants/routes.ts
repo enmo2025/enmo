@@ -12,7 +12,7 @@ export const PATH = {
   DELETE_ACCOUNT_SUCCESS: '/delete-account/success',
 } as const;
 
-export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER, PATH.DELETE_ACCOUNT_SUCCESS] as const;
+export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER, PATH.DELETE_ACCOUNT_SUCCESS, PATH.HOME] as const;
 
 export const PATH_AUTH = [PATH.LOGIN, PATH.REGISTER] as const;
 

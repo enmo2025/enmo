@@ -19,22 +19,17 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
   const isCheckFullInfo = session.user?.dateOfBirth && session.user?.gender && session.user?.prefectures;
   const isBasicInfoPage = currentPath === PATH.REGISTER_BASIC_INFO;
 
-  // Redirect authenticated users away from auth pages
+  // Redirect authenticated users away from auth pages (login, register) to HOME
   if (isAuthenticated && isAuthenticationRoute) {
     return redirect(PATH.HOME);
   }
 
-  // Redirect unauthenticated users to login (except for auth pages and public pages)
-  if (!isAuthenticated && !isAuthenticationRoute && !isPublicRoute) {
+  // Redirect unauthenticated users to login (except for public pages)
+  if (!isAuthenticated && !isPublicRoute) {
     return redirect(PATH.LOGIN);
   }
 
-  // Redirect authenticated users away from public pages (except for DELETE_ACCOUNT_SUCCESS)
-  if (isAuthenticated && isPublicRoute && currentPath !== PATH.DELETE_ACCOUNT_SUCCESS) {
-    return redirect(PATH.LOGIN);
-  }
-
-  // Handle incomplete profile for authenticated users
+  // Handle incomplete profile for authenticated users (only for protected pages)
   if (isAuthenticated && !isCheckFullInfo && !isBasicInfoPage && !isPublicRoute) {
     return redirect(PATH.REGISTER_BASIC_INFO);
   }
