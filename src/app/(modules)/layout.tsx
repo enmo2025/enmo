@@ -9,6 +9,7 @@ import { cn } from '~/lib/utils';
 import '../globals.css';
 import { siteConfig, siteUrl } from '~/config/site';
 import AuthProvider from '~/providers/auth-provider';
+import 'react-quill-new/dist/quill.snow.css';
 
 type Props = {
   params: Promise<{ locale: string }>;

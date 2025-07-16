@@ -1,9 +1,13 @@
+import { notFound } from 'next/navigation';
 import React from 'react';
 import EditEvent from '~/components/pages/Admin/EditEvent/EditEvent';
-import { apiClient } from '~/services/clientService';
-import { IEvent } from '~/types';
+import { getEventById } from '~/services/clientService/event/event.service';
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const { event } = await apiClient.get<{ event: IEvent }>(`/event/${params.id}`);
+  const { id } = params;
+  const event = await getEventById(id);
+
+  if (!event) return notFound();
+
   return <EditEvent event={event} />;
 }

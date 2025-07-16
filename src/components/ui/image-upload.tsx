@@ -5,9 +5,12 @@ import { useDropzone, type Accept } from 'react-dropzone';
 import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import { PictureLineIcon, PicturePlusLineIcon, XMarkCircleLineIcon } from '../shared/icons';
+import { Spinner } from './spinner';
+import Image from 'next/image';
 
 export interface ImageUploadProps extends React.HTMLAttributes<HTMLDivElement> {
-  onFilesAccepted?: (files: File[]) => void;
+  preview?: string;
+  onFilesAccepted?: (files: File[], url?: string) => void;
   accept?: Accept;
   maxSize?: number;
   multiple?: boolean;
@@ -17,6 +20,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
   (
     {
       className,
+      preview,
       onFilesAccepted,
       accept = {
         'image/jpg': ['.jpg'],
@@ -28,16 +32,48 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
     },
     ref
   ) => {
-    const [previews, setPreviews] = React.useState<string[]>([]);
-    const inputRef = React.useRef<HTMLInputElement | null>(null);
+    const [previews, setPreviews] = React.useState<string>(preview || '');
+    const [filename, setFilename] = React.useState<string | null>(null);
+    const [loading, setLoading] = React.useState(false);
+
+    const uploadFile = async (file: File) => {
+      const formData = new FormData();
+      formData.append('file', file);
+      const uniqueFilename = `${Date.now()}_${file.name}`;
+      setFilename(uniqueFilename);
+      const res = await fetch(`/api/upload?filename=${encodeURIComponent(uniqueFilename)}`, {
+        method: 'POST',
+        body: file,
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return data.url || data.downloadUrl || data.pathname || null;
+    };
+
+    const deleteFile = async (filenameToDelete?: string) => {
+      if (!filenameToDelete) return;
+      await fetch(`/api/upload?filename=${encodeURIComponent(filenameToDelete)}`, {
+        method: 'DELETE',
+      });
+    };
 
     const handleDrop = React.useCallback(
-      (files: File[]) => {
-        if (onFilesAccepted) onFilesAccepted(files);
-        const urls = files.map((file) => URL.createObjectURL(file));
-        setPreviews(urls);
+      async (files: File[]) => {
+        if (files.length === 0) return;
+        setLoading(true);
+        try {
+          if (filename) await deleteFile(filename);
+          const file = files[0];
+          const url = await uploadFile(file);
+          if (url) {
+            setPreviews(url);
+            if (onFilesAccepted) onFilesAccepted([file], url);
+          }
+        } finally {
+          setLoading(false);
+        }
       },
-      [onFilesAccepted]
+      [onFilesAccepted, filename]
     );
 
     const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
@@ -45,26 +81,35 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       accept,
       maxSize,
       multiple: false,
+      noClick: true,
+      noKeyboard: true,
     });
 
     React.useEffect(() => {
-      return () => {
-        previews.forEach((url) => URL.revokeObjectURL(url));
+      const handleBeforeUnload = async () => {
+        if (filename) await deleteFile(filename);
       };
-    }, [previews]);
+      window.addEventListener('beforeunload', handleBeforeUnload);
+      return () => {
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+    }, [filename, previews]);
 
-    const handleRemove = () => {
-      setPreviews([]);
-      if (onFilesAccepted) onFilesAccepted([]);
-    };
-
-    const handleReplace = () => {
-      open();
+    const handleRemove = async () => {
+      if (filename) await deleteFile(filename);
+      setPreviews('');
+      setFilename(null);
+      if (onFilesAccepted) onFilesAccepted([], undefined);
     };
 
     return (
-      <div className="flex w-full flex-col items-center" onClick={() => inputRef.current?.click()}>
-        {previews.length === 0 ? (
+      <div className="relative flex w-full flex-col items-center">
+        {loading && (
+          <div className="bg-white/70 absolute inset-0 z-10 flex items-center justify-center">
+            <Spinner />
+          </div>
+        )}
+        {previews === '' ? (
           <div
             {...getRootProps()}
             className={cn(
@@ -73,9 +118,10 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
               className
             )}
             style={{ minHeight: 180 }}
+            onClick={open}
             {...props}
           >
-            <input {...getInputProps()} ref={inputRef} />
+            <input {...getInputProps()} />
             <div className="flex flex-col items-center gap-1">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-brown-900">
                 <PicturePlusLineIcon className="text-red" />
@@ -89,11 +135,13 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
         ) : (
           <>
             <div className="overflow-hidden rounded-md border-[3px] border-red-500" style={{ maxWidth: 480 }}>
-              <img src={previews[0]} alt="preview" className="h-64 w-full object-cover" />
+              <Image src={previews} alt="preview" width={2000} height={2000} className="h-64 w-full object-cover" />
+              <input {...getInputProps()} />
             </div>
             <div className="mt-4 flex justify-center gap-4">
               <Button
                 variant="outline"
+                type="button"
                 size="sm"
                 leadingIcon={<XMarkCircleLineIcon />}
                 className="w-full border-warning text-warning"
@@ -104,11 +152,12 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
               </Button>
               <Button
                 variant="outline"
+                type="button"
                 size="sm"
                 leadingIcon={<PictureLineIcon />}
                 className="w-full border-brown-900 text-brown-900"
                 typeStyle="round"
-                onClick={handleReplace}
+                onClick={open}
               >
                 交換する
               </Button>

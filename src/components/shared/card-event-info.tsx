@@ -4,7 +4,7 @@ import { Button } from '~/components/ui/button';
 import { useIsBreakpoint } from '~/hooks/use-breakpoint';
 
 export interface CardEventInfoProps {
-  date: string;
+  date: Date;
   location: string;
   participantFee: string;
 }
@@ -16,7 +16,15 @@ export default function CardEventInfo({ date, location, participantFee }: CardEv
       <div className="flex flex-col gap-5">
         <div className="flex items-center gap-5">
           <span className="text-body-md text-brown-700 md:text-body-lg">時間:</span>
-          <span className="text-body-lg text-brown-900 md:text-body-xl">{date}</span>
+          <span className="text-body-lg text-brown-900 md:text-body-xl">
+            {date
+              .toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })
+              .replace(/\//g, '/')}
+          </span>
         </div>
         <div className="flex items-center gap-5">
           <span className="text-body-md text-brown-700 md:text-body-lg">地域:</span>

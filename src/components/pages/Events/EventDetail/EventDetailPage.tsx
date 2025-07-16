@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import CardEventInfo from '~/components/shared/card-event-info';
 import CardHostInfo from '~/components/shared/card-host-info';
-import { Event } from '../events.service';
+import { IEvent } from '~/types';
+import 'react-quill-new/dist/quill.snow.css';
 
-export default function EventDetailPage({ event }: { event: Event }) {
+export default function EventDetailPage({ event }: { event: IEvent }) {
   return (
     <div className="mx-auto flex max-w-200 gap-10 px-5 pt-[60px] lg:max-w-300 lg:gap-[100px] lg:px-10">
       <div className="flex flex-col gap-10">
@@ -21,16 +22,16 @@ export default function EventDetailPage({ event }: { event: Event }) {
             <Image src={event.eventBanner} alt="host-info" width={700} height={390} />
           </div>
           <div
-            className="flex flex-col gap-5 text-body-md text-brown-700 md:text-body-lg"
+            className="ql-editor flex h-full flex-col gap-5 !overflow-y-hidden text-body-md text-brown-700 md:text-body-lg"
             dangerouslySetInnerHTML={{ __html: event.content }}
           ></div>
           <div className="flex items-center justify-center sm:hidden">
             <CardHostInfo
-              companyName={event.host.companyName}
-              companyLogo={event.host.companyLogo}
-              companyRole={event.host.companyRole}
-              description={event.host.description}
-              hostName={event.host.hostName}
+              companyName={event.companyName}
+              companyLogo={event.companyLogo}
+              companyProfile={event.companyProfile}
+              description={event.description}
+              hostName={event.hostName}
             />
           </div>
         </div>
@@ -42,11 +43,11 @@ export default function EventDetailPage({ event }: { event: Event }) {
         </div>
         <div>
           <CardHostInfo
-            companyName={event.host.companyName}
-            companyLogo={event.host.companyLogo}
-            companyRole={event.host.companyRole}
-            description={event.host.description}
-            hostName={event.host.hostName}
+            companyName={event.companyName}
+            companyLogo={event.companyLogo}
+            companyProfile={event.companyProfile}
+            description={event.description}
+            hostName={event.hostName}
           />
         </div>
       </div>

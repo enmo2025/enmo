@@ -43,6 +43,7 @@ type EventFormData = z.infer<typeof eventFormSchema>;
 export default function EventForm({ event }: { event?: IEvent }) {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const router = useRouter();
+  const dateInputRef = React.useRef<HTMLInputElement>(null);
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
@@ -139,10 +140,12 @@ export default function EventForm({ event }: { event?: IEvent }) {
                 <div className="flex flex-col gap-1">
                   <ImageUpload
                     {...field}
-                    onFilesAccepted={(files) => {
-                      const file = files[0];
-                      if (file) {
-                        field.onChange(file.name);
+                    preview={field.value}
+                    onFilesAccepted={(_, url) => {
+                      if (url) {
+                        field.onChange(url);
+                      } else {
+                        field.onChange('');
                       }
                     }}
                     className="mx-auto h-40 w-full max-w-[512px] sm:h-60 md:h-72"
@@ -196,11 +199,19 @@ export default function EventForm({ event }: { event?: IEvent }) {
                 render={({ field }) => (
                   <Input
                     {...field}
+                    type="date"
+                    ref={dateInputRef}
                     variant={form.formState.errors.date ? 'warning' : 'outline'}
                     label="イベントの日付"
                     trailingIcon={<CalendarLineIcon />}
                     helperText={form.formState.errors.date?.message}
                     className="w-full"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      dateInputRef.current?.showPicker?.();
+                      dateInputRef.current?.focus();
+                    }}
                   />
                 )}
               />
@@ -242,10 +253,12 @@ export default function EventForm({ event }: { event?: IEvent }) {
                 <div className="flex flex-col gap-1">
                   <ImageUpload
                     {...field}
-                    onFilesAccepted={(files) => {
-                      const file = files[0];
-                      if (file) {
-                        field.onChange(file.name);
+                    preview={field.value}
+                    onFilesAccepted={(_, url) => {
+                      if (url) {
+                        field.onChange(url);
+                      } else {
+                        field.onChange('');
                       }
                     }}
                     className="mx-auto aspect-square w-full max-w-[180px]"
