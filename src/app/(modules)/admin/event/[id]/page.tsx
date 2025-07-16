@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import React from 'react';
 import EditEvent from '~/components/pages/Admin/EditEvent/EditEvent';
-import { getEventById } from '~/services/clientService/event/event.service';
+import { getEventById } from '~/services/serverService/event/event.service';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
