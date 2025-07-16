@@ -2,21 +2,25 @@ import { HTTP_STATUS } from '~/constants/status-code';
 import { getCurrentSession } from './auth/session';
 import { NextRequest, NextResponse } from 'next/server';
 import { User } from '@prisma/client';
+import { Pagination } from '~/services/clientService/interface';
 
 export const successResponse = <T>({
   message,
   data,
   status = HTTP_STATUS.OK,
+  pagination,
 }: {
   message: string;
   data: T;
   status?: number;
+  pagination?: Pagination;
 }) => {
   return {
     success: true,
     status,
     message,
     data,
+    pagination,
   };
 };
 
@@ -51,3 +55,8 @@ export function withAuth(handler: (request: NextRequest, user: User) => Promise<
     return handler(request, user);
   };
 }
+
+export const getPagination = (page: number, limit: number, total: number) => {
+  const skip = (page - 1) * limit;
+  return { skip, limit };
+};

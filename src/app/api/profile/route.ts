@@ -6,7 +6,6 @@ import { prisma } from '~/lib/server/db';
 import { errorResponse, successResponse, withAuth } from '~/lib/server/utils';
 import dayjs from 'dayjs';
 import { getCurrentSession } from '~/lib/server/auth/session';
-import { omit } from '~/lib/utils';
 
 export const PUT = withAuth(async (request: NextRequest, user: User) => {
   try {
@@ -55,14 +54,6 @@ export const DELETE = withAuth(async () => {
 
     await prisma.user.delete({
       where: { id: user?.id ?? '' },
-    });
-
-    const userDeletionLog = omit(user, ['id', 'createdAt', 'updatedAt']);
-    await prisma.userDeletionLog.create({
-      data: {
-        originalUserId: user.id,
-        ...userDeletionLog,
-      },
     });
 
     return NextResponse.json(successResponse({ message: 'Account deleted successfully', data: null }), {

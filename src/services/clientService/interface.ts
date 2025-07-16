@@ -21,6 +21,7 @@ export interface SuccessResponse<T> {
   success: true;
   status: number;
   message: string;
+  pagination?: Pagination;
   data: T;
 }
 
@@ -28,4 +29,10 @@ export interface ErrorResponse {
   success: false;
   status: number;
   message: string;
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
 }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createEvent, getEvents } from '~/services/clientService/event/event.service';
+import { createEvent, getEvents } from '~/services/serverService/event/event.service';
 
 export const GET = async (req: Request) => {
   try {

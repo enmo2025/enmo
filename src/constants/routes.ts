@@ -11,6 +11,11 @@ export const PATH = {
   PROFILE_TERM: '/profile/term-of-use',
   DELETE_ACCOUNT: '/delete-account/confirm',
   DELETE_ACCOUNT_SUCCESS: '/delete-account/success',
+  ADMIN: {
+    LIST_USER_PAID: '/admin/list-user-paid',
+    LIST_EVENT: '/admin/list-event',
+    EVENT: '/admin/event',
+  },
 } as const;
 
 export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER, PATH.DELETE_ACCOUNT_SUCCESS, PATH.HOME] as const;

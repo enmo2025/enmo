@@ -7,7 +7,7 @@ const LineIcon = ({ size = 20, color = 'white', className }: IconProps) => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    style={{ width: size, height: size }}
+    style={{ width: size, height: size, fill: color }}
   >
     <path
       fillRule="evenodd"

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getEventById, updateEvent, deleteEvent } from '~/services/clientService/event/event.service';
+import { getEventById, updateEvent, deleteEvent } from '~/services/serverService/event/event.service';
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {

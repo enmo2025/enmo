@@ -70,7 +70,7 @@ const getMarginStyle = (isMobile: boolean) => (isMobile ? {} : { marginRight: `$
 const SideNavHeader: React.FC<SideNavHeaderProps> = React.memo(
   ({ title, isMobile, onToggle, children, openSideNav }) => (
     <div className="flex flex-col items-center gap-2 px-3 md:flex-row md:justify-center">
-      <div className={cn('flex w-full items-center justify-between gap-2 p-4', openSideNav && 'p-0')}>
+      <div className={cn('flex w-full items-center justify-center gap-2 p-4', openSideNav && 'p-0')}>
         {isMobile && (
           <button
             onClick={onToggle}
@@ -93,7 +93,7 @@ const NavigationList: React.FC<{ listNav: NavItem[]; onToggle?: () => void }> = 
   const { isActive, getIconColor, navigateTo } = useNavigation();
 
   return (
-    <div className="flex flex-col gap-4 py-20">
+    <div className="flex flex-col gap-4 py-10">
       {listNav.map((item) => {
         const isItemActive = isActive(item.href);
 

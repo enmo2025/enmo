@@ -9,7 +9,7 @@ import { PATH } from '~/constants/routes';
 import { toast } from '~/hooks/use-toast';
 import { useDeleteProfile } from '~/services/clientService/profile/profile.api';
 import { logoutClient } from '~/app/(modules)/actions';
-import { SpinnerSection } from '~/components/ui/spinner';
+import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 
 interface DeleteAccountProps {
   user: User;
@@ -28,8 +28,8 @@ export default function DeleteAccount({ user }: DeleteAccountProps) {
     },
   });
   return (
-    <div className="absolute left-1/2 top-1/2 mx-auto flex w-full -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-10 px-6 text-center md:max-w-[600px]">
-      <SpinnerSection show={isPending}>
+    <div>
+      <div className="absolute left-1/2 top-1/2 mx-auto flex w-full -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-10 px-6 text-center md:max-w-[600px]">
         <div className="space-y-10">
           <h1 className="text-display-sm font-bold text-red">アカウントを削除しますか？</h1>
           <Card className="w-full">
@@ -57,7 +57,8 @@ export default function DeleteAccount({ user }: DeleteAccountProps) {
             </Button>
           </div>
         </div>
-      </SpinnerSection>
+      </div>
+      {isPending && <LoadingOverlay />}
     </div>
   );
 }
@@ -67,7 +68,14 @@ export function SuccessDeleteAccount() {
   return (
     <div className="absolute left-1/2 top-1/2 mx-auto flex w-full -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-10 px-6 text-center">
       <h1 className="mb-5 text-display-sm font-bold text-red-900">アカウントが無効化されました</h1>
-      <Button onClick={() => router.push(PATH.HOME)} typeStyle="round" size="xl" variant="outline">
+      <Button
+        onClick={() => {
+          router.push(PATH.LOGIN);
+        }}
+        typeStyle="round"
+        size="xl"
+        variant="outline"
+      >
         ホームに戻る
       </Button>
     </div>

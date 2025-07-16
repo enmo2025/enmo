@@ -16,35 +16,17 @@ model User {
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  
+  purchases              Purchase[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 } 
-
-model UserDeletionLog {
-  id                     String    @id @unique @default(cuid())
-  originalUserId         String    @unique
-  fullName               String?
-  fullNameKana           String?
-  email                  String?
-  dateOfBirth            DateTime?
-  gender                 Gender?
-  picture                String?
-  prefectures            String?
-  lineId                 String?
-  stripeCustomerId       String?
-  stripeSubscriptionId   String?
-  stripePriceId          String?
-  stripeCurrentPeriodEnd DateTime?
-  deletedAt              DateTime  @default(now())
-  canRestore             Boolean   @default(true)
-  
-  @@map("user_deletion_logs")
-}
 
 enum Gender {
   MALE
   FEMALE
   OTHER
 }
+
 

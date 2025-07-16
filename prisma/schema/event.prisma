@@ -1,5 +1,5 @@
 model Event {
-  id                String   @id @default(uuid())
+  id                String @id @unique @default(cuid())
   title             String
   description       String
   eventBanner       String
@@ -11,6 +11,7 @@ model Event {
   companyProfile    String
   companyLogo       String
   hostName          String
+  purchases         Purchase[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 } 
