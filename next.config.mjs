@@ -14,7 +14,7 @@ const withSerwist = withSerwistInit({
 const nextConfig = {
   trailingSlash: false,
   images: {
-    domains: ['picsum.photos'],
+    domains: ['qez2mjtbkbydzdti.public.blob.vercel-storage.com'],
   },
   eslint: {
     ignoreDuringBuilds: true,

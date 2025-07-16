@@ -22,7 +22,7 @@ export default function EventDetailPage({ event }: { event: IEvent }) {
             <Image src={event.eventBanner} alt="host-info" width={700} height={390} />
           </div>
           <div
-            className="ql-editor flex flex-col gap-5 text-body-md text-brown-700 md:text-body-lg"
+            className="ql-editor flex h-full flex-col gap-5 !overflow-y-hidden text-body-md text-brown-700 md:text-body-lg"
             dangerouslySetInnerHTML={{ __html: event.content }}
           ></div>
           <div className="flex items-center justify-center sm:hidden">
