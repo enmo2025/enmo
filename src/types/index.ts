@@ -52,3 +52,18 @@ export interface IconProps {
   color?: string;
   className?: string;
 }
+
+export interface IEvent {
+  id: string;
+  title: string;
+  description: string;
+  eventBanner: string;
+  content: string;
+  participantFee: string;
+  date: Date;
+  location: string;
+  companyName: string;
+  companyProfile: string;
+  companyLogo: string;
+  hostName: string;
+}

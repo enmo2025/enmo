@@ -173,7 +173,7 @@ const SideNavContainer: React.FC<{
           />
         </div>
       </div>
-      <div className="flex-1 p-4 md:p-8 lg:p-16">{!openSideNav && children}</div>
+      <div className="min-w-0 flex-1 p-4 md:p-8 lg:p-16">{!openSideNav && children}</div>
     </div>
   );
 };

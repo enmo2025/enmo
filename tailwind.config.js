@@ -63,6 +63,8 @@ export default {
         'yellow-50': 'var(--yellow-50)',
         'yellow-100': 'var(--yellow-100)',
         'yellow-200': 'var(--yellow-200)',
+        'yellow-300': 'var(--yellow-300)',
+        'yellow-400': 'var(--yellow-400)',
         'yellow-700': 'var(--yellow-700)',
         'brown-100': 'var(--brown-100)',
         'brown-300': 'var(--brown-300)',
@@ -101,7 +103,12 @@ export default {
       },
       spacing: {
         15: '60px',
+        25: '100px',
         30: '120px',
+        100: '400px',
+      },
+      boxShadow: {
+        'sub-menu': '0px 4px 16px rgba(0, 0, 0, 0.25)',
       },
     },
   },
