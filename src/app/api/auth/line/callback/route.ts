@@ -8,6 +8,7 @@ import { prisma } from '~/lib/server/db';
 import { line } from '~/lib/server/auth/line';
 import { PATH } from '~/constants/routes';
 import { lineMessaging } from '~/lib/server/line-messaging';
+import messageTemplate from '~/constants/message-template';
 
 export const GET = async (request: Request) => {
   const url = new URL(request.url);
@@ -69,7 +70,7 @@ export const GET = async (request: Request) => {
           .sendMessage(existingUser.lineId, [
             {
               type: 'text',
-              text: `こんにちは ${existingUser.fullName || 'ユーザー'}さん！\n\n✨ ログインありがとうございます！\n\n🎉 あなたの参加をお待ちしております。何かご質問がございましたら、お気軽にお声かけください。`,
+              text: messageTemplate(existingUser).welcome.text,
             },
           ])
           .catch((error) => console.error('Failed to send LINE welcome message:', error));
