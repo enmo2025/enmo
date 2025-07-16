@@ -1,9 +1,9 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 
 export interface CardHostInfoProps {
   companyName: string;
-  companyLogo: StaticImageData;
-  companyRole: string;
+  companyLogo: string;
+  companyProfile: string;
   description: string;
   hostName: string;
 }
@@ -11,7 +11,7 @@ export interface CardHostInfoProps {
 export default function CardHostInfo({
   companyName,
   companyLogo,
-  companyRole,
+  companyProfile,
   description,
   hostName,
 }: CardHostInfoProps) {
@@ -26,7 +26,7 @@ export default function CardHostInfo({
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-headline-lg font-bold text-red-700 max-lg:text-headline-md">{companyName}</span>
-          <span className="text-title-md font-bold text-black md:text-title-sm lg:text-title-md">{companyRole}</span>
+          <span className="text-title-md font-bold text-black md:text-title-sm lg:text-title-md">{companyProfile}</span>
         </div>
       </div>
       <div className="text-body-md text-brown-900 max-lg:text-body-sm">{description}</div>

@@ -1,17 +1,12 @@
-'use client';
-
-import { notFound, useParams } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import EventDetailPage from '~/components/pages/Events/EventDetail/EventDetailPage';
-import { getEventById } from '~/components/pages/Events/EventDetail/eventDetail.service';
+import { getEventById } from '~/services/clientService/event/event.service';
 
-export default function Pages() {
-  const params = useParams();
-  const id = params.id as string;
-  const event = getEventById(id);
+export default async function Pages({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const event = await getEventById(id);
 
-  if (!event) {
-    return notFound();
-  }
+  if (!event) return notFound();
 
   return <EventDetailPage event={event} />;
 }

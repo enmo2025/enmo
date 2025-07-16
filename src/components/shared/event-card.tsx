@@ -1,12 +1,12 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export interface EventCardProps {
   title: string;
   description: string;
-  eventBanner: StaticImageData;
-  brandLogo: StaticImageData;
-  brandName: string;
+  eventBanner: string;
+  companyLogo: string;
+  companyName: string;
   participantFee: string;
   id: string;
 }
@@ -15,8 +15,8 @@ export default function EventCard({
   title,
   description,
   eventBanner,
-  brandLogo,
-  brandName,
+  companyLogo,
+  companyName,
   participantFee,
   id,
 }: EventCardProps) {
@@ -42,10 +42,10 @@ export default function EventCard({
           </div>
           <div className="flex justify-between">
             <span className="flex items-center gap-2">
-              <span className="h-4 w-4 overflow-hidden rounded-full border border-red-800 sm:h-6 sm:w-6">
-                <Image src={brandLogo} alt="Event Card" width={24} height={24} className="object-cover" />
+              <span className="relative h-4 w-4 overflow-hidden rounded-full border border-red-800 sm:h-6 sm:w-6">
+                <Image src={companyLogo} alt="Event Card" fill className="object-cover" />
               </span>
-              <span className="text-body-xs text-red-800 sm:text-body-lg">{brandName}</span>
+              <span className="text-body-xs text-red-800 sm:text-body-lg">{companyName}</span>
             </span>
             <span className="text-body-xs text-brown-900 sm:text-body-lg">{participantFee}</span>
           </div>
