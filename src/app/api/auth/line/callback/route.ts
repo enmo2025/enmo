@@ -7,6 +7,8 @@ import { createSession, generateSessionToken } from '~/lib/server/auth/session';
 import { prisma } from '~/lib/server/db';
 import { line } from '~/lib/server/auth/line';
 import { PATH } from '~/constants/routes';
+import { lineMessaging } from '~/lib/server/line-messaging';
+import messageTemplate from '~/constants/message-template';
 
 export const GET = async (request: Request) => {
   const url = new URL(request.url);
@@ -63,8 +65,18 @@ export const GET = async (request: Request) => {
       const session = await createSession(sessionTokenCookie, existingUser.id);
       await setSessionTokenCookie(sessionTokenCookie, session.expiresAt);
 
-      // Check if user profile is complete
+      if (existingUser.lineId) {
+        lineMessaging
+          .sendMessage(existingUser.lineId, [
+            {
+              type: 'text',
+              text: messageTemplate(existingUser).welcome.text,
+            },
+          ])
+          .catch((error) => console.error('Failed to send LINE welcome message:', error));
+      }
 
+      // Check if user profile is complete
       revalidatePath('/', 'layout');
       return new Response(null, {
         status: 302,
@@ -86,7 +98,6 @@ export const GET = async (request: Request) => {
     const sessionTokenCookie = generateSessionToken();
     const session = await createSession(sessionTokenCookie, newUser.id);
     await setSessionTokenCookie(sessionTokenCookie, session.expiresAt);
-
     // New user always needs to complete profile
     revalidatePath('/', 'layout');
     return new Response(null, {
