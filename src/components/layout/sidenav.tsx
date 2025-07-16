@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { ChevronRightIcon, InformationCircleIcon } from '~/components/shared/icons';
@@ -7,6 +8,7 @@ import LogoutButton from '~/components/shared/logout-button';
 import { Button } from '~/components/ui/button';
 import { Spinner } from '~/components/ui/spinner';
 import { HEADER_HEIGHT } from '~/constants/common';
+import { PATH } from '~/constants/routes';
 import { useIsMobile } from '~/hooks/use-mobile';
 import { cn } from '~/lib/utils';
 import { IconProps } from '~/types';
@@ -46,6 +48,13 @@ const useNavigation = () => {
   const navigateTo = (href: string): void => router.push(href);
 
   return { isActive, getIconColor, navigateTo };
+};
+
+const useActiveNavItem = (listNav: NavItem[]) => {
+  const { isActive } = useNavigation();
+
+  const activeItem = listNav.find((item) => isActive(item.href));
+  return activeItem;
 };
 
 // ========== UTILITIES ==========
@@ -116,7 +125,9 @@ const SideNavFooter: React.FC = React.memo(() => (
   <div className="mt-auto">
     <div className="mb-4 flex w-full items-center justify-center gap-2">
       <InformationCircleIcon />
-      <span className="text-body-lg text-brown-700">利用規約</span>
+      <Link href={PATH.PROFILE_TERM} className="text-body-lg text-brown-700">
+        利用規約
+      </Link>
     </div>
     <LogoutButton />
   </div>
@@ -171,17 +182,21 @@ const SideNavContainer: React.FC<{
 const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleSidebar = () => setIsOpen((prev) => !prev);
+  const activeNavItem = useActiveNavItem(listNav);
+
+  // Use active nav item's name as title, fallback to original title
+  const mobileTitle = activeNavItem?.name || title;
 
   if (isOpen) {
     return (
-      <SideNavContainer title={title} listNav={listNav} isMobile openSideNav={isOpen} onToggle={toggleSidebar}>
+      <SideNavContainer title={mobileTitle} listNav={listNav} isMobile openSideNav={isOpen} onToggle={toggleSidebar}>
         {children}
       </SideNavContainer>
     );
   }
 
   return (
-    <SideNavHeader openSideNav={isOpen} title={title} isMobile onToggle={toggleSidebar}>
+    <SideNavHeader openSideNav={isOpen} title={mobileTitle} isMobile onToggle={toggleSidebar}>
       {children}
     </SideNavHeader>
   );

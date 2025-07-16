@@ -10,7 +10,7 @@ export interface AdminSubMenuProps {
 
 export default function AdminSubMenu({ item }: AdminSubMenuProps) {
   return (
-    <div className="shadow-sub-menu flex w-fit flex-col gap-1 rounded border border-yellow-400 p-2 text-yellow-300">
+    <div className="flex w-fit flex-col gap-1 rounded border border-yellow-400 p-2 text-yellow-300 shadow-sub-menu">
       {item.map((item, index) => (
         <Button
           key={index}

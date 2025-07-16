@@ -12,7 +12,7 @@ const listNav = [
     icon: UserIcon,
   },
   {
-    name: 'パスワード',
+    name: '設定',
     href: PATH.PROFILE_SETTING,
     icon: SettingIcon,
   },
