@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { ChevronRightIcon, InformationCircleIcon } from '~/components/shared/icons';
@@ -7,6 +8,7 @@ import LogoutButton from '~/components/shared/logout-button';
 import { Button } from '~/components/ui/button';
 import { Spinner } from '~/components/ui/spinner';
 import { HEADER_HEIGHT } from '~/constants/common';
+import { PATH } from '~/constants/routes';
 import { useIsMobile } from '~/hooks/use-mobile';
 import { cn } from '~/lib/utils';
 import { IconProps } from '~/types';
@@ -123,7 +125,9 @@ const SideNavFooter: React.FC = React.memo(() => (
   <div className="mt-auto">
     <div className="mb-4 flex w-full items-center justify-center gap-2">
       <InformationCircleIcon />
-      <span className="text-body-lg text-brown-700">利用規約</span>
+      <Link href={PATH.PROFILE_TERM} className="text-body-lg text-brown-700">
+        利用規約
+      </Link>
     </div>
     <LogoutButton />
   </div>

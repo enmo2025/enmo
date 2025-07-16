@@ -33,7 +33,7 @@ export default function Navbar({
           <Link href={PATH.HOME} className="flex items-center text-4xl font-bold">
             <p className={cn(style.header, isAuth ? 'text-white' : 'text-primary')}>enmo</p>
           </Link>
-          <div className="space-x-4">
+          <div className="hidden space-x-4 lg:block">
             {!isAuth &&
               listMenu.map((item) => (
                 <Button

@@ -8,6 +8,7 @@ export const PATH = {
   PROFILE: '/profile',
   PROFILE_INFO: '/profile/info',
   PROFILE_SETTING: '/profile/setting',
+  PROFILE_TERM: '/profile/term-of-use',
   DELETE_ACCOUNT: '/delete-account/confirm',
   DELETE_ACCOUNT_SUCCESS: '/delete-account/success',
 } as const;

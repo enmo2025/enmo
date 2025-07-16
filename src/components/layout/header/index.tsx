@@ -16,7 +16,7 @@ export default async function Header() {
     },
     {
       name: 'プロフィール',
-      href: PATH.PROFILE,
+      href: PATH.PROFILE_INFO,
     },
   ];
 
