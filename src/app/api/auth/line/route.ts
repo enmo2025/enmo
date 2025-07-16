@@ -13,6 +13,8 @@ export const GET = async (request: Request) => {
   const scopes = ['profile', 'openid', 'email'];
   const lineUrl = line.createAuthorizationURL(state, codeVerifier, scopes);
 
+  lineUrl.searchParams.set('bot_prompt', 'normal');
+
   const cookieStore = await cookies();
 
   // Set cookies with more permissive settings for development
