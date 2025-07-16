@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import EventsPage from '~/components/pages/Events/EventsPage';
-import { getEvents } from '~/services/clientService/event/event.service';
+import { getEvents } from '~/services/serverService/event/event.service';
 
 export default async function pages() {
   const events = await getEvents();

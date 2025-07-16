@@ -20,6 +20,7 @@ import { REACT_QUILL_TOOLBAR_OPTIONS } from '~/constants';
 import { ImageUpload } from '~/components/ui/image-upload';
 import { IEvent } from '~/types';
 import { useRouter } from 'next/navigation';
+import { toast } from '~/hooks/use-toast';
 
 const eventFormSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
@@ -70,22 +71,30 @@ export default function EventForm({ event }: { event?: IEvent }) {
     if (event) {
       try {
         await apiClient.put<{ success: boolean; event?: any; error?: string }>(`/event/${event.id}`, payload);
-        alert('Update event success');
+        toast({
+          title: 'Update event success',
+        });
         router.push(`/admin/event/${event.id}`);
       } catch (error: any) {
         console.error('Error updating event:', error);
-        alert('Update event failed: ' + (error.message || 'Unknown error'));
+        toast({
+          title: 'Update event failed: ' + (error.message || 'Unknown error'),
+        });
       } finally {
         setIsSubmitting(false);
       }
     } else {
       try {
         await apiClient.post<{ success: boolean; event?: any; error?: string }>('/event', payload);
-        alert('Create event success');
+        toast({
+          title: 'Create event success',
+        });
         router.push('/admin/list-event');
       } catch (error: any) {
         console.error('Error creating event:', error);
-        alert('Create event failed: ' + (error.message || 'Unknown error'));
+        toast({
+          title: 'Create event failed: ' + (error.message || 'Unknown error'),
+        });
       } finally {
         setIsSubmitting(false);
       }
