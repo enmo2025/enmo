@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Button } from '~/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
 import { HEADER_HEIGHT } from '~/constants/common';
-import { PATH, PATH_AUTH } from '~/constants/routes';
+import { PATH } from '~/constants/routes';
 import { cn } from '~/lib/utils';
 
 export default function Navbar({
@@ -21,7 +21,9 @@ export default function Navbar({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const path = usePathname();
   const router = useRouter();
-  const isAuth = [...PATH_AUTH, PATH.REGISTER_BASIC_INFO].includes(path as (typeof PATH_AUTH)[number]);
+  const isAuth = [...Object.values(PATH.AUTH), PATH.REGISTER_BASIC_INFO].includes(
+    path as (typeof PATH.AUTH)[keyof typeof PATH.AUTH]
+  );
   const style = {
     header: isAuth ? 'bg-primary text-white' : 'bg-white text-brown-700',
   };
@@ -37,7 +39,7 @@ export default function Navbar({
             {!isAuth &&
               listMenu.map((item) => (
                 <Button
-                  variant={item.href !== PATH.REGISTER ? 'outline' : 'solid'}
+                  variant={item.href !== PATH.AUTH.REGISTER ? 'outline' : 'solid'}
                   key={item.name}
                   size="lg"
                   onClick={() => router.push(item.href)}
@@ -52,15 +54,17 @@ export default function Navbar({
               <span className="sr-only">Open Menu</span>
               <MenuIcon />
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="bg-white">
               <div className="flex flex-col items-center space-y-10 py-10">
-                <div className="text-muted-foreground space-y-4 text-center text-sm leading-loose">
+                <div className="text-muted-foreground flex w-full flex-col space-y-4 text-center text-sm leading-loose">
                   {listMenu.map((item) => (
                     <Button
-                      variant={item.href === PATH.REGISTER ? 'outline' : 'solid'}
+                      variant={item.href === PATH.AUTH.REGISTER ? 'outline' : 'solid'}
                       key={item.name}
+                      className="w-full"
                       onClick={() => router.push(item.href)}
                       size="lg"
+                      typeStyle="round"
                     >
                       {item.name}
                     </Button>

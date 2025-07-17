@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { PATH } from '~/constants/routes';
 
 export interface EventCardProps {
   title: string;
@@ -23,7 +24,7 @@ export default function EventCard({
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/events/${id}`);
+    router.push(PATH.EVENT.DETAIL(id));
   };
 
   return (

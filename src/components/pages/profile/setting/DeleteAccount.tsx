@@ -19,7 +19,7 @@ export default function DeleteAccount({ user }: DeleteAccountProps) {
   const router = useRouter();
   const { mutate: deleteProfile, isPending } = useDeleteProfile({
     onSuccess: async () => {
-      router.push(PATH.DELETE_ACCOUNT_SUCCESS);
+      router.push(PATH.PROFILE.DELETE_ACCOUNT_SUCCESS);
       toast({
         title: '削除しました',
         description: 'アカウントが削除されました',
@@ -70,7 +70,7 @@ export function SuccessDeleteAccount() {
       <h1 className="mb-5 text-display-sm font-bold text-red-900">アカウントが無効化されました</h1>
       <Button
         onClick={() => {
-          router.push(PATH.LOGIN);
+          router.push(PATH.AUTH.LOGIN);
         }}
         typeStyle="round"
         size="xl"

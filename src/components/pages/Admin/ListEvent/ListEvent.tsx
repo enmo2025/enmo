@@ -11,6 +11,7 @@ import DynamicTable from '~/components/shared/dynamic-table';
 import { toast } from '~/hooks/use-toast';
 import { useDeleteEvent } from '~/services/clientService/event/event.api';
 import { useGetEvents } from '~/services/clientService/event/event.api';
+import { PATH } from '~/constants/routes';
 
 const PAGE_SIZE = 10;
 
@@ -28,7 +29,7 @@ export default function ListEvent() {
     });
   });
   const handleEdit = (event: IEvent) => {
-    router.push(`/admin/event/${event.id}`);
+    router.push(PATH.ADMIN.EDIT_EVENT(event.id));
   };
   const handleDelete = async (id: string) => {
     deleteEvent(id);

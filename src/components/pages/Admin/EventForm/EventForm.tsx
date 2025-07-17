@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from '~/hooks/use-toast';
 import { useCreateEvent, useUpdateEvent } from '~/services/clientService/event/event.api';
 import { Event } from '@prisma/client';
+import { PATH } from '~/constants/routes';
 
 const eventFormSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
@@ -47,14 +48,14 @@ export default function EventForm({ event }: { event?: Event }) {
       title: '作成しました',
       description: 'イベントを作成しました',
     });
-    router.push('/admin/list-event');
+    router.push(PATH.ADMIN.LIST_EVENT);
   });
   const { mutate: updateEvent, isPending: isUpdating } = useUpdateEvent(() => {
     toast({
       title: '更新しました',
       description: 'イベントを更新しました',
     });
-    router.push('/admin/list-event');
+    router.push(PATH.ADMIN.LIST_EVENT);
   });
 
   const router = useRouter();

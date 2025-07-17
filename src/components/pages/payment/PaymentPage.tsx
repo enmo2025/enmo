@@ -36,8 +36,8 @@ interface PriceDetailsProps {
 export default function PaymentPage({ id }: { id: string }) {
   const { data, isLoading } = useGetEvent(id);
   const event = data?.data;
-  if (!event) return <NoDataPlaceholder />;
   if (isLoading) return <LoadingOverlay />;
+  if (!event) return <NoDataPlaceholder />;
   const totalAmount = Number(event.participantFee) + Number(event.serviceCharge);
 
   return (
