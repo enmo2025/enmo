@@ -28,7 +28,7 @@ interface LineErrorResponse {
   }>;
 }
 
-export class LineMessagingService {
+export class LineService {
   private readonly accessToken: string;
   private readonly channelSecret: string;
   private readonly baseUrl = 'https://api.line.me/v2/bot';
@@ -76,5 +76,4 @@ export class LineMessagingService {
   }
 }
 
-// Export singleton instance
-export const lineMessaging = new LineMessagingService();
+export const lineService = new LineService();
