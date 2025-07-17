@@ -41,3 +41,16 @@ export const useCreatePurchase = (userId: string, eventId: string, options?: Cus
     ...options,
   });
 };
+
+const getPurchaseByStripeSessionId = async (sessionId: string) => {
+  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchase/stripe-session/${sessionId}`);
+  return response;
+};
+
+export const useGetPurchaseByStripeSessionId = (sessionId: string, options?: CustomHookQueryOptionParams) => {
+  return useQuery({
+    queryKey: purchaseQueryKeys.stripeSession(sessionId),
+    queryFn: () => getPurchaseByStripeSessionId(sessionId),
+    ...options,
+  });
+};
