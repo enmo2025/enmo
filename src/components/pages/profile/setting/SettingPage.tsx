@@ -27,7 +27,7 @@ export default function SettingPage() {
             </p>
           </div>
           <Button
-            onClick={() => router.push(PATH.DELETE_ACCOUNT)}
+            onClick={() => router.push(PATH.PROFILE.DELETE_ACCOUNT)}
             typeStyle="round"
             className="w-full min-w-[300px] lg:w-auto"
             size="xl"

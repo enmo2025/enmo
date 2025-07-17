@@ -9,12 +9,22 @@ import { formatDate } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import { LineIcon } from '~/components/shared/icons';
 import { cn } from '~/lib/utils';
+import { useConfirmPurchase } from '~/services/clientService/prefecture/prefecture.api';
+import { toast } from '~/hooks/use-toast';
 
 const PAGE_SIZE = 10;
 
 export default function ListUserPaid() {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetPurchases(page, PAGE_SIZE);
+  const { mutate: confirmPurchase } = useConfirmPurchase({
+    onSuccess: () => {
+      toast({
+        title: '購入確認しました',
+        description: 'ユーザーにLINEで連絡しました',
+      });
+    },
+  });
 
   const currentPage = data?.pagination?.page ?? page;
 
@@ -46,13 +56,13 @@ export default function ListUserPaid() {
         header: '',
         accessorKey: 'sendLine',
         cell: ({ row }) => {
-          // TODO: handle late
-          const isSent = false;
+          const isConfirmed = row.original.isConfirmed;
           return (
             <Button
-              leadingIcon={<LineIcon color={isSent ? 'white' : 'brown'} />}
-              variant={isSent ? 'solid' : 'outline'}
-              className={cn(isSent && 'bg-brown-700 text-white')}
+              leadingIcon={<LineIcon color={isConfirmed ? 'white' : 'brown'} />}
+              variant={isConfirmed ? 'solid' : 'outline'}
+              className={cn(isConfirmed && 'bg-brown-700 text-white')}
+              onClick={() => confirmPurchase(row.original.id)}
             >
               LINEで連絡する
             </Button>
@@ -61,7 +71,7 @@ export default function ListUserPaid() {
         size: 100,
       },
     ],
-    [currentPage]
+    [confirmPurchase, currentPage]
   );
 
   const handlePageChange = (newPage: number) => {

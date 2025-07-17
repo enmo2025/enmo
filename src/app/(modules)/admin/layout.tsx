@@ -18,7 +18,7 @@ const listNav = [
   },
   {
     name: 'くらしの窓口追加',
-    href: PATH.ADMIN.EVENT,
+    href: PATH.ADMIN.CREATE_EVENT,
     icon: SettingIcon,
   },
 ];

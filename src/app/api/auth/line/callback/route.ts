@@ -7,8 +7,8 @@ import { createSession, generateSessionToken } from '~/lib/server/auth/session';
 import { prisma } from '~/lib/server/db';
 import { line } from '~/lib/server/auth/line';
 import { PATH } from '~/constants/routes';
-import { lineMessaging } from '~/lib/server/line-messaging';
 import messageTemplate from '~/constants/message-template';
+import { lineService } from '~/services/serverService/lines/line.service';
 
 export const GET = async (request: Request) => {
   const url = new URL(request.url);
@@ -66,7 +66,7 @@ export const GET = async (request: Request) => {
       await setSessionTokenCookie(sessionTokenCookie, session.expiresAt);
 
       if (existingUser.lineId) {
-        lineMessaging
+        lineService
           .sendMessage(existingUser.lineId, [
             {
               type: 'text',

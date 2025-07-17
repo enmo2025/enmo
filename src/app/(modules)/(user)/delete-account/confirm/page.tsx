@@ -1,5 +1,5 @@
 import React from 'react';
-import DeleteAccount from '~/components/pages/profile/setting/delete-account';
+import DeleteAccount from '~/components/pages/profile/setting/DeleteAccount';
 import { getCurrentSession } from '~/lib/server/auth/session';
 
 export default async function DeleteAccountPage() {
