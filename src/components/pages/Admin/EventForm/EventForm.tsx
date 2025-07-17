@@ -7,7 +7,6 @@ import { Button } from '~/components/ui/button';
 import { CalendarLineIcon, LocationLineIcon, TagLineIcon } from '~/components/shared/icons';
 import dynamic from 'next/dynamic';
 import { Textarea } from '~/components/ui/textarea';
-import { apiClient } from '~/services/clientService';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -18,9 +17,10 @@ import 'react-quill-new/dist/quill.snow.css';
 import '~/assets/css/react-quill.css';
 import { REACT_QUILL_TOOLBAR_OPTIONS } from '~/constants';
 import { ImageUpload } from '~/components/ui/image-upload';
-import { IEvent } from '~/types';
 import { useRouter } from 'next/navigation';
 import { toast } from '~/hooks/use-toast';
+import { useCreateEvent, useUpdateEvent } from '~/services/clientService/event/event.api';
+import { Event } from '@prisma/client';
 
 const eventFormSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
@@ -41,8 +41,22 @@ const eventFormSchema = z.object({
 
 type EventFormData = z.infer<typeof eventFormSchema>;
 
-export default function EventForm({ event }: { event?: IEvent }) {
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+export default function EventForm({ event }: { event?: Event }) {
+  const { mutate: createEvent, isPending: isCreating } = useCreateEvent(() => {
+    toast({
+      title: '作成しました',
+      description: 'イベントを作成しました',
+    });
+    router.push('/admin/list-event');
+  });
+  const { mutate: updateEvent, isPending: isUpdating } = useUpdateEvent(() => {
+    toast({
+      title: '更新しました',
+      description: 'イベントを更新しました',
+    });
+    router.push('/admin/list-event');
+  });
+
   const router = useRouter();
   const dateInputRef = React.useRef<HTMLInputElement>(null);
   const form = useForm<EventFormData>({
@@ -52,7 +66,7 @@ export default function EventForm({ event }: { event?: IEvent }) {
       description: event?.description || '',
       eventBanner: event?.eventBanner || '',
       content: event?.content || '',
-      participantFee: event?.participantFee || '',
+      participantFee: event?.participantFee.toString() || '',
       date: event?.date?.toString() || '',
       location: event?.location || '',
       hostName: event?.hostName || '',
@@ -63,43 +77,19 @@ export default function EventForm({ event }: { event?: IEvent }) {
   });
 
   const onSubmit = async (data: EventFormData) => {
-    setIsSubmitting(true);
     const payload = {
       ...data,
+      participantFee: Number(data.participantFee),
       date: new Date(data.date),
     };
     if (event) {
-      try {
-        await apiClient.put<{ success: boolean; event?: any; error?: string }>(`/event/${event.id}`, payload);
-        toast({
-          title: 'Update event success',
-        });
-        router.push(`/admin/event/${event.id}`);
-      } catch (error: any) {
-        console.error('Error updating event:', error);
-        toast({
-          title: 'Update event failed: ' + (error.message || 'Unknown error'),
-        });
-      } finally {
-        setIsSubmitting(false);
-      }
+      updateEvent({ event: payload, id: event.id });
     } else {
-      try {
-        await apiClient.post<{ success: boolean; event?: any; error?: string }>('/event', payload);
-        toast({
-          title: 'Create event success',
-        });
-        router.push('/admin/list-event');
-      } catch (error: any) {
-        console.error('Error creating event:', error);
-        toast({
-          title: 'Create event failed: ' + (error.message || 'Unknown error'),
-        });
-      } finally {
-        setIsSubmitting(false);
-      }
+      createEvent(payload);
     }
   };
+
+  const isSubmitting = isCreating || isUpdating;
 
   return (
     <div className="flex flex-col gap-8 overflow-x-hidden sm:gap-10 md:gap-15">

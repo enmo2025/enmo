@@ -4,7 +4,8 @@ model Event {
   description       String
   eventBanner       String
   content           String
-  participantFee    String
+  participantFee    Int
+  serviceCharge     Int @default(10)
   date              DateTime
   location          String
   companyName       String

@@ -9,30 +9,29 @@ import AdminSubMenu from '~/components/shared/admin-sub-menu';
 import ConfirmModal from '~/components/shared/confirm-modal';
 import DynamicTable from '~/components/shared/dynamic-table';
 import { toast } from '~/hooks/use-toast';
-import { apiClient } from '~/services/clientService';
+import { useDeleteEvent } from '~/services/clientService/event/event.api';
+import { useGetEvents } from '~/services/clientService/event/event.api';
 
-export default function ListEvent({ events }: { events: IEvent[] }) {
+const PAGE_SIZE = 10;
+
+export default function ListEvent() {
   const router = useRouter();
+  const [page, setPage] = useState(1);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
-
+  const { data, isLoading } = useGetEvents(page, PAGE_SIZE);
+  const { mutate: deleteEvent, isPending: isDeleting } = useDeleteEvent(() => {
+    toast({
+      title: '削除しました',
+      description: 'イベントを削除しました',
+    });
+  });
   const handleEdit = (event: IEvent) => {
     router.push(`/admin/event/${event.id}`);
   };
   const handleDelete = async (id: string) => {
-    try {
-      await apiClient.delete<{ success: boolean; event?: any; error?: string }>(`/event/${id}`);
-      toast({
-        title: 'Delete event success',
-      });
-      router.refresh();
-    } catch (error: any) {
-      console.error('Error deleting event:', error);
-      toast({
-        title: 'Delete event failed: ' + (error.message || 'Unknown error'),
-      });
-    }
+    deleteEvent(id);
   };
 
   const columns = useMemo(
@@ -139,10 +138,21 @@ export default function ListEvent({ events }: { events: IEvent[] }) {
     [openMenuId, menuPosition]
   );
 
+  const isFetching = isLoading || isDeleting;
+
   return (
     <div className="flex w-full flex-col overflow-x-auto max-md:h-[calc(100vh-80px)] md:overflow-visible">
       <div className="min-w-[900px] gap-5 md:min-w-0">
-        <DynamicTable data={events} columns={columns} canPaginate={false} />
+        <DynamicTable
+          isFetching={isFetching}
+          data={data?.data || []}
+          columns={columns}
+          canPaginate={true}
+          initialPageIndex={page}
+          initialPageSize={PAGE_SIZE}
+          rowCount={data?.pagination?.total ?? 0}
+          onPageChange={setPage}
+        />
       </div>
       {confirmDeleteId && (
         <ConfirmModal

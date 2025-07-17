@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getPagination, successResponse } from '~/lib/server/utils';
+import { NextResponse } from 'next/server';
+import { getPagination, successResponse, withAuth } from '~/lib/server/utils';
 import { prisma } from '~/lib/server/db';
 
-export async function GET(request: NextRequest) {
+export const GET = withAuth(async ({ request }) => {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get('page')) || 1;
   const limit = Number(searchParams.get('limit')) || 10;
@@ -37,4 +37,4 @@ export async function GET(request: NextRequest) {
       },
     })
   );
-}
+});
