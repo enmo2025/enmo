@@ -5,7 +5,7 @@ export interface CreateEventInput {
   description: string;
   eventBanner: string;
   content: string;
-  participantFee: string;
+  participantFee: number;
   date: Date;
   location: string;
   companyName: string;
@@ -14,8 +14,11 @@ export interface CreateEventInput {
   hostName: string;
 }
 
-export async function getEvents() {
-  return prisma.event.findMany();
+export async function getEvents(skip: number, limit: number) {
+  return prisma.event.findMany({
+    skip,
+    take: limit,
+  });
 }
 
 export async function getEventById(id: string) {

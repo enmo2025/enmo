@@ -5,16 +5,26 @@ export const PATH = {
   LOGIN: '/login',
   REGISTER: '/register',
   REGISTER_BASIC_INFO: '/register/basic-info',
+
   PROFILE: '/profile',
   PROFILE_INFO: '/profile/info',
   PROFILE_SETTING: '/profile/setting',
   PROFILE_TERM: '/profile/term-of-use',
   DELETE_ACCOUNT: '/delete-account/confirm',
   DELETE_ACCOUNT_SUCCESS: '/delete-account/success',
+
   ADMIN: {
     LIST_USER_PAID: '/admin/list-user-paid',
     LIST_EVENT: '/admin/list-event',
     EVENT: '/admin/event',
+  },
+  PAYMENT: {
+    PAYMENT: (id: string) => `/payment/${id}`,
+    PAYMENT_SUCCESS: (id: string) => `/payment/success/${id}`,
+  },
+  EVENT: {
+    DETAIL: (id: string) => `/event/${id}`,
+    LIST: '/event',
   },
 } as const;
 

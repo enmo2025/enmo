@@ -7,7 +7,7 @@ export interface EventCardProps {
   eventBanner: string;
   companyLogo: string;
   companyName: string;
-  participantFee: string;
+  participantFee: number;
   id: string;
 }
 

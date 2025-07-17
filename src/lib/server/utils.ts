@@ -38,8 +38,14 @@ export const errorResponse = <T>({
   };
 };
 
-export function withAuth(handler: (request: NextRequest, user: User) => Promise<Response>) {
-  return async (request: NextRequest) => {
+interface ArgWithAuth {
+  request: NextRequest;
+  user: User;
+  context?: { params: { [key: string]: string } };
+}
+
+export function withAuth(handler: (args: ArgWithAuth) => Promise<Response>) {
+  return async (request: NextRequest, context?: any) => {
     const { session, user } = await getCurrentSession();
 
     if (!session || !user) {
@@ -52,7 +58,10 @@ export function withAuth(handler: (request: NextRequest, user: User) => Promise<
       );
     }
 
-    return handler(request, user);
+    const params =
+      context?.params && typeof context.params.then === 'function' ? await context.params : context?.params;
+
+    return handler({ request, user, context: { ...context, params } });
   };
 }
 

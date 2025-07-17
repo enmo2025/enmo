@@ -1,5 +1,4 @@
-import { User } from '@prisma/client';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { HTTP_STATUS } from '~/constants/status-code';
 import { prisma } from '~/lib/server/db';
@@ -7,7 +6,7 @@ import { errorResponse, successResponse, withAuth } from '~/lib/server/utils';
 import dayjs from 'dayjs';
 import { getCurrentSession } from '~/lib/server/auth/session';
 
-export const PUT = withAuth(async (request: NextRequest, user: User) => {
+export const PUT = withAuth(async ({ request, user }) => {
   try {
     const body = await request.json();
 

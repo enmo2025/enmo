@@ -1,35 +1,36 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import EventList from '~/components/shared/event-list';
+import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import { Pagination } from '~/components/ui/pagination';
-import { IEvent } from '~/types';
+import { useGetEvents } from '~/services/clientService/event/event.api';
 
-export default function EventsPage({ eventList = [] }: { eventList: IEvent[] }) {
+const PAGE_SIZE = 12;
+
+export default function EventsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsRendered, setItemsRendered] = useState<IEvent[]>([]);
-
-  const itemsPerPage = 12;
-  const totalPage = Math.ceil(eventList.length / itemsPerPage);
-
-  useEffect(() => {
-    setItemsRendered(eventList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
-  }, [currentPage, eventList, itemsPerPage]);
+  const { data, isLoading } = useGetEvents(currentPage, PAGE_SIZE);
+  const eventList = data?.data ?? [];
+  const totalPage = Math.ceil(data?.pagination?.total ?? 0 / PAGE_SIZE);
 
   return (
-    <div className="mx-auto flex max-w-300 flex-col gap-10 px-5 pt-15 md:gap-15 md:px-10 lg:gap-10">
-      <span className="text-headline-lg font-bold text-red-700">くらしの窓口リスト</span>
-      <EventList eventList={itemsRendered} />
-      <div className="flex justify-center pb-10">
-        {totalPage > 1 && (
-          <Pagination
-            totalItems={eventList.length}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-          />
-        )}
+    <div>
+      <div className="mx-auto flex max-w-300 flex-col gap-10 px-5 pt-15 md:gap-15 md:px-10 lg:gap-10">
+        <span className="text-headline-lg font-bold text-red-700">くらしの窓口リスト</span>
+        <EventList eventList={eventList} />
+        <div className="flex justify-center pb-10">
+          {totalPage > 1 && (
+            <Pagination
+              totalItems={eventList.length}
+              itemsPerPage={PAGE_SIZE}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </div>
       </div>
+      {isLoading && <LoadingOverlay />}
     </div>
   );
 }
