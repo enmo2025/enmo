@@ -57,7 +57,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={cn(
-          'flex items-start gap-1',
+          'flex w-full items-start gap-1',
           orientation === 'horizontal' ? 'flex-row items-center gap-5' : 'flex-col'
         )}
       >

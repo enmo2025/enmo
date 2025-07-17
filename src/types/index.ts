@@ -59,7 +59,7 @@ export interface IEvent {
   description: string;
   eventBanner: string;
   content: string;
-  participantFee: string;
+  participantFee: number;
   date: Date;
   location: string;
   companyName: string;

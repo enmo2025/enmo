@@ -1,6 +1,6 @@
 import { apiClient } from '~/services/clientService';
 import { CustomHookQueryOptionParams, SuccessResponse } from '../interface';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { purchaseQueryKeys } from './purchase.qkey';
 import { PurchaseExtend } from './interface.api';
 
@@ -26,6 +26,18 @@ export const useGetPurchase = (id: string, options?: CustomHookQueryOptionParams
   return useQuery({
     queryKey: purchaseQueryKeys.detail(id),
     queryFn: () => getPurchase(id),
+    ...options,
+  });
+};
+
+const createPurchase = async (userId: string, eventId: string) => {
+  const response = await apiClient.post<SuccessResponse<PurchaseExtend>>(`/purchase`, { userId, eventId });
+  return response;
+};
+
+export const useCreatePurchase = (userId: string, eventId: string, options?: CustomHookQueryOptionParams) => {
+  return useMutation({
+    mutationFn: () => createPurchase(userId, eventId),
     ...options,
   });
 };

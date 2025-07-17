@@ -28,7 +28,18 @@ const eventFormSchema = z.object({
   description: z.string().min(1, 'Description is required').max(100, 'Description must be less than 100 characters'),
   eventBanner: z.string().min(1, 'Event banner is required'),
   content: z.string().min(1, 'Content is required'),
-  participantFee: z.string().min(1, 'Participant fee is required'),
+  participantFee: z
+    .string()
+    .transform((val) => Number(val))
+    .refine((val) => !isNaN(val), {
+      message: 'Must be a number',
+    })
+    .refine((val) => Number.isInteger(val), {
+      message: 'Must be an integer',
+    })
+    .refine((val) => val > 0, {
+      message: 'Must be greater than 0',
+    }),
   date: z.string().min(1, 'Date is required'),
   location: z.string().min(1, 'Location is required'),
   hostName: z.string().min(1, 'Host name is required'),
@@ -67,7 +78,7 @@ export default function EventForm({ event }: { event?: Event }) {
       description: event?.description || '',
       eventBanner: event?.eventBanner || '',
       content: event?.content || '',
-      participantFee: event?.participantFee.toString() || '',
+      participantFee: event?.participantFee,
       date: event?.date?.toString() || '',
       location: event?.location || '',
       hostName: event?.hostName || '',
@@ -187,6 +198,7 @@ export default function EventForm({ event }: { event?: Event }) {
                     {...field}
                     variant={form.formState.errors.participantFee ? 'warning' : 'outline'}
                     label="価格"
+                    type="number"
                     trailingIcon={<TagLineIcon />}
                     helperText={form.formState.errors.participantFee?.message}
                     className="w-full"

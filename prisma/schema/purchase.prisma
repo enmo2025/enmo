@@ -1,10 +1,12 @@
 model Purchase {
-  id        String   @id @default(uuid())
-  userId    String   
-  eventId   String   
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isConfirmed Boolean  @default(false)
+  id              String   @id @default(uuid())
+  userId          String   
+  eventId         String   
+  stripeSessionId String   @unique
+  amount          Int
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isConfirmed     Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

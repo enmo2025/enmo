@@ -48,7 +48,7 @@ export default function EventCard({
               </span>
               <span className="text-body-xs text-red-800 sm:text-body-lg">{companyName}</span>
             </span>
-            <span className="text-body-xs text-brown-900 sm:text-body-lg">{participantFee}</span>
+            <span className="text-body-xs text-brown-900 sm:text-body-lg">¥{participantFee}</span>
           </div>
         </div>
       </div>
