@@ -7,7 +7,7 @@ import Divider from '~/components/ui/divider';
 import { Button } from '~/components/ui/button';
 import eventBanner from '~/assets/images/event-banner.png';
 import CheckCircle from '~/components/shared/icons/check-circle';
-import { useGetPurchase } from '~/services/clientService/purchase/purchase.api';
+import { useGetPurchaseByStripeSessionId } from '~/services/clientService/purchase/purchase.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 
@@ -26,10 +26,12 @@ function EventDetail({ label, value }: EventDetailProps) {
 }
 
 export default function PaymentSuccess({ id }: { id: string }) {
-  const { data, isLoading } = useGetPurchase(id);
-  const event = data?.data;
-  if (!event) return <NoDataPlaceholder />;
+  const { data, isLoading } = useGetPurchaseByStripeSessionId(id);
+  const purchase = data?.data;
+
   if (isLoading) return <LoadingOverlay />;
+  if (!purchase) return <NoDataPlaceholder />;
+
   return (
     <div className="mx-auto mt-14 flex max-w-screen-md flex-col text-center">
       {/* Success Icon */}
@@ -73,7 +75,7 @@ export default function PaymentSuccess({ id }: { id: string }) {
       <div className="mb-8 text-left">
         <div className="mb-2 flex justify-between text-body-md text-brown-700">
           <span>注文番号:</span>
-          <span className="text-title-lg font-medium">1890</span>
+          <span className="text-title-lg font-medium">{data.data.amount}</span>
         </div>
         <div className="flex justify-between text-body-md text-brown-700">
           <span>注文日:</span>
