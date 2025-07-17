@@ -33,12 +33,35 @@ interface PriceDetailsProps {
   totalAmount: number;
 }
 
-export default function PaymentPage({ id }: { id: string }) {
+export default function PaymentPage({ id, userId }: { id: string; userId: string }) {
   const { data, isLoading } = useGetEvent(id);
   const event = data?.data;
   if (!event) return <NoDataPlaceholder />;
   if (isLoading) return <LoadingOverlay />;
   const totalAmount = Number(event.participantFee) + Number(event.serviceCharge);
+
+  const handlePayment = async () => {
+    const res = await fetch('/api/stripe/checkout', {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount: totalAmount,
+        userId: userId,
+        event: event,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.open(data.url, '_blank');
+    } else {
+      console.error('Failed to create checkout session.', data);
+    }
+  };
 
   return (
     <div className="mx-auto mb-30 mt-14 max-w-screen-md text-center">
@@ -53,7 +76,7 @@ export default function PaymentPage({ id }: { id: string }) {
           />
         </CardContent>
       </Card>
-      <Button className="mt-10 w-full" size="xl" typeStyle="round">
+      <Button className="mt-10 w-full" onClick={handlePayment} size="xl" typeStyle="round">
         クレジットカードで支払う
       </Button>
     </div>

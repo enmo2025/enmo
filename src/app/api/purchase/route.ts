@@ -38,3 +38,13 @@ export const GET = withAuth(async ({ request }) => {
     })
   );
 });
+
+export const POST = withAuth(async ({ request }) => {
+  const { userId, eventId } = await request.json();
+
+  const purchase = await prisma.purchase.create({
+    data: { userId, eventId },
+  });
+
+  return NextResponse.json(successResponse({ message: 'Purchase created successfully', data: purchase }));
+});
