@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createEvent, getEvents } from '~/services/serverService/event/event.service';
 import { HTTP_STATUS } from '~/constants/status-code';
 import { errorResponse, getPagination, successResponse, withAuth } from '~/lib/server/utils';
 
-export const GET = withAuth(async ({ request }) => {
+export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const page = Number(searchParams.get('page')) || 1;
@@ -29,7 +29,7 @@ export const GET = withAuth(async ({ request }) => {
     const errMsg = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(errorResponse({ message: errMsg, status: HTTP_STATUS.INTERNAL_SERVER_ERROR }));
   }
-});
+};
 
 export const POST = withAuth(async ({ request }) => {
   try {

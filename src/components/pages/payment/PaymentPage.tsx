@@ -1,11 +1,16 @@
+'use client';
+
 import React from 'react';
 import { Card, CardContent } from '~/components/ui/card';
 import eventBanner from '~/assets/images/event-banner.png';
 import Image from 'next/image';
 import Divider from '~/components/ui/divider';
-import { mockEventData } from '~/components/pages/payment/mockData';
 import { Event } from '@prisma/client';
 import { Button } from '~/components/ui/button';
+import { useGetEvent } from '~/services/clientService/event/event.api';
+import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
+import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
+import { formatDate } from '~/lib/utils';
 
 interface PriceRowProps {
   label: string;
@@ -28,8 +33,11 @@ interface PriceDetailsProps {
   totalAmount: number;
 }
 
-export default function PaymentPage() {
-  const event = mockEventData;
+export default function PaymentPage({ id }: { id: string }) {
+  const { data, isLoading } = useGetEvent(id);
+  const event = data?.data;
+  if (!event) return <NoDataPlaceholder />;
+  if (isLoading) return <LoadingOverlay />;
   const totalAmount = Number(event.participantFee) + Number(event.serviceCharge);
 
   return (
@@ -59,7 +67,7 @@ function EventSummary({ event }: EventSummaryProps) {
         width={1000}
         height={1000}
         className="h-[180px] w-[260px] rounded-sm object-cover"
-        src={eventBanner}
+        src={event.eventBanner}
         alt="event banner"
       />
       <div className="w-full text-left text-brown-900">
@@ -67,7 +75,7 @@ function EventSummary({ event }: EventSummaryProps) {
         <div className="mt-2 text-body-md">{event.location}</div>
         <Divider />
         <div className="mt-3 w-full space-y-2 text-body-sm">
-          <EventDetail label="時間" value={event.date.toString()} />
+          <EventDetail label="時間" value={formatDate(event.date, false)} />
           <EventDetail label="地域" value={event.location} />
           <EventDetail label="連絡方法" value="LINE" />
         </div>

@@ -67,12 +67,12 @@ export function generateId(length = 10): string {
   return generateRandomString(random, alphanumeric, length);
 }
 
-export function formatDate(input: string | Date): string {
+export function formatDate(input: string | Date, isJapanese = true): string {
   const date = new Date(input);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return `${year}年${month}月${day}日`;
+  return isJapanese ? `${year}年${month}月${day}日` : `${year}/${month}/${day}`;
 }
 
 export const genderList = {

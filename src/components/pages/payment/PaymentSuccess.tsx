@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Card, CardContent } from '~/components/ui/card';
 import Image from 'next/image';
@@ -5,6 +7,9 @@ import Divider from '~/components/ui/divider';
 import { Button } from '~/components/ui/button';
 import eventBanner from '~/assets/images/event-banner.png';
 import CheckCircle from '~/components/shared/icons/check-circle';
+import { useGetPurchase } from '~/services/clientService/purchase/purchase.api';
+import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
+import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 
 interface EventDetailProps {
   label: string;
@@ -20,7 +25,11 @@ function EventDetail({ label, value }: EventDetailProps) {
   );
 }
 
-export default function PaymentSuccess() {
+export default function PaymentSuccess({ id }: { id: string }) {
+  const { data, isLoading } = useGetPurchase(id);
+  const event = data?.data;
+  if (!event) return <NoDataPlaceholder />;
+  if (isLoading) return <LoadingOverlay />;
   return (
     <div className="mx-auto mt-14 flex max-w-screen-md flex-col text-center">
       {/* Success Icon */}

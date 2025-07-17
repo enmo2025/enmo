@@ -3,15 +3,19 @@
 import { Button } from '~/components/ui/button';
 import { useIsBreakpoint } from '~/hooks/use-breakpoint';
 import { formatDate } from '~/lib/utils';
+import { useRouter } from 'next/navigation';
+import { PATH } from '~/constants/routes';
 
 export interface CardEventInfoProps {
+  id: string;
   date: Date;
   location: string;
   participantFee: number;
 }
 
-export default function CardEventInfo({ date, location, participantFee }: CardEventInfoProps) {
+export default function CardEventInfo({ date, location, participantFee, id }: CardEventInfoProps) {
   const isTablet = useIsBreakpoint(1024);
+  const router = useRouter();
   return (
     <div className="flex w-full max-w-100 flex-col gap-7 rounded-xl border border-brown-300 bg-yellow-50 p-5">
       <div className="flex flex-col gap-5">
@@ -29,7 +33,12 @@ export default function CardEventInfo({ date, location, participantFee }: CardEv
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <Button typeStyle="round" className="font-bold" size={isTablet ? 'lg' : 'xl'}>
+        <Button
+          typeStyle="round"
+          className="font-bold"
+          size={isTablet ? 'lg' : 'xl'}
+          onClick={() => router.push(PATH.PAYMENT.PAYMENT(id))}
+        >
           このくらしの窓口に参加する
         </Button>
       </div>

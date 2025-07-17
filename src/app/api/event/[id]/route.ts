@@ -3,9 +3,9 @@ import { HTTP_STATUS } from '~/constants/status-code';
 import { errorResponse, successResponse, withAuth } from '~/lib/server/utils';
 import { getEventById, updateEvent, deleteEvent } from '~/services/serverService/event/event.service';
 
-export const GET = withAuth(async ({ request, context }) => {
+export const GET = async (req: Request, { params }: { params: { id: string } }) => {
   try {
-    const id = context?.params?.id;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json(errorResponse({ message: 'Event not found', status: HTTP_STATUS.NOT_FOUND }));
@@ -20,7 +20,7 @@ export const GET = withAuth(async ({ request, context }) => {
     const errMsg = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(errorResponse({ message: errMsg, status: HTTP_STATUS.INTERNAL_SERVER_ERROR }));
   }
-});
+};
 
 export const PUT = withAuth(async ({ request, context }) => {
   try {

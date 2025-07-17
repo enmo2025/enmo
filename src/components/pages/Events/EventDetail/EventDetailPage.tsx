@@ -23,7 +23,12 @@ export default function EventDetailPage({ id }: { id: string }) {
               <span className="text-body-md text-brown-700 md:text-body-lg">{event.description}</span>
             </div>
             <div className="flex items-center justify-center sm:hidden">
-              <CardEventInfo date={event.date} location={event.location} participantFee={event.participantFee} />
+              <CardEventInfo
+                date={event.date}
+                location={event.location}
+                participantFee={event.participantFee}
+                id={event.id}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-10">
@@ -48,7 +53,12 @@ export default function EventDetailPage({ id }: { id: string }) {
 
         <div className="flex flex-col gap-10 max-sm:hidden">
           <div>
-            <CardEventInfo date={event.date} location={event.location} participantFee={event.participantFee} />
+            <CardEventInfo
+              id={event.id}
+              date={event.date}
+              location={event.location}
+              participantFee={event.participantFee}
+            />
           </div>
           <div>
             <CardHostInfo
