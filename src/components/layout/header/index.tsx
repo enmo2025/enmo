@@ -12,22 +12,22 @@ export default async function Header() {
     },
     {
       name: 'くらしの窓口 一覧',
-      href: PATH.PROFILE,
+      href: PATH.EVENT.LIST,
     },
     {
       name: 'プロフィール',
-      href: PATH.PROFILE_INFO,
+      href: PATH.PROFILE.INFO,
     },
   ];
 
   const listMenuUnAuth = [
     {
       name: 'ログイン',
-      href: PATH.LOGIN,
+      href: PATH.AUTH.LOGIN,
     },
     {
       name: '新規登録',
-      href: PATH.REGISTER,
+      href: PATH.AUTH.REGISTER,
     },
   ];
 

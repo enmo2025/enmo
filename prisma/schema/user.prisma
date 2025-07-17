@@ -9,6 +9,7 @@ model User {
   prefectures            String?
   sessions               Session[]
   emailVerificationCodes EmailVerificationCode[]
+  role                   Role                    @default(USER)
 
   lineId                 String?   @unique
 
@@ -27,6 +28,11 @@ enum Gender {
   MALE
   FEMALE
   OTHER
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 

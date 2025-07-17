@@ -125,7 +125,7 @@ const SideNavFooter: React.FC = React.memo(() => (
   <div className="mt-auto">
     <div className="mb-4 flex w-full items-center justify-center gap-2">
       <InformationCircleIcon />
-      <Link href={PATH.PROFILE_TERM} className="text-body-lg text-brown-700">
+      <Link href={PATH.PROFILE.TERM} className="text-body-lg text-brown-700">
         利用規約
       </Link>
     </div>
