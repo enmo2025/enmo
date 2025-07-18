@@ -13,7 +13,12 @@ export default function SettingPage() {
       <Card>
         <CardContent className="flex flex-col items-center justify-between gap-10 lg:flex-row">
           <h1 className="text-headline-sm font-bold">お支払いに関するサポートへのお問い合わせ</h1>
-          <Button typeStyle="round" className="w-full min-w-[300px] lg:w-auto" size="xl">
+          <Button
+            onClick={() => router.push('https://stripe.com/customers')}
+            typeStyle="round"
+            className="w-full min-w-[300px] lg:w-auto"
+            size="xl"
+          >
             サポートに連絡する
           </Button>
         </CardContent>
