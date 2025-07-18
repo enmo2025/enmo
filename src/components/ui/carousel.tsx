@@ -175,7 +175,6 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
       <Button
         ref={ref}
         variant={variant}
-        size={size}
         className={cn(
           'absolute h-8 w-8 rounded-full',
           orientation === 'horizontal'
@@ -203,7 +202,6 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
       <Button
         ref={ref}
         variant={variant}
-        size={size}
         className={cn(
           'absolute h-8 w-8 rounded-full',
           orientation === 'horizontal'

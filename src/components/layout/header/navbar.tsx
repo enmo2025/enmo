@@ -29,7 +29,7 @@ export default function Navbar({
   };
 
   return (
-    <header style={{ height: HEADER_HEIGHT }} className={cn(`sticky top-0 w-full`, style.header)}>
+    <header style={{ height: HEADER_HEIGHT }} className={cn(`sticky top-0 z-40 w-full`, style.header)}>
       <div className="container h-full">
         <nav className="flex h-full items-center justify-between">
           <Link href={PATH.HOME} className="flex items-center text-4xl font-bold">
