@@ -8,8 +8,8 @@ export default function LogoutButton({ className }: { className?: string }) {
     <div className={className}>
       <Button
         type="submit"
-        onClick={() => {
-          logoutClient();
+        onClick={async () => {
+          await logoutClient();
         }}
         typeStyle="round"
         variant="outline"

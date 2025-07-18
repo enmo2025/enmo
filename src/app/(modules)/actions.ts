@@ -10,9 +10,9 @@ import { invalidateSession } from '~/lib/server/auth/session';
 const createLogoutAction = ({ noRedirect = false }: { noRedirect?: boolean } = {}) =>
   authActionClient.metadata({ actionName: 'logout' }).action(async ({ ctx: { sessionId } }) => {
     await invalidateSession(sessionId);
-    deleteSessionTokenCookie();
-    revalidatePath(PATH.HOME);
-    return noRedirect ? null : redirect(PATH.LOGIN);
+    await deleteSessionTokenCookie();
+    revalidatePath('/');
+    return noRedirect ? null : redirect(PATH.AUTH.LOGIN);
   });
 
 export const logout = createLogoutAction;

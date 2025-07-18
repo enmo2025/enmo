@@ -19,12 +19,14 @@ export default function DeleteAccount({ user }: DeleteAccountProps) {
   const router = useRouter();
   const { mutate: deleteProfile, isPending } = useDeleteProfile({
     onSuccess: async () => {
-      router.push(PATH.PROFILE.DELETE_ACCOUNT_SUCCESS);
       toast({
         title: '削除しました',
         description: 'アカウントが削除されました',
       });
-      logoutClient();
+
+      await logoutClient({ noRedirect: true });
+
+      router.push(PATH.PROFILE.DELETE_ACCOUNT_SUCCESS);
     },
   });
   return (

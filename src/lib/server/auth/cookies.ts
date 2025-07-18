@@ -17,7 +17,9 @@ export async function deleteSessionTokenCookie(): Promise<void> {
     httpOnly: true,
     sameSite: 'lax',
     secure: process.env.NODE_ENV === 'production',
-    maxAge: 0,
+    expires: new Date(0),
     path: '/',
   });
+
+  cookieStore.delete('session');
 }

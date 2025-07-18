@@ -85,7 +85,6 @@ export const GET = async (request: Request) => {
         },
       });
     }
-
     const newUser = await prisma.user.create({
       data: {
         lineId: lineUser.userId,
