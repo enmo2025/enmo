@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Card, CardContent } from '~/components/ui/card';
-import eventBanner from '~/assets/images/event-banner.png';
 import Image from 'next/image';
 import Divider from '~/components/ui/divider';
 import { Event } from '@prisma/client';
@@ -64,7 +63,7 @@ export default function PaymentPage({ id, userId }: { id: string; userId: string
   };
 
   return (
-    <div className="mx-auto mb-30 mt-14 max-w-screen-md text-center">
+    <div className="mx-auto mb-30 mt-14 max-w-screen-md px-4 text-center">
       <h1 className="mb-10 text-headline-lg font-bold text-red-700">お支払い方法を選択してください</h1>
       <Card className="bg-white">
         <CardContent>
@@ -85,11 +84,11 @@ export default function PaymentPage({ id, userId }: { id: string; userId: string
 
 function EventSummary({ event }: EventSummaryProps) {
   return (
-    <div className="flex gap-10">
+    <div className="flex flex-col gap-4 md:flex-row md:gap-10">
       <Image
         width={1000}
         height={1000}
-        className="h-[180px] w-[260px] rounded-sm object-cover"
+        className="h-[180px] w-full rounded-sm object-cover md:w-[260px]"
         src={event.eventBanner}
         alt="event banner"
       />

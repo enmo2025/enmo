@@ -10,6 +10,7 @@ import CheckCircle from '~/components/shared/icons/check-circle';
 import { useGetPurchaseByStripeSessionId } from '~/services/clientService/purchase/purchase.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
+import { formatDate } from '~/lib/utils';
 
 interface EventDetailProps {
   label: string;
@@ -33,7 +34,7 @@ export default function PaymentSuccess({ id }: { id: string }) {
   if (!purchase) return <NoDataPlaceholder />;
 
   return (
-    <div className="mx-auto mt-14 flex max-w-screen-md flex-col text-center">
+    <div className="mx-auto mt-14 flex max-w-screen-md flex-col px-4 text-center">
       {/* Success Icon */}
       <div className="mx-auto mb-8 text-center">
         <CheckCircle />
@@ -50,21 +51,21 @@ export default function PaymentSuccess({ id }: { id: string }) {
       {/* Event Details Card */}
       <Card className="mb-8 bg-white">
         <CardContent className="p-6">
-          <div className="flex gap-10">
+          <div className="flex flex-col gap-4 md:flex-row md:gap-10">
             <Image
               width={1000}
               height={1000}
-              className="h-[160px] w-[260px] rounded-sm object-cover"
+              className="h-[160px] w-full rounded-sm object-cover md:w-[260px]"
               src={eventBanner}
               alt="event banner"
             />
             <div className="w-full text-left text-brown-900">
-              <div className="text-headline-sm font-bold text-brown-700">くらしの窓口詳細名</div>
-              <div className="mt-2 text-body-md">オンラインアクティビティ</div>
+              <div className="text-headline-sm font-bold text-brown-700">{purchase.event.title}</div>
+              <div className="mt-2 text-body-md">{purchase.event.description}</div>
               <Divider />
               <div className="mt-3 w-full space-y-2 text-body-sm">
-                <EventDetail label="時間" value="2025/02/25" />
-                <EventDetail label="地域" value="オンライン" />
+                <EventDetail label="時間" value={formatDate(purchase.event.date, false)} />
+                <EventDetail label="地域" value={purchase.event.location} />
               </div>
             </div>
           </div>
@@ -75,11 +76,11 @@ export default function PaymentSuccess({ id }: { id: string }) {
       <div className="mb-8 text-left">
         <div className="mb-2 flex justify-between text-body-md text-brown-700">
           <span>注文番号:</span>
-          <span className="text-title-lg font-medium">{data.data.amount}</span>
+          <span className="text-title-lg font-medium">{purchase.amount}</span>
         </div>
         <div className="flex justify-between text-body-md text-brown-700">
           <span>注文日:</span>
-          <span className="text-title-lg font-medium">2025/01/02</span>
+          <span className="text-title-lg font-medium">{formatDate(purchase.createdAt, false)}</span>
         </div>
       </div>
 
