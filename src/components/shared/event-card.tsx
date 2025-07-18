@@ -29,13 +29,13 @@ export default function EventCard({
 
   return (
     <div
-      className="flex w-full min-w-[150px] cursor-pointer flex-col justify-between overflow-hidden rounded-[5.81px] border border-red-600 max-xs:h-60 sm:min-w-60 sm:rounded-xl"
+      className="flex h-[350px] w-full min-w-[150px] cursor-pointer flex-col justify-between overflow-hidden rounded-[5.81px] border border-red-600 max-xs:h-60 sm:min-w-60 sm:rounded-xl"
       onClick={handleClick}
     >
-      <div className="w-full overflow-hidden">
+      <div className="w-full flex-1 overflow-hidden">
         <Image src={eventBanner} alt="Event Card" width={288} height={180} className="h-full w-full object-cover" />
       </div>
-      <div className="p-3 sm:h-[160px]">
+      <div className="h-28 px-3 py-2 sm:h-[160px] sm:p-3">
         <div className="flex h-full flex-col justify-between">
           <div className="flex flex-col gap-1 text-left">
             <span className="line-clamp-1 text-title-sm font-bold text-brown-900 sm:text-title-lg">{title}</span>

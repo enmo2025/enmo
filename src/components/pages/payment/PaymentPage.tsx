@@ -10,6 +10,7 @@ import { useGetEvent } from '~/services/clientService/event/event.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import { formatDate } from '~/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface PriceRowProps {
   label: string;
@@ -33,6 +34,7 @@ interface PriceDetailsProps {
 }
 
 export default function PaymentPage({ id, userId }: { id: string; userId: string }) {
+  const router = useRouter();
   const { data, isLoading } = useGetEvent(id);
   const event = data?.data;
   if (isLoading) return <LoadingOverlay />;
@@ -56,7 +58,7 @@ export default function PaymentPage({ id, userId }: { id: string; userId: string
     const data = await res.json();
 
     if (data.url) {
-      window.open(data.url, '_blank');
+      router.push(data.url);
     } else {
       console.error('Failed to create checkout session.', data);
     }
