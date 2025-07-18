@@ -1,12 +1,12 @@
-import { User } from '@prisma/client';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { HTTP_STATUS } from '~/constants/status-code';
 import { prisma } from '~/lib/server/db';
 import { errorResponse, successResponse, withAuth } from '~/lib/server/utils';
 import dayjs from 'dayjs';
+import { getCurrentSession } from '~/lib/server/auth/session';
 
-export const PUT = withAuth(async (request: NextRequest, user: User) => {
+export const PUT = withAuth(async ({ request, user }) => {
   try {
     const body = await request.json();
 
@@ -35,6 +35,31 @@ export const PUT = withAuth(async (request: NextRequest, user: User) => {
     );
   } catch (error) {
     console.error('Error updating basic info:', error);
+    return NextResponse.json(
+      errorResponse({ message: 'Internal server error', status: HTTP_STATUS.INTERNAL_SERVER_ERROR })
+    );
+  }
+});
+
+export const DELETE = withAuth(async () => {
+  try {
+    const { user } = await getCurrentSession();
+
+    if (!user) {
+      return NextResponse.json(errorResponse({ message: 'User not found', status: HTTP_STATUS.NOT_FOUND }), {
+        status: HTTP_STATUS.NOT_FOUND,
+      });
+    }
+
+    await prisma.user.delete({
+      where: { id: user?.id ?? '' },
+    });
+
+    return NextResponse.json(successResponse({ message: 'Account deleted successfully', data: null }), {
+      status: HTTP_STATUS.OK,
+    });
+  } catch (error) {
+    console.error('Error deleting account:', error);
     return NextResponse.json(
       errorResponse({ message: 'Internal server error', status: HTTP_STATUS.INTERNAL_SERVER_ERROR })
     );

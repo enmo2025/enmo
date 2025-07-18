@@ -2,17 +2,47 @@ import { QUERY_PARAMS } from './common';
 
 export const PATH = {
   HOME: '/',
-  LOGIN: '/login',
-  REGISTER: '/register',
   REGISTER_BASIC_INFO: '/register/basic-info',
-  PROFILE: '/profile',
-  PROFILE_INFO: '/profile/info',
-  PROFILE_SETTING: '/profile/setting',
+
+  AUTH: {
+    LOGIN: '/login',
+    REGISTER: '/register',
+  },
+
+  PROFILE: {
+    VIEW: '/profile',
+    INFO: '/profile/info',
+    SETTING: '/profile/setting',
+    TERM: '/profile/term-of-use',
+    DELETE_ACCOUNT: '/delete-account/confirm',
+    DELETE_ACCOUNT_SUCCESS: '/delete-account/success',
+  },
+
+  PAYMENT: {
+    PAYMENT: (id: string) => `/payment/${id}`,
+    PAYMENT_SUCCESS: (id: string) => `/payment/success/${id}`,
+  },
+
+  EVENT: {
+    DETAIL: (id: string) => `/events/${id}`,
+    LIST: '/events',
+  },
+
+  ADMIN: {
+    LIST_USER_PAID: '/admin/list-user-paid',
+    LIST_EVENT: '/admin/list-event',
+    CREATE_EVENT: '/admin/event',
+    EDIT_EVENT: (id: string) => `/admin/event/${id}`,
+    DELETE_EVENT: (id: string) => `/admin/list-event/${id}`,
+  },
 } as const;
 
-export const PUBLIC_PAGES = [PATH.LOGIN, PATH.REGISTER] as const;
-
-export const PATH_AUTH = [PATH.LOGIN, PATH.REGISTER] as const;
+export const PUBLIC_PAGES = [
+  PATH.AUTH.LOGIN,
+  PATH.AUTH.REGISTER,
+  PATH.PROFILE.DELETE_ACCOUNT_SUCCESS,
+  PATH.HOME,
+] as const;
 
 /**
  * Helper functions to work with routes

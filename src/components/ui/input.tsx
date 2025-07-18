@@ -57,36 +57,38 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div
         className={cn(
-          'flex items-start gap-1',
+          'flex w-full items-start gap-1',
           orientation === 'horizontal' ? 'flex-row items-center gap-5' : 'flex-col'
         )}
       >
         <Label htmlFor={props.id} disabled={props.disabled}>
           {label}
         </Label>
-        <div className="relative w-full">
-          {leadingIcon && <span className="absolute inset-y-0 left-2 flex items-center gap-2">{leadingIcon}</span>}
-          <input
-            type={type}
-            className={cn(
-              inputVariants({ variant, typeStyle, className }),
-              trailingIcon || variant !== 'default' ? 'pr-10' : '',
-              leadingIcon ? 'pl-10' : '',
-              className
+        <div className="flex w-full flex-col gap-1">
+          <div className="relative w-full">
+            {leadingIcon && <span className="absolute inset-y-0 left-2 flex items-center gap-2">{leadingIcon}</span>}
+            <input
+              type={type}
+              className={cn(
+                inputVariants({ variant, typeStyle, className }),
+                trailingIcon || variant !== 'default' ? 'pr-10' : '',
+                leadingIcon ? 'pl-10' : '',
+                className
+              )}
+              ref={ref}
+              {...props}
+            />
+            {(trailingIcon || variant === 'warning' || variant === 'success') && (
+              <span
+                className={`pointer-events-none absolute inset-y-0 right-2 flex items-center gap-2 ${props.disabled ? 'opacity-15' : ''}`}
+              >
+                {getTrailingIcon()}
+                {trailingIcon && trailingIcon}
+              </span>
             )}
-            ref={ref}
-            {...props}
-          />
-          {(trailingIcon || variant === 'warning' || variant === 'success') && (
-            <span
-              className={`absolute inset-y-0 right-2 flex items-center gap-2 ${props.disabled ? 'pointer-events-none opacity-15' : ''}`}
-            >
-              {getTrailingIcon()}
-              {trailingIcon && trailingIcon}
-            </span>
-          )}
+          </div>
+          {helperText && <p className={`text-body-md ${getHelperTextColor()}`}>{helperText}</p>}
         </div>
-        {helperText && <p className={`text-body-md ${getHelperTextColor()}`}>{helperText}</p>}
       </div>
     );
   }

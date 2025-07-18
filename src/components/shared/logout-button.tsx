@@ -1,5 +1,5 @@
 'use client';
-import { logout } from '~/app/(modules)/actions';
+import { logoutClient } from '~/app/(modules)/actions';
 import { Button } from '../ui/button';
 import { LogoutIcon } from './icons';
 
@@ -9,7 +9,7 @@ export default function LogoutButton({ className }: { className?: string }) {
       <Button
         type="submit"
         onClick={async () => {
-          await logout();
+          await logoutClient();
         }}
         typeStyle="round"
         variant="outline"

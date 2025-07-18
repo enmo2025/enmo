@@ -8,12 +8,12 @@ import { PATH } from '~/constants/routes';
 const listNav = [
   {
     name: '個人情報',
-    href: PATH.PROFILE_INFO,
+    href: PATH.PROFILE.INFO,
     icon: UserIcon,
   },
   {
-    name: 'パスワード',
-    href: PATH.PROFILE_SETTING,
+    name: '設定',
+    href: PATH.PROFILE.SETTING,
     icon: SettingIcon,
   },
 ];

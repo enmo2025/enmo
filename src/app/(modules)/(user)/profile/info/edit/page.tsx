@@ -1,5 +1,5 @@
 import React from 'react';
-import EditProfile from '~/components/pages/profile/edit-profile';
+import EditProfile from '~/components/pages/profile/my-profile/EditProfile';
 import { getCurrentSession } from '~/lib/server/auth/session';
 
 export default async function EditPage() {

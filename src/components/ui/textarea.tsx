@@ -51,7 +51,7 @@ const Textarea = React.forwardRef<
         {props.label}
       </Label>
       <textarea
-        className={cn(textareaVariants({ variant: 'default' }), className)}
+        className={cn(textareaVariants({ variant }), className)}
         ref={ref}
         onChange={(e) => {
           setLength(e.target.value.length);

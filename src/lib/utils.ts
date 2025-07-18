@@ -67,16 +67,26 @@ export function generateId(length = 10): string {
   return generateRandomString(random, alphanumeric, length);
 }
 
-export function formatDate(input: string | Date): string {
+export function formatDate(input: string | Date, isJapanese = true): string {
   const date = new Date(input);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return `${year}年${month}月${day}日`;
+  return isJapanese ? `${year}年${month}月${day}日` : `${year}/${month}/${day}`;
 }
 
 export const genderList = {
   [EGender.FEMALE]: '男性',
   [EGender.MALE]: '女性',
   [EGender.OTHER]: 'その他',
+};
+
+export const omit = <T extends object, K extends keyof T>(obj: T, keys: K[]): Omit<T, K> => {
+  const result = {} as Omit<T, K>;
+  for (const key in obj) {
+    if (!keys.includes(key as unknown as K)) {
+      (result as unknown as Record<string, unknown>)[key] = obj[key];
+    }
+  }
+  return result;
 };

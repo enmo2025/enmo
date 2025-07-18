@@ -27,7 +27,7 @@ type SidebarContextProps = {
   setOpen: (open: boolean) => void;
   openMobile: boolean;
   setOpenMobile: (open: boolean) => void;
-  isMobile: boolean;
+  isMobile: boolean | undefined;
   toggleSidebar: () => void;
 };
 
@@ -231,7 +231,7 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
         ref={ref}
         data-sidebar="trigger"
         variant="ghost"
-        size="icon"
+        size="lg"
         className={cn('h-7 w-7', className)}
         onClick={(event) => {
           onClick?.(event);

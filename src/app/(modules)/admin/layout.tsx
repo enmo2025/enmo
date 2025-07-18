@@ -2,24 +2,30 @@
 
 import React from 'react';
 import Sidenav from '~/components/layout/sidenav';
-import { FilePlusLineIcon } from '~/components/shared/icons';
+import { FilePlusLineIcon, JobIcon, SettingIcon } from '~/components/shared/icons';
+import { PATH } from '~/constants/routes';
 
 const listNav = [
   {
-    name: 'イベント一覧',
-    href: '/admin/list-event',
+    name: '課金ユーザー一覧',
+    href: PATH.ADMIN.LIST_USER_PAID,
     icon: FilePlusLineIcon,
   },
   {
+    name: 'イベント一覧',
+    href: PATH.ADMIN.LIST_EVENT,
+    icon: JobIcon,
+  },
+  {
     name: 'くらしの窓口追加',
-    href: '/admin/event',
-    icon: FilePlusLineIcon,
+    href: PATH.ADMIN.CREATE_EVENT,
+    icon: SettingIcon,
   },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Sidenav title="Admin" listNav={listNav}>
+    <Sidenav title="管理者" className="bg-red-100" listNav={listNav}>
       {children}
     </Sidenav>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import CreateEvent from '~/components/pages/Admin/CreateEvent/CreateEvent';
+import CreateEvent from '~/components/pages/admin/create-event';
 
 export default function Page() {
   return <CreateEvent />;

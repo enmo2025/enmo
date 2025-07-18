@@ -1,6 +1,5 @@
 import React from 'react';
-import AdminPage from '~/components/pages/Admin/AdminPage';
 
 export default function Page() {
-  return <AdminPage />;
+  return <div>Admin</div>;
 }

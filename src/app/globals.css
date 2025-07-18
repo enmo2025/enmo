@@ -62,8 +62,10 @@
     --yellow-200: #f9f3e8;
     --yellow-300: #f6eede;
     --yellow-400: #f4ead7;
+    --yellow-500: #f1e5cd;
     --yellow-700: #aba392;
 
+    --brown-50: #f9f8f6;
     --brown-100: #eeeae2;
     --brown-300: #d9d1c1;
     --brown-500: #c7bba3;
@@ -94,5 +96,15 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }
