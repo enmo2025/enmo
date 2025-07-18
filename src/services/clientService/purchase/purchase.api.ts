@@ -1,8 +1,16 @@
 import { apiClient } from '~/services/clientService';
 import { CustomHookQueryOptionParams, SuccessResponse } from '../interface';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, UseMutationOptions, useQuery } from '@tanstack/react-query';
 import { purchaseQueryKeys } from './purchase.qkey';
 import { PurchaseExtend } from './interface.api';
+import { Purchase } from '@prisma/client';
+import queryClient from '../query-client';
+
+export const invalidatePurchaseQuery = () => {
+  queryClient.invalidateQueries({
+    predicate: (query) => Array.isArray(query.queryKey) && query.queryKey[0] === purchaseQueryKeys.all[0],
+  });
+};
 
 const getPurchases = async (page: number, limit: number) => {
   const response = await apiClient.get<SuccessResponse<PurchaseExtend[]>>(`/purchase?page=${page}&limit=${limit}`);
@@ -11,6 +19,11 @@ const getPurchases = async (page: number, limit: number) => {
 
 const getPurchase = async (id: string) => {
   const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchase/${id}`);
+  return response;
+};
+
+export const confirmPurchase = async (id: string) => {
+  const response = await apiClient.post<Purchase>(`/purchase/confirm/${id}`);
   return response;
 };
 
@@ -52,5 +65,16 @@ export const useGetPurchaseByStripeSessionId = (sessionId: string, options?: Cus
     queryKey: purchaseQueryKeys.stripeSession(sessionId),
     queryFn: () => getPurchaseByStripeSessionId(sessionId),
     ...options,
+  });
+};
+
+export const useConfirmPurchase = (options: UseMutationOptions<Purchase, Error, string>) => {
+  return useMutation({
+    mutationFn: (id: string) => confirmPurchase(id),
+    ...options,
+    onSuccess: (data, variables, context) => {
+      invalidatePurchaseQuery();
+      options.onSuccess?.(data, variables, context);
+    },
   });
 };

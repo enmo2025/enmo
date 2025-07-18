@@ -9,7 +9,7 @@ import { formatDate } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
 import { LineIcon } from '~/components/shared/icons';
 import { cn } from '~/lib/utils';
-import { useConfirmPurchase } from '~/services/clientService/prefecture/prefecture.api';
+import { useConfirmPurchase } from '~/services/clientService/purchase/purchase.api';
 import { toast } from '~/hooks/use-toast';
 
 const PAGE_SIZE = 10;
