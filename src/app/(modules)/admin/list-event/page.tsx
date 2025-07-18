@@ -1,5 +1,5 @@
 import React from 'react';
-import ListEvent from '~/components/pages/Admin/ListEvent/ListEvent';
+import ListEvent from '~/components/pages/admin/list-event';
 
 export default async function Page() {
   return <ListEvent />;

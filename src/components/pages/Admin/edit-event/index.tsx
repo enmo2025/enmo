@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import EventForm from '../EventForm/EventForm';
+import EventForm from '../event-form';
 import { useGetEvent } from '~/services/clientService/event/event.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
