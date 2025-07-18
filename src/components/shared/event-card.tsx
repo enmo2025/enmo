@@ -32,8 +32,8 @@ export default function EventCard({
       className="flex w-full min-w-[150px] cursor-pointer flex-col justify-between overflow-hidden rounded-[5.81px] border border-red-600 max-xs:h-60 sm:min-w-60 sm:rounded-xl"
       onClick={handleClick}
     >
-      <div className="w-full overflow-hidden">
-        <Image src={eventBanner} alt="Event Card" width={288} height={180} className="h-full w-full object-cover" />
+      <div className="h-[188px] w-full">
+        <Image src={eventBanner} alt="Event Card" width={288} height={180} className="size-full object-cover" />
       </div>
       <div className="p-3 sm:h-[160px]">
         <div className="flex h-full flex-col justify-between">
