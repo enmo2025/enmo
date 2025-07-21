@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import React from 'react';
 import SidenavAdmin from '~/components/layout/sidenav-admin';
+import { PATH } from '~/constants/routes';
+import { FilePlusLineIcon, JobIcon, SettingIcon } from '~/components/shared/icons';
 
 const listNav = [
   {
