@@ -28,6 +28,7 @@ export const POST = async (req: Request) => {
           quantity: 1,
         },
       ],
+      customer_creation: 'if_required',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/payment/success/{CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/404`,
     });

@@ -86,15 +86,24 @@ class ApiClient {
     return this.handleResponse<T>(response);
   }
 
-  async post<T>(endpoint: string, data?: unknown, options: ApiRequestOptions = {}): Promise<T> {
+  async post<T>(endpoint: string, data?: unknown | File, options: ApiRequestOptions = {}): Promise<T> {
     const { params, headers, ...requestOptions } = options;
     const url = this.buildURL(endpoint, params);
     const requestHeaders = this.buildHeaders(headers);
+    let body: BodyInit | undefined;
+
+    if (data instanceof FormData) {
+      body = data;
+      delete requestHeaders['Content-Type'];
+    } else if (data !== undefined) {
+      body = JSON.stringify(data);
+      requestHeaders['Content-Type'] = 'application/json';
+    }
 
     const response = await fetch(url, {
       method: 'POST',
       headers: requestHeaders,
-      body: data ? JSON.stringify(data) : undefined,
+      body: body,
       credentials: 'include',
       ...requestOptions,
     });
