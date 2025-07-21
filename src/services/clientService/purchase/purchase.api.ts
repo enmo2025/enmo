@@ -44,7 +44,7 @@ export const useGetPurchase = (id: string, options?: CustomHookQueryOptionParams
 };
 
 const createPurchase = async (userId: string, eventId: string) => {
-  const response = await apiClient.post<SuccessResponse<PurchaseExtend>>(`/purchase`, { userId, eventId });
+  const response = await apiClient.post<SuccessResponse<PurchaseExtend>>(`/purchases`, { userId, eventId });
   return response;
 };
 
@@ -56,7 +56,7 @@ export const useCreatePurchase = (userId: string, eventId: string, options?: Cus
 };
 
 const getPurchaseByStripeSessionId = async (sessionId: string) => {
-  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchase/stripe-session/${sessionId}`);
+  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchases/stripe-session/${sessionId}`);
   return response;
 };
 
