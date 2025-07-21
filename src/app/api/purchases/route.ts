@@ -9,22 +9,25 @@ export const GET = withAuth(async ({ request }) => {
 
   const { skip } = getPagination(Number(page), Number(limit), 100);
 
-  const purchases = await prisma.purchase.findMany({
-    skip,
-    take: limit,
-    include: {
-      user: {
-        select: {
-          fullName: true,
+  const [purchases, total] = await Promise.all([
+    prisma.purchase.findMany({
+      skip,
+      take: limit,
+      include: {
+        user: {
+          select: {
+            fullName: true,
+          },
+        },
+        event: {
+          select: {
+            title: true,
+          },
         },
       },
-      event: {
-        select: {
-          title: true,
-        },
-      },
-    },
-  });
+    }),
+    prisma.purchase.count(),
+  ]);
 
   return NextResponse.json(
     successResponse({
@@ -33,7 +36,7 @@ export const GET = withAuth(async ({ request }) => {
       pagination: {
         page,
         limit,
-        total: purchases.length,
+        total: total,
       },
     })
   );
