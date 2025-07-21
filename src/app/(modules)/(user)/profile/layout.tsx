@@ -1,27 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
-import Sidenav from '~/components/layout/sidenav';
-import { SettingIcon, UserIcon } from '~/components/shared/icons';
-import { PATH } from '~/constants/routes';
+import SidenavProfile from '~/components/layout/sidenav-profile';
 
-const listNav = [
-  {
-    name: '個人情報',
-    href: PATH.PROFILE.INFO,
-    icon: UserIcon,
-  },
-  {
-    name: '設定',
-    href: PATH.PROFILE.SETTING,
-    icon: SettingIcon,
-  },
-];
+export const metadata: Metadata = {
+  title: 'プロフィール',
+  description: 'プロフィールページ',
+  manifest: '/manifest.json',
+  keywords: ['プロフィール', 'Profile', 'Enmo'],
+};
 
 export default function layout({ children }: { children: React.ReactNode }) {
-  return (
-    <Sidenav title="プロフィール" listNav={listNav}>
-      {children}
-    </Sidenav>
-  );
+  return <SidenavProfile>{children}</SidenavProfile>;
 }

@@ -1,9 +1,6 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
-import Sidenav from '~/components/layout/sidenav';
-import { FilePlusLineIcon, JobIcon, SettingIcon } from '~/components/shared/icons';
-import { PATH } from '~/constants/routes';
+import SidenavAdmin from '~/components/layout/sidenav-admin';
 
 const listNav = [
   {
@@ -28,10 +25,13 @@ const listNav = [
   },
 ];
 
+export const metadata: Metadata = {
+  title: '管理者',
+  description: '管理者ページ',
+  manifest: '/manifest.json',
+  keywords: ['管理者', 'Admin', 'Enmo'],
+};
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <Sidenav title="管理者" className="bg-red-100" listNav={listNav}>
-      {children}
-    </Sidenav>
-  );
+  return <SidenavAdmin>{children}</SidenavAdmin>;
 }

@@ -6,7 +6,7 @@ export const uploadImage = async (file: File) => {
   formData.append('file', file);
   const uniqueFilename = `${Date.now()}_${file.name}`;
   formData.append('filename', uniqueFilename);
-  const res = await apiClient.post<any>(`/upload`, formData);
+  const res = await apiClient.post<any>(`/uploads`, formData);
   return res;
 };
 

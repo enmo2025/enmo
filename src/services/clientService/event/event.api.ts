@@ -13,27 +13,27 @@ export const invalidateEventQuery = () => {
 };
 
 export const getEvent = async (id: string) => {
-  const event = await apiClient.get<SuccessResponse<Event>>(`/event/${id}`);
+  const event = await apiClient.get<SuccessResponse<Event>>(`/events/${id}`);
   return event;
 };
 
 export const getEvents = async (page: number, limit: number) => {
-  const events = await apiClient.get<SuccessResponse<Event[]>>(`/event?page=${page}&limit=${limit}`);
+  const events = await apiClient.get<SuccessResponse<Event[]>>(`/events?page=${page}&limit=${limit}`);
   return events;
 };
 
 export const createEvent = async (event: CreateEventInput) => {
-  const newEvent = await apiClient.post<SuccessResponse<Event>>('/event', event);
+  const newEvent = await apiClient.post<SuccessResponse<Event>>('/events', event);
   return newEvent;
 };
 
 export const updateEvent = async (id: string, event: CreateEventInput) => {
-  const updatedEvent = await apiClient.put<SuccessResponse<Event>>(`/event/${id}`, event);
+  const updatedEvent = await apiClient.put<SuccessResponse<Event>>(`/events/${id}`, event);
   return updatedEvent;
 };
 
 export const deleteEvent = async (id: string) => {
-  const deletedEvent = await apiClient.delete<SuccessResponse<Event>>(`/event/${id}`);
+  const deletedEvent = await apiClient.delete<SuccessResponse<Event>>(`/events/${id}`);
   return deletedEvent;
 };
 
