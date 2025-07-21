@@ -14,9 +14,9 @@
       "type": "image/png"
     }
   ],
-  "name": "ChadNext",
+  "name": "Enmo",
   "orientation": "portrait",
-  "short_name": "chadnext",
+  "short_name": "enmo",
   "start_url": "/",
   "theme_color": "#ffffff"
 }

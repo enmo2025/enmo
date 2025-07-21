@@ -1,5 +1,6 @@
 'use client';
 
+import { Metadata } from 'next';
 import React from 'react';
 import Sidenav from '~/components/layout/sidenav';
 import { SettingIcon, UserIcon } from '~/components/shared/icons';
@@ -17,6 +18,13 @@ const listNav = [
     icon: SettingIcon,
   },
 ];
+
+export const metadata: Metadata = {
+  title: 'プロフィール',
+  description: 'プロフィールページ',
+  manifest: '/manifest.json',
+  keywords: ['プロフィール', 'Profile', 'Enmo'],
+};
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
