@@ -21,7 +21,8 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
   const isAuthenticationRoute = Object.values(PATH.AUTH).includes(
     currentPath as (typeof PATH.AUTH)[keyof typeof PATH.AUTH]
   );
-  const isPublicRoute = PUBLIC_PAGES.includes(currentPath as (typeof PUBLIC_PAGES)[number]);
+  const isPublicRoute =
+    PUBLIC_PAGES.includes(currentPath as (typeof PUBLIC_PAGES)[number]) || currentPath.startsWith(PATH.EVENT.LIST);
   const isAuthenticated = Boolean(session.user);
   const isCheckFullInfo = session.user?.dateOfBirth && session.user?.gender && session.user?.prefectures;
   const isBasicInfoPage = currentPath === PATH.REGISTER_BASIC_INFO;
