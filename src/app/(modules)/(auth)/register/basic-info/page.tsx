@@ -1,8 +1,16 @@
 'use client';
 
+import { Metadata } from 'next';
 import React from 'react';
 import UpdateProfile from '~/components/shared/update-profile';
 import { PATH } from '~/constants/routes';
+
+export const metadata: Metadata = {
+  title: '基本情報を入力してください',
+  description: '基本情報を入力してください',
+  manifest: '/manifest.json',
+  keywords: ['基本情報', '入力', 'Enmo'],
+};
 
 export default function BasicInfo() {
   return (
