@@ -41,7 +41,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       formData.append('file', file);
       const uniqueFilename = `${Date.now()}_${file.name}`;
       setFilename(uniqueFilename);
-      const res = await fetch(`/api/upload?filename=${encodeURIComponent(uniqueFilename)}`, {
+      const res = await fetch(`/api/uploads?filename=${encodeURIComponent(uniqueFilename)}`, {
         method: 'POST',
         body: file,
       });
