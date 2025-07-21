@@ -147,7 +147,6 @@ export default function ListEvent() {
   );
 
   const isFetching = isLoading || isDeleting;
-
   return (
     <div className="flex w-full flex-col overflow-x-auto max-md:h-[calc(100vh-80px)] md:overflow-visible">
       <div className="min-w-[900px] gap-5 md:min-w-0">

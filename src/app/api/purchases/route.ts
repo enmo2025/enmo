@@ -9,22 +9,25 @@ export const GET = withAuth(async ({ request }) => {
 
   const { skip } = getPagination(Number(page), Number(limit), 100);
 
-  const purchases = await prisma.purchase.findMany({
-    skip,
-    take: limit,
-    include: {
-      user: {
-        select: {
-          fullName: true,
+  const [purchases, total] = await Promise.all([
+    prisma.purchase.findMany({
+      skip,
+      take: limit,
+      include: {
+        user: {
+          select: {
+            fullName: true,
+          },
+        },
+        event: {
+          select: {
+            title: true,
+          },
         },
       },
-      event: {
-        select: {
-          title: true,
-        },
-      },
-    },
-  });
+    }),
+    prisma.purchase.count(),
+  ]);
 
   return NextResponse.json(
     successResponse({
@@ -33,17 +36,17 @@ export const GET = withAuth(async ({ request }) => {
       pagination: {
         page,
         limit,
-        total: purchases.length,
+        total: total,
       },
     })
   );
 });
 
-export const POST = withAuth(async ({ request }) => {
+export const POST = withAuth(async ({ request, user }) => {
   const { userId, eventId, stripeSessionId, amount } = await request.json();
 
   const purchase = await prisma.purchase.create({
-    data: { userId, eventId, stripeSessionId, amount },
+    data: { userId, eventId, stripeSessionId, amount, lineId: user.lineId },
   });
 
   return NextResponse.json(successResponse({ message: 'Purchase created successfully', data: purchase }));

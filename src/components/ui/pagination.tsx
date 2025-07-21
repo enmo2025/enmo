@@ -10,8 +10,7 @@ export interface PaginationProps {
 
 const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
   ({ totalItems, itemsPerPage, currentPage, onPageChange, ...props }, ref) => {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-
+    const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
     const handlePrevious = () => {
       if (currentPage > 1) {
         onPageChange(currentPage - 1);

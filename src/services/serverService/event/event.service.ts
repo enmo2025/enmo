@@ -12,11 +12,12 @@ export interface CreateEventInput {
 }
 
 export async function getEvents(skip: number, limit: number) {
-  return prisma.event.findMany({
-    skip,
-    take: limit,
-    include: { partner: true },
-  });
+  const [data, total] = await Promise.all([
+    prisma.event.findMany({ skip, take: limit, include: { partner: true } }),
+    prisma.event.count(),
+  ]);
+
+  return { data, total };
 }
 
 export async function getEventById(id: string) {
