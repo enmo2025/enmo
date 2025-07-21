@@ -14,7 +14,7 @@ export default function SettingPage() {
         <CardContent className="flex flex-col items-center justify-between gap-10 lg:flex-row">
           <h1 className="text-headline-sm font-bold">お支払いに関するサポートへのお問い合わせ</h1>
           <Button
-            onClick={() => router.push('https://stripe.com/customers')}
+            onClick={() => window.open('https://docs.stripe.com/customer-management', '_blank', 'noopener')}
             typeStyle="round"
             className="w-full min-w-[300px] lg:w-auto"
             size="xl"
