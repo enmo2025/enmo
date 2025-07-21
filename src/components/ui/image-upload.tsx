@@ -7,6 +7,7 @@ import { Button } from '~/components/ui/button';
 import { PictureLineIcon, PicturePlusLineIcon, XMarkCircleLineIcon } from '../shared/icons';
 import { Spinner } from './spinner';
 import Image from 'next/image';
+import { deleteImage, uploadImage } from '~/services/clientService/misc/misc.api';
 
 export interface ImageUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   preview?: string;
@@ -37,24 +38,14 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
     const [loading, setLoading] = React.useState(false);
 
     const uploadFile = async (file: File) => {
-      const formData = new FormData();
-      formData.append('file', file);
-      const uniqueFilename = `${Date.now()}_${file.name}`;
-      setFilename(uniqueFilename);
-      const res = await fetch(`/api/uploads?filename=${encodeURIComponent(uniqueFilename)}`, {
-        method: 'POST',
-        body: file,
-      });
-      if (!res.ok) return null;
-      const data = await res.json();
-      return data.url || data.downloadUrl || data.pathname || null;
+      const res = await uploadImage(file);
+      setFilename(res.pathname);
+      return res.url;
     };
 
     const deleteFile = async (filenameToDelete?: string) => {
       if (!filenameToDelete) return;
-      await fetch(`/api/upload?filename=${encodeURIComponent(filenameToDelete)}`, {
-        method: 'DELETE',
-      });
+      await deleteImage(filenameToDelete);
     };
 
     const handleDrop = React.useCallback(
@@ -146,6 +137,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
                 leadingIcon={<XMarkCircleLineIcon />}
                 className="w-full border-warning text-warning"
                 typeStyle="round"
+                disabled={loading}
                 onClick={handleRemove}
               >
                 消去
@@ -157,6 +149,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
                 leadingIcon={<PictureLineIcon />}
                 className="w-full border-brown-900 text-brown-900"
                 typeStyle="round"
+                disabled={loading}
                 onClick={open}
               >
                 交換する
