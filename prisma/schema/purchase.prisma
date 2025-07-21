@@ -1,13 +1,13 @@
 model Purchase {
   id              String   @id @default(uuid())
-  userId          String   
-  eventId         String   
+  userId          String?   
+  eventId         String?   
   stripeSessionId String   @unique
   amount          Int
-  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event           Event?    @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   isConfirmed     Boolean  @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  lineId          String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

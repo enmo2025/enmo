@@ -1,10 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import EventList from '~/components/shared/event-list';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
-import { Button } from '~/components/ui/button';
 import { PaginationSSR } from '~/components/ui/pagination-ssr';
+import { PATH } from '~/constants/routes';
 import { EventDetail } from '~/services/clientService/event/event.interface';
 
 export default function EventsPage({
@@ -19,7 +18,6 @@ export default function EventsPage({
   pageSize: number;
 }) {
   if (eventList.length === 0) return <NoDataPlaceholder />;
-
   return (
     <div>
       <div className="mx-auto flex max-w-300 flex-col gap-10 px-5 pt-15 md:gap-15 md:px-10 lg:gap-10">
@@ -31,13 +29,7 @@ export default function EventsPage({
               totalItems={totalPage * pageSize}
               itemsPerPage={pageSize}
               currentPage={currentPage}
-              renderPageLink={(pageNum) => (
-                <Link href={`/events?page=${pageNum}`}>
-                  <Button variant="outline" size="lg">
-                    {pageNum < currentPage ? '前を表示' : '次を表示'}
-                  </Button>
-                </Link>
-              )}
+              pageBasePath={PATH.EVENT.LIST}
             />
           )}
         </div>
