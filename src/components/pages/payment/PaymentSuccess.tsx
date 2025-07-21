@@ -11,6 +11,8 @@ import { useGetPurchaseByStripeSessionId } from '~/services/clientService/purcha
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import { formatDate } from '~/lib/utils';
+import { useRouter } from 'next/navigation';
+import { PATH } from '~/constants/routes';
 
 interface EventDetailProps {
   label: string;
@@ -29,6 +31,7 @@ function EventDetail({ label, value }: EventDetailProps) {
 export default function PaymentSuccess({ id }: { id: string }) {
   const { data, isLoading } = useGetPurchaseByStripeSessionId(id);
   const purchase = data?.data;
+  const router = useRouter();
 
   if (isLoading) return <LoadingOverlay />;
   if (!purchase) return <NoDataPlaceholder />;
@@ -85,7 +88,7 @@ export default function PaymentSuccess({ id }: { id: string }) {
       </div>
 
       {/* Home Button */}
-      <Button className="w-full" size="xl" typeStyle="round" variant="outline">
+      <Button className="w-full" onClick={() => router.push(PATH.HOME)} size="xl" typeStyle="round" variant="outline">
         ホームに戻る
       </Button>
 
