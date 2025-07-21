@@ -81,10 +81,6 @@ export default function EventForm({ event }: { event?: Event }) {
       participantFee: event?.participantFee,
       date: event?.date?.toString() || '',
       location: event?.location || '',
-      hostName: event?.hostName || '',
-      companyName: event?.companyName || '',
-      companyLogo: event?.companyLogo || '',
-      companyProfile: event?.companyProfile || '',
     },
   });
 
