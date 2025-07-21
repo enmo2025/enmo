@@ -12,11 +12,16 @@ import { toast } from '~/hooks/use-toast';
 import { useDeleteEvent } from '~/services/clientService/event/event.api';
 import { useGetEvents } from '~/services/clientService/event/event.api';
 import { PATH } from '~/constants/routes';
+import { useClickOutside } from '~/components/shared/use-click-outside';
 
 const PAGE_SIZE = 10;
 
 export default function ListEvent() {
   const router = useRouter();
+  const ref = useClickOutside<HTMLDivElement>((e) => {
+    setOpenMenuId(null);
+    setMenuPosition(null);
+  });
   const [page, setPage] = useState(1);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
@@ -107,28 +112,30 @@ export default function ListEvent() {
                 className="fixed z-50 rounded bg-white shadow-lg"
                 style={{ top: menuPosition.top, left: menuPosition.left }}
               >
-                <AdminSubMenu
-                  item={[
-                    {
-                      title: '編集',
-                      onClick: () => {
-                        handleEdit(row.original);
-                        setOpenMenuId(null);
-                        setMenuPosition(null);
+                <div ref={ref}>
+                  <AdminSubMenu
+                    item={[
+                      {
+                        title: '編集',
+                        onClick: () => {
+                          handleEdit(row.original);
+                          setOpenMenuId(null);
+                          setMenuPosition(null);
+                        },
+                        className: 'text-yellow-900',
                       },
-                      className: 'text-yellow-900',
-                    },
-                    {
-                      title: '削除',
-                      onClick: () => {
-                        setConfirmDeleteId(row.original.id);
-                        setOpenMenuId(null);
-                        setMenuPosition(null);
+                      {
+                        title: '削除',
+                        onClick: () => {
+                          setConfirmDeleteId(row.original.id);
+                          setOpenMenuId(null);
+                          setMenuPosition(null);
+                        },
+                        className: 'text-warning',
                       },
-                      className: 'text-warning',
-                    },
-                  ]}
-                />
+                    ]}
+                  />
+                </div>
               </div>
             )}
           </div>

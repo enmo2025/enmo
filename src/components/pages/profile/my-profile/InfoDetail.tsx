@@ -36,7 +36,7 @@ export default function InfoDetail({ user }: InfoDetailProps) {
       <Card className="w-full border-black">
         <CardContent>
           <div className="flex items-center justify-between">
-            <h1 className="text-body-xl font-bold text-red-700 md:text-headline-lg">鈴木 美月</h1>
+            <h1 className="text-body-xl font-bold text-red-700 md:text-headline-lg">{user?.fullName}</h1>
             <Button
               leadingIcon={<EditIcon />}
               variant="outline"

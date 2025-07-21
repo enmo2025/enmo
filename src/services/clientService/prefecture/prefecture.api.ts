@@ -4,7 +4,7 @@ import { Prefecture } from './prefecture.interface';
 import { prefectureQueryKeys } from './prefecture.qkey';
 
 export const getPrefectures = async (): Promise<Prefecture[]> => {
-  const response = await apiClient.get<Prefecture[]>('/prefecture');
+  const response = await apiClient.get<Prefecture[]>('/prefectures');
   return response;
 };
 

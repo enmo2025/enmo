@@ -13,17 +13,17 @@ export const invalidatePurchaseQuery = () => {
 };
 
 const getPurchases = async (page: number, limit: number) => {
-  const response = await apiClient.get<SuccessResponse<PurchaseExtend[]>>(`/purchase?page=${page}&limit=${limit}`);
+  const response = await apiClient.get<SuccessResponse<PurchaseExtend[]>>(`/purchases?page=${page}&limit=${limit}`);
   return response;
 };
 
 const getPurchase = async (id: string) => {
-  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchase/${id}`);
+  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchases/${id}`);
   return response;
 };
 
 export const confirmPurchase = async (id: string) => {
-  const response = await apiClient.post<Purchase>(`/purchase/confirm/${id}`);
+  const response = await apiClient.post<Purchase>(`/purchases/confirm/${id}`);
   return response;
 };
 
