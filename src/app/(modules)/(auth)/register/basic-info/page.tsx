@@ -1,5 +1,3 @@
-'use client';
-
 import { Metadata } from 'next';
 import React from 'react';
 import UpdateProfile from '~/components/shared/update-profile';
