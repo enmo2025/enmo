@@ -21,6 +21,11 @@ const listNav = [
     href: PATH.ADMIN.CREATE_EVENT,
     icon: SettingIcon,
   },
+  {
+    name: 'パートナー追加',
+    href: PATH.ADMIN.CREATE_PARTNER,
+    icon: SettingIcon,
+  },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

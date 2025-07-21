@@ -34,6 +34,7 @@ export const PATH = {
     CREATE_EVENT: '/admin/event',
     EDIT_EVENT: (id: string) => `/admin/event/${id}`,
     DELETE_EVENT: (id: string) => `/admin/list-event/${id}`,
+    CREATE_PARTNER: '/admin/partner',
   },
 } as const;
 
