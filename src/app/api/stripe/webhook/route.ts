@@ -32,7 +32,6 @@ export async function POST(req: Request) {
           amount: session.amount_total ?? 0,
         },
       });
-      console.log('✅ Purchase created successfully');
     } catch (err) {
       console.error('❌ Purchase creation failed:', err);
     }

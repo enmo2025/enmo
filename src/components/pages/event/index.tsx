@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import EventList from '~/components/shared/event-list';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
+import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import { Pagination } from '~/components/ui/pagination';
 import { useGetEvents } from '~/services/clientService/event/event.api';
 
@@ -13,6 +14,9 @@ export default function EventsPage() {
   const { data, isLoading } = useGetEvents(currentPage, PAGE_SIZE);
   const eventList = data?.data ?? [];
   const totalPage = Math.ceil(data?.pagination?.total ?? 0 / PAGE_SIZE);
+
+  if (isLoading) return <LoadingOverlay />;
+  if (eventList.length === 0) return <NoDataPlaceholder />;
 
   return (
     <div>
@@ -30,7 +34,6 @@ export default function EventsPage() {
           )}
         </div>
       </div>
-      {isLoading && <LoadingOverlay />}
     </div>
   );
 }

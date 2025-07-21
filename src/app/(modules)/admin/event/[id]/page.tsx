@@ -1,4 +1,5 @@
 import React from 'react';
+
 import EditEvent from '~/components/pages/admin/edit-event';
 
 export default async function Page({ params }: { params: { id: string } }) {
