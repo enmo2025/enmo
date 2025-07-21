@@ -1,31 +1,6 @@
 import { Metadata } from 'next';
 import React from 'react';
 import SidenavAdmin from '~/components/layout/sidenav-admin';
-import { PATH } from '~/constants/routes';
-import { FilePlusLineIcon, JobIcon, SettingIcon } from '~/components/shared/icons';
-
-const listNav = [
-  {
-    name: '課金ユーザー一覧',
-    href: PATH.ADMIN.LIST_USER_PAID,
-    icon: FilePlusLineIcon,
-  },
-  {
-    name: 'イベント一覧',
-    href: PATH.ADMIN.LIST_EVENT,
-    icon: JobIcon,
-  },
-  {
-    name: 'くらしの窓口追加',
-    href: PATH.ADMIN.CREATE_EVENT,
-    icon: SettingIcon,
-  },
-  {
-    name: 'パートナー追加',
-    href: PATH.ADMIN.CREATE_PARTNER,
-    icon: SettingIcon,
-  },
-];
 
 export const metadata: Metadata = {
   title: '管理者',
