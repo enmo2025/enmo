@@ -1,21 +1,23 @@
 'use client';
 
-import { useState } from 'react';
+import Link from 'next/link';
 import EventList from '~/components/shared/event-list';
-import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
-import { Pagination } from '~/components/ui/pagination';
-import { useGetEvents } from '~/services/clientService/event/event.api';
+import { Button } from '~/components/ui/button';
+import { PaginationSSR } from '~/components/ui/pagination-ssr';
+import { EventDetail } from '~/services/clientService/event/event.interface';
 
-const PAGE_SIZE = 12;
-
-export default function EventsPage() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading } = useGetEvents(currentPage, PAGE_SIZE);
-  const eventList = data?.data ?? [];
-  const totalPage = Math.ceil(data?.pagination?.total ?? 0 / PAGE_SIZE);
-
-  if (isLoading) return <LoadingOverlay />;
+export default function EventsPage({
+  eventList,
+  totalPage,
+  currentPage,
+  pageSize,
+}: {
+  eventList: EventDetail[];
+  totalPage: number;
+  currentPage: number;
+  pageSize: number;
+}) {
   if (eventList.length === 0) return <NoDataPlaceholder />;
 
   return (
@@ -25,11 +27,17 @@ export default function EventsPage() {
         <EventList eventList={eventList} />
         <div className="flex justify-center pb-10">
           {totalPage > 1 && (
-            <Pagination
-              totalItems={eventList.length}
-              itemsPerPage={PAGE_SIZE}
+            <PaginationSSR
+              totalItems={totalPage * pageSize}
+              itemsPerPage={pageSize}
               currentPage={currentPage}
-              onPageChange={setCurrentPage}
+              renderPageLink={(pageNum) => (
+                <Link href={`/events?page=${pageNum}`}>
+                  <Button variant="outline" size="lg">
+                    {pageNum < currentPage ? '前を表示' : '次を表示'}
+                  </Button>
+                </Link>
+              )}
             />
           )}
         </div>

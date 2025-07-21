@@ -10,7 +10,7 @@ export const GET = async (request: NextRequest) => {
     const limit = Number(searchParams.get('limit')) || 10;
 
     const { skip } = getPagination(Number(page), Number(limit), 100);
-    const data = await getEvents(skip, limit);
+    const { data, total } = await getEvents(skip, limit);
 
     return NextResponse.json(
       successResponse({
@@ -20,7 +20,7 @@ export const GET = async (request: NextRequest) => {
         pagination: {
           page,
           limit,
-          total: data.length,
+          total: total,
         },
       })
     );

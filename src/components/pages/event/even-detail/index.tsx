@@ -4,16 +4,11 @@ import Image from 'next/image';
 import CardEventInfo from '~/components/shared/card-event-info';
 import CardHostInfo from '~/components/shared/card-host-info';
 import 'react-quill-new/dist/quill.snow.css';
-import { useGetEvent } from '~/services/clientService/event/event.api';
-import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
-import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
+import { EventDetail } from '~/services/clientService/event/event.interface';
 
-export default function EventDetailPage({ id }: { id: string }) {
-  const { data, isLoading } = useGetEvent(id);
-  const event = data?.data;
+export default function EventDetailPage({ eventDetail }: { eventDetail: EventDetail }) {
+  const event = eventDetail;
   const partner = event?.partner;
-  if (isLoading) return <LoadingOverlay />;
-  if (!event) return <NoDataPlaceholder />;
   return (
     <div>
       <div className="mx-auto flex max-w-200 gap-10 px-5 pt-[60px] lg:max-w-300 lg:gap-[100px] lg:px-10">

@@ -31,13 +31,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       shortcut: '/favicon-16x16.png',
     },
     manifest: `${siteUrl}/manifest.json`,
+    keywords: ['イベント', 'Events', 'Enmo'],
+    description: 'イベントページ',
+    openGraph: {
+      title: site.name,
+      description: 'イベントページ',
+      images: [site.url + '/ogp.png'],
+    },
+    twitter: {
+      title: site.name,
+      description: 'イベントページ',
+      images: [site.url + '/ogp.png'],
+    },
+    robots: {
+      index: false,
+      follow: false,
+    },
     metadataBase: new URL(site.url ?? ''),
     alternates: {
       canonical: '/',
-      languages: {
-        en: '/en',
-        fr: '/fr',
-      },
     },
     appleWebApp: {
       capable: true,
