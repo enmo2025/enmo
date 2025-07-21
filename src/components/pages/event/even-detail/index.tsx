@@ -33,9 +33,13 @@ export default function EventDetailPage({ id }: { id: string }) {
             </div>
           </div>
           <div className="flex flex-col gap-10">
-            <div className="h-full w-full">
-              <Image src={event.eventBanner} alt="host-info" width={700} height={390} />
-            </div>
+            <Image
+              src={event.eventBanner}
+              className="h-[400px] flex-1 object-cover"
+              alt="host-info"
+              width={700}
+              height={390}
+            />
             <div
               className="ql-editor flex h-full flex-col gap-5 !overflow-y-hidden text-body-md text-brown-700 md:text-body-lg"
               dangerouslySetInnerHTML={{ __html: event.content }}
