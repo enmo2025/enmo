@@ -8,21 +8,19 @@ export interface CreateEventInput {
   participantFee: number;
   date: Date;
   location: string;
-  companyName: string;
-  companyProfile: string;
-  companyLogo: string;
-  hostName: string;
+  partnerId: string;
 }
 
 export async function getEvents(skip: number, limit: number) {
   return prisma.event.findMany({
     skip,
     take: limit,
+    include: { partner: true },
   });
 }
 
 export async function getEventById(id: string) {
-  return prisma.event.findUnique({ where: { id } });
+  return prisma.event.findUnique({ where: { id }, include: { partner: true } });
 }
 
 export async function createEvent(data: CreateEventInput) {

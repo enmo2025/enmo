@@ -8,10 +8,8 @@ model Event {
   serviceCharge     Int @default(10)
   date              DateTime
   location          String
-  companyName       String
-  companyProfile    String
-  companyLogo       String
-  hostName          String
+  partnerId         String
+  partner           Partner     @relation(fields: [partnerId], references: [id], onDelete: Cascade)
   purchases         Purchase[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt

@@ -22,6 +22,8 @@ import { toast } from '~/hooks/use-toast';
 import { useCreateEvent, useUpdateEvent } from '~/services/clientService/event/event.api';
 import { Event } from '@prisma/client';
 import { PATH } from '~/constants/routes';
+import { Select } from '~/components/ui/select';
+import { useGetPartners } from '~/services/clientService/partner/partner.api';
 
 const eventFormSchema = z.object({
   title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
@@ -42,16 +44,10 @@ const eventFormSchema = z.object({
     }),
   date: z.string().min(1, 'Date is required'),
   location: z.string().min(1, 'Location is required'),
-  hostName: z.string().min(1, 'Host name is required'),
-  companyName: z.string().min(1, 'Please enter company name'),
-  companyLogo: z.string().min(1, 'Please select company logo'),
-  companyProfile: z
-    .string()
-    .min(1, 'Please enter company profile')
-    .max(100, 'Company profile must be less than 100 characters'),
+  partnerId: z.string().min(1, 'Partner ID is required'),
 });
 
-type EventFormData = z.infer<typeof eventFormSchema>;
+export type EventFormData = z.infer<typeof eventFormSchema>;
 
 export default function EventForm({ event }: { event?: Event }) {
   const { mutate: createEvent, isPending: isCreating } = useCreateEvent(() => {
@@ -68,6 +64,8 @@ export default function EventForm({ event }: { event?: Event }) {
     });
     router.push(PATH.ADMIN.LIST_EVENT);
   });
+  const { data: partners } = useGetPartners();
+  console.log(partners?.data);
 
   const router = useRouter();
   const dateInputRef = React.useRef<HTMLInputElement>(null);
@@ -81,10 +79,7 @@ export default function EventForm({ event }: { event?: Event }) {
       participantFee: event?.participantFee,
       date: event?.date?.toString() || '',
       location: event?.location || '',
-      hostName: event?.hostName || '',
-      companyName: event?.companyName || '',
-      companyLogo: event?.companyLogo || '',
-      companyProfile: event?.companyProfile || '',
+      partnerId: event?.partnerId || '',
     },
   });
 
@@ -242,72 +237,23 @@ export default function EventForm({ event }: { event?: Event }) {
                 )}
               />
             </div>
-          </div>
-          <div className="flex flex-col gap-6 rounded-xl border border-brown-700 p-4 sm:gap-8 sm:p-8 md:gap-10 md:p-10">
-            <span className="flex justify-center text-title-lg font-bold text-brown-900">くらしパートナーについて</span>
             <Controller
               control={form.control}
-              name="companyName"
+              name="partnerId"
               render={({ field }) => (
-                <Input
+                <Select
                   {...field}
-                  variant={form.formState.errors.companyName ? 'warning' : 'outline'}
-                  label="会社名"
-                  helperText={form.formState.errors.companyName?.message}
+                  variant={form.formState.errors.partnerId ? 'warning' : 'default'}
+                  label="パートナーID"
+                  helperText={form.formState.errors.partnerId?.message}
                   className="w-full"
-                />
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="companyLogo"
-              render={({ field }) => (
-                <div className="flex flex-col gap-1">
-                  <ImageUpload
-                    {...field}
-                    preview={field.value}
-                    onFilesAccepted={(_, url) => {
-                      if (url) {
-                        field.onChange(url);
-                      } else {
-                        field.onChange('');
-                      }
-                    }}
-                    className="mx-auto aspect-square w-full max-w-[180px]"
-                  />
-                  {form.formState.errors.companyLogo && (
-                    <span className="text-sm text-warning">{form.formState.errors.companyLogo.message}</span>
-                  )}
-                </div>
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="companyProfile"
-              render={({ field }) => (
-                <Textarea
-                  {...field}
-                  label="会社概要"
-                  rows={3}
-                  maxLength={100}
-                  helperText={form.formState.errors.companyProfile?.message}
-                  variant={form.formState.errors.companyProfile ? 'warning' : 'default'}
-                  className="w-full"
-                />
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="hostName"
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  variant={form.formState.errors.hostName ? 'warning' : 'outline'}
-                  label="担当者名"
-                  orientation="horizontal"
-                  helperText={form.formState.errors.hostName?.message}
-                  className="w-full"
-                />
+                >
+                  {partners?.data.map((partner) => (
+                    <option key={partner.id} value={partner.id}>
+                      {partner.companyName}
+                    </option>
+                  ))}
+                </Select>
               )}
             />
           </div>

@@ -5,6 +5,7 @@ import { eventQueryKeys } from './event.qkey';
 import { SuccessResponse } from '../interface';
 import { queryClient } from '../query-client';
 import { CreateEventInput } from '~/services/serverService/event/event.service';
+import { EventDetail } from './event.interface';
 
 export const invalidateEventQuery = () => {
   queryClient.invalidateQueries({
@@ -13,12 +14,12 @@ export const invalidateEventQuery = () => {
 };
 
 export const getEvent = async (id: string) => {
-  const event = await apiClient.get<SuccessResponse<Event>>(`/events/${id}`);
+  const event = await apiClient.get<SuccessResponse<EventDetail>>(`/events/${id}`);
   return event;
 };
 
 export const getEvents = async (page: number, limit: number) => {
-  const events = await apiClient.get<SuccessResponse<Event[]>>(`/events?page=${page}&limit=${limit}`);
+  const events = await apiClient.get<SuccessResponse<EventDetail[]>>(`/events?page=${page}&limit=${limit}`);
   return events;
 };
 

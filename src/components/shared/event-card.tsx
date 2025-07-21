@@ -1,26 +1,9 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { PATH } from '~/constants/routes';
+import { EventDetail } from '~/services/clientService/event/event.interface';
 
-export interface EventCardProps {
-  title: string;
-  description: string;
-  eventBanner: string;
-  companyLogo: string;
-  companyName: string;
-  participantFee: number;
-  id: string;
-}
-
-export default function EventCard({
-  title,
-  description,
-  eventBanner,
-  companyLogo,
-  companyName,
-  participantFee,
-  id,
-}: EventCardProps) {
+export default function EventCard({ title, description, eventBanner, participantFee, id, partner }: EventDetail) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -44,9 +27,9 @@ export default function EventCard({
           <div className="flex justify-between border-t border-grey-100 pt-3">
             <span className="flex items-center gap-2">
               <span className="relative h-4 w-4 overflow-hidden rounded-full border border-red-800 sm:h-6 sm:w-6">
-                <Image src={companyLogo} alt="Event Card" fill className="object-cover" />
+                <Image src={partner.companyLogo} alt="Event Card" fill className="object-cover" />
               </span>
-              <span className="text-body-xs text-red-800 sm:text-body-lg">{companyName}</span>
+              <span className="text-body-xs text-red-800 sm:text-body-lg">{partner.companyName}</span>
             </span>
             <span className="text-body-xs text-brown-900 sm:text-body-lg">¥{participantFee}</span>
           </div>

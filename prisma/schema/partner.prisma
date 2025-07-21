@@ -1,0 +1,11 @@
+model Partner {
+  id                String   @id @default(uuid())
+  companyName       String
+  companyProfile    String
+  companyField      String
+  companyLogo       String
+  hostName          String
+  events            Event[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+} 

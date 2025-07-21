@@ -11,6 +11,7 @@ import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 export default function EventDetailPage({ id }: { id: string }) {
   const { data, isLoading } = useGetEvent(id);
   const event = data?.data;
+  const partner = event?.partner;
   if (isLoading) return <LoadingOverlay />;
   if (!event) return <NoDataPlaceholder />;
   return (
@@ -41,11 +42,11 @@ export default function EventDetailPage({ id }: { id: string }) {
             ></div>
             <div className="flex items-center justify-center sm:hidden">
               <CardHostInfo
-                companyName={event.companyName}
-                companyLogo={event.companyLogo}
-                companyProfile={event.companyProfile}
+                companyName={partner?.companyName || ''}
+                companyLogo={partner?.companyLogo || ''}
+                companyProfile={partner?.companyProfile || ''}
                 description={event.description}
-                hostName={event.hostName}
+                hostName={partner?.hostName || ''}
               />
             </div>
           </div>
@@ -62,11 +63,11 @@ export default function EventDetailPage({ id }: { id: string }) {
           </div>
           <div>
             <CardHostInfo
-              companyName={event.companyName}
-              companyLogo={event.companyLogo}
-              companyProfile={event.companyProfile}
+              companyName={partner?.companyName || ''}
+              companyLogo={partner?.companyLogo || ''}
+              companyProfile={partner?.companyProfile || ''}
               description={event.description}
-              hostName={event.hostName}
+              hostName={partner?.hostName || ''}
             />
           </div>
         </div>

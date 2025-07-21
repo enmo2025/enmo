@@ -1,5 +1,5 @@
 import React from 'react';
-import EditEvent from '~/components/pages/Admin/edit-event';
+import EditEvent from '~/components/pages/admin/edit-event';
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
