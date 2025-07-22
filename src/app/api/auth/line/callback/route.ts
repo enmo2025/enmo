@@ -15,18 +15,15 @@ export const GET = async (request: Request) => {
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
   const cookieStore = await cookies();
-  const storedState = cookieStore.get('line_oauth_state')?.value ?? null;
   const codeVerifier = cookieStore.get('line_oauth_code_verifier')?.value ?? null;
   const redirect = cookieStore.get('line_redirect_after_login')?.value ?? PATH.HOME;
 
-  if (!code || !state || !storedState || !codeVerifier || state !== storedState) {
+  if (!code || !state || !codeVerifier) {
     return new Response(
       `Invalid request - missing parameters:
             code: ${Boolean(code)},
             state: ${Boolean(state)},
-            storedState: ${Boolean(storedState)},
-            codeVerifier: ${Boolean(codeVerifier)},
-            stateMatch: ${state === storedState}`,
+            codeVerifier: ${Boolean(codeVerifier)}`,
       {
         status: 400,
       }
