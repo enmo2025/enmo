@@ -9,35 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static URLs (public pages)
   const staticUrls = [
     { url: siteUrl || '', lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 1 }, // Home
-    { url: `${siteUrl}/login`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
-    { url: `${siteUrl}/register`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 },
-    {
-      url: `${siteUrl}/register/basic-info`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
     { url: `${siteUrl}/events`, lastModified: new Date(), changeFrequency: 'daily' as const, priority: 1 },
-    { url: `${siteUrl}/profile`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
-    { url: `${siteUrl}/profile/info`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.7 },
-    {
-      url: `${siteUrl}/profile/term-of-use`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-    {
-      url: `${siteUrl}/delete-account/confirm`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.2,
-    },
-    {
-      url: `${siteUrl}/delete-account/success`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.2,
-    },
   ];
 
   // Dynamic event URLs
@@ -45,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}/events/${id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: 0.9,
+    priority: 1,
   }));
 
   return [...staticUrls, ...eventUrls];
