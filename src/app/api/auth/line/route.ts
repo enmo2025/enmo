@@ -33,8 +33,6 @@ export const GET = async (request: Request) => {
     cookieOptions.secure = false;
   }
 
-  // Store the original redirect URL without any encoding
-  cookieStore.set('line_oauth_state', state, cookieOptions);
   cookieStore.set('line_oauth_code_verifier', codeVerifier, cookieOptions);
   cookieStore.set('line_redirect_after_login', safeRedirect, cookieOptions);
 
