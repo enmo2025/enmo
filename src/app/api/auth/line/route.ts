@@ -17,19 +17,20 @@ export const GET = async (request: Request) => {
 
   const cookieStore = await cookies();
 
+  const isProd = process.env.NODE_ENV === 'production';
+
   // Set cookies with more permissive settings for development
   const cookieOptions = {
     path: '/',
-    secure: process.env.NODE_ENV === 'production',
+    secure: isProd,
     httpOnly: true,
     maxAge: 60 * 10, // 10 minutes
-    sameSite: 'lax' as 'lax' | 'none',
+    sameSite: isProd ? ('none' as const) : ('lax' as const),
   };
 
   // In development, make cookies work on localhost
-  if (process.env.NODE_ENV !== 'production') {
+  if (!isProd) {
     cookieOptions.secure = false;
-    cookieOptions.sameSite = 'none' as const;
   }
 
   // Store the original redirect URL without any encoding
