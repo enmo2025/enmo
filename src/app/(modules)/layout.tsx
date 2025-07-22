@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     manifest: `${siteUrl}/manifest.json`,
     keywords: ['イベント', 'Events', 'Enmo'],
-    description: 'イベントページ',
+    description: 'Enmoのイベントページでは、最新のイベント情報や参加方法をご紹介します',
     openGraph: {
       title: site.name,
       description: 'イベントページ',
@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [site.url + '/ogp.png'],
     },
     robots: {
-      index: false,
-      follow: false,
+      index: true,
+      follow: true,
     },
     metadataBase: new URL(site.url ?? ''),
     alternates: {
