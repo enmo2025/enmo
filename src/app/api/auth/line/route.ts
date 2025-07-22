@@ -23,12 +23,13 @@ export const GET = async (request: Request) => {
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 60 * 10, // 10 minutes
-    sameSite: 'lax' as const,
+    sameSite: 'lax' as 'lax' | 'none',
   };
 
   // In development, make cookies work on localhost
   if (process.env.NODE_ENV !== 'production') {
     cookieOptions.secure = false;
+    cookieOptions.sameSite = 'none' as const;
   }
 
   // Store the original redirect URL without any encoding
