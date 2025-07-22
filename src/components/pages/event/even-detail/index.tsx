@@ -44,7 +44,7 @@ export default function EventDetailPage({ eventDetail }: { eventDetail: EventDet
                 companyName={partner?.companyName || ''}
                 companyLogo={partner?.companyLogo || ''}
                 companyProfile={partner?.companyProfile || ''}
-                description={event.description}
+                companyField={partner?.companyField || ''}
                 hostName={partner?.hostName || ''}
               />
             </div>
@@ -65,7 +65,7 @@ export default function EventDetailPage({ eventDetail }: { eventDetail: EventDet
               companyName={partner?.companyName || ''}
               companyLogo={partner?.companyLogo || ''}
               companyProfile={partner?.companyProfile || ''}
-              description={event.description}
+              companyField={partner?.companyField || ''}
               hostName={partner?.hostName || ''}
             />
           </div>
