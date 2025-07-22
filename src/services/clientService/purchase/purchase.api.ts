@@ -22,8 +22,8 @@ const getPurchase = async (id: string) => {
   return response;
 };
 
-export const confirmPurchase = async (id: string) => {
-  const response = await apiClient.post<Purchase>(`/purchases/confirm/${id}`);
+export const confirmPurchase = async (id: string, lineId: string) => {
+  const response = await apiClient.post<Purchase>(`/purchases/confirm/${id}`, { lineId });
   return response;
 };
 
@@ -68,9 +68,9 @@ export const useGetPurchaseByStripeSessionId = (sessionId: string, options?: Cus
   });
 };
 
-export const useConfirmPurchase = (options: UseMutationOptions<Purchase, Error, string>) => {
+export const useConfirmPurchase = (options: UseMutationOptions<Purchase, Error, { id: string; lineId: string }>) => {
   return useMutation({
-    mutationFn: (id: string) => confirmPurchase(id),
+    mutationFn: ({ id, lineId }) => confirmPurchase(id, lineId),
     ...options,
     onSuccess: (data, variables, context) => {
       invalidatePurchaseQuery();

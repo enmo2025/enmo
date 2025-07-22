@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-    const { userId, eventId } = session.metadata as { userId: string; eventId: string };
+    const { userId, eventId, lineId } = session.metadata as { userId: string; eventId: string; lineId: string };
     try {
       await prisma.purchase.create({
         data: {
@@ -30,6 +30,7 @@ export async function POST(req: Request) {
           eventId,
           stripeSessionId: session.id,
           amount: session.amount_total ?? 0,
+          lineId: lineId,
         },
       });
     } catch (err) {
