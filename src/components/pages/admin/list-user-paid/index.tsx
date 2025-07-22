@@ -39,12 +39,12 @@ export default function ListUserPaid() {
       {
         header: 'ユーザー名',
         accessorKey: 'user.fullName',
-        cell: ({ row }) => <div>{row.original.user.fullName}</div>,
+        cell: ({ row }) => <div>{row.original.user?.fullName ?? '-'}</div>,
       },
       {
         header: '購入したプロジェクト名',
         accessorKey: 'event.title',
-        cell: ({ row }) => <div>{row.original.event.title}</div>,
+        cell: ({ row }) => <div>{row.original.event?.title}</div>,
         size: 100,
       },
       {
