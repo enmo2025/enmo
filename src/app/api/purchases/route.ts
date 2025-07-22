@@ -44,7 +44,6 @@ export const GET = withAuth(async ({ request }) => {
 
 export const POST = withAuth(async ({ request, user }) => {
   const { userId, eventId, stripeSessionId, amount } = await request.json();
-
   const purchase = await prisma.purchase.create({
     data: { userId, eventId, stripeSessionId, amount, lineId: user.lineId },
   });
