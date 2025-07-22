@@ -6,8 +6,19 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
-        disallow: ['/api/', `/dashboard`],
+        allow: ['/', '/events', '/events/:id'],
+        disallow: [
+          '/api/',
+          '/admin',
+          '/admin/',
+          '/profile/setting',
+          '/profile/setting/',
+          '/payment',
+          '/payment/',
+          '/register/basic-info',
+          '/delete-account/confirm',
+          '/delete-account/success',
+        ],
       },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,

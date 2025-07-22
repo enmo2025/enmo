@@ -1,23 +1,11 @@
 import { Metadata } from 'next';
 import EventsPage from '~/components/pages/event';
-import { siteConfig } from '~/config/site';
 import { getEvents } from '~/services/clientService/event/event.api';
 
 export const metadata: Metadata = {
   title: 'イベント',
   description: 'イベントページ',
-  manifest: '/manifest.json',
   keywords: ['イベント', 'Events', 'Enmo'],
-  openGraph: {
-    title: 'イベント',
-    description: 'イベントページ',
-    images: [siteConfig().url + '/ogp.png'],
-  },
-  twitter: {
-    title: 'イベント',
-    description: 'イベントページ',
-    images: [siteConfig().url + '/ogp.png'],
-  },
 };
 
 const PAGE_SIZE = 12;

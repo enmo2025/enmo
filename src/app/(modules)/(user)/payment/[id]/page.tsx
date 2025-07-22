@@ -7,7 +7,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: '支払い',
   description: '支払いページ',
-  manifest: '/manifest.json',
   keywords: ['支払い', 'Payment', 'Enmo'],
 };
 

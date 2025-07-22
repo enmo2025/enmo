@@ -90,3 +90,13 @@ export const omit = <T extends object, K extends keyof T>(obj: T, keys: K[]): Om
   }
   return result;
 };
+
+export function stripHtmlTags(html: string): string {
+  return (
+    html
+      // eslint-disable-next-line sonarjs/slow-regex
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
+}

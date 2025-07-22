@@ -35,3 +35,7 @@ export async function updateEvent(id: string, data: CreateEventInput) {
 export async function deleteEvent(id: string) {
   return prisma.event.delete({ where: { id } });
 }
+
+export async function getAllEventIds() {
+  return prisma.event.findMany({ select: { id: true } });
+}

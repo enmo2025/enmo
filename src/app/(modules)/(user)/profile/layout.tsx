@@ -5,7 +5,6 @@ import SidenavProfile from '~/components/layout/sidenav-profile';
 export const metadata: Metadata = {
   title: 'プロフィール',
   description: 'プロフィールページ',
-  manifest: '/manifest.json',
   keywords: ['プロフィール', 'Profile', 'Enmo'],
 };
 
