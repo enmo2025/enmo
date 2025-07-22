@@ -1,18 +1,20 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { withAuth } from '~/lib/server/utils';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export const POST = async (req: Request) => {
-  const { amount, userId, event } = await req.json();
+export const POST = withAuth(async ({ request, user }) => {
+  const { amount, event } = await request.json();
 
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       metadata: {
-        userId: userId,
+        userId: user.id,
         eventId: event.id,
+        lineId: user.lineId,
       },
       line_items: [
         {
@@ -37,4 +39,4 @@ export const POST = async (req: Request) => {
   } catch (err) {
     return NextResponse.json({ error: (err as any).message }, { status: 500 });
   }
-};
+});

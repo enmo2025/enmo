@@ -23,6 +23,7 @@ export default function ListUserPaid() {
         title: '購入確認しました',
         description: 'ユーザーにLINEで連絡しました',
       });
+      window.open(`https://chat.line.biz/Udf183546c57931e953339c8648038b13`, '_blank', 'noopener');
     },
   });
 
@@ -62,7 +63,9 @@ export default function ListUserPaid() {
               leadingIcon={<LineIcon color={isConfirmed ? 'white' : 'brown'} />}
               variant={isConfirmed ? 'solid' : 'outline'}
               className={cn(isConfirmed && 'bg-brown-700 text-white')}
-              onClick={() => confirmPurchase(row.original.id)}
+              onClick={() => {
+                confirmPurchase({ id: row.original.id, lineId: row.original.lineId! });
+              }}
             >
               LINEで連絡する
             </Button>

@@ -5,26 +5,32 @@ import { prisma } from '~/lib/server/db';
 import { lineService } from '~/services/serverService/lines/line.service';
 import messageTemplate from '~/constants/message-template';
 
-const POST = withAuth(async ({ context, user }) => {
+const POST = withAuth(async ({ context, request }) => {
   const id = await context?.params?.id;
+  const { lineId } = await request.json();
   if (!id) {
     return NextResponse.json(errorResponse({ message: 'Purchase not found', status: HTTP_STATUS.NOT_FOUND }));
   }
+  if (!lineId) {
+    return NextResponse.json(errorResponse({ message: 'Line ID not found', status: HTTP_STATUS.NOT_FOUND }));
+  }
+
   const purchase = await prisma.purchase.update({
     where: { id },
     data: { isConfirmed: true },
+    include: {
+      user: true,
+    },
   });
 
-  if (user.lineId) {
-    lineService
-      .sendMessage(user.lineId, [
-        {
-          type: 'text',
-          text: messageTemplate(user).confirmPurchase.text,
-        },
-      ])
-      .catch((error) => console.error('Failed to send LINE welcome message:', error));
-  }
+  lineService
+    .sendMessage(lineId, [
+      {
+        type: 'text',
+        text: messageTemplate(purchase.user!).confirmPurchase.text,
+      },
+    ])
+    .catch((error) => console.error('Failed to send LINE welcome message:', error));
 
   return NextResponse.json(successResponse({ message: 'Purchase confirmed successfully', data: purchase }));
 });
