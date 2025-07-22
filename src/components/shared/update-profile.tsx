@@ -129,7 +129,7 @@ export default function UpdateProfile({
         </div>
       )}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
           {/* 氏名 (Name) */}
           <div className="space-y-4">
             <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
@@ -146,7 +146,7 @@ export default function UpdateProfile({
                         variant={form.formState.errors.lastName ? 'warning' : 'default'}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="min-h-[20px]" />
                   </FormItem>
                 )}
               />
@@ -162,7 +162,7 @@ export default function UpdateProfile({
                         variant={form.formState.errors.firstName ? 'warning' : 'default'}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="min-h-[20px]" />
                   </FormItem>
                 )}
               />
@@ -185,7 +185,7 @@ export default function UpdateProfile({
                         variant={form.formState.errors.lastNameKana ? 'warning' : 'default'}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="min-h-[20px]" />
                   </FormItem>
                 )}
               />
@@ -201,7 +201,7 @@ export default function UpdateProfile({
                         variant={form.formState.errors.firstNameKana ? 'warning' : 'default'}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="min-h-[20px]" />
                   </FormItem>
                 )}
               />
@@ -228,7 +228,7 @@ export default function UpdateProfile({
                           ))}
                         </Select>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px]" />
                     </FormItem>
                   )}
                 />
@@ -250,7 +250,7 @@ export default function UpdateProfile({
                           ))}
                         </Select>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px]" />
                     </FormItem>
                   )}
                 />
@@ -273,7 +273,7 @@ export default function UpdateProfile({
                           ))}
                         </Select>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="min-h-[20px]" />
                     </FormItem>
                   )}
                 />
@@ -303,7 +303,7 @@ export default function UpdateProfile({
                       ))}
                     </Select>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="min-h-[20px]" />
                 </FormItem>
               )}
             />
@@ -328,7 +328,7 @@ export default function UpdateProfile({
                       <RadioGroupItem value={EGender.OTHER} id="other" title="その他" />
                     </RadioGroup>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="min-h-[20px]" />
                 </FormItem>
               )}
             />
