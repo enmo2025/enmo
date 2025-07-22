@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 10;
 
 export default async function pages({ searchParams }: { searchParams: Promise<{ page: string }> }) {
   const { page } = await searchParams;
