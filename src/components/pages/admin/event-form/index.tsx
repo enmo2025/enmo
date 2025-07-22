@@ -7,7 +7,6 @@ import { Button } from '~/components/ui/button';
 import { CalendarLineIcon, LocationLineIcon, TagLineIcon } from '~/components/shared/icons';
 import dynamic from 'next/dynamic';
 import { Textarea } from '~/components/ui/textarea';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const ReactQuill = dynamic(() => import('react-quill-new'), {
@@ -24,30 +23,8 @@ import { Event } from '@prisma/client';
 import { PATH } from '~/constants/routes';
 import { Select } from '~/components/ui/select';
 import { useGetPartners } from '~/services/clientService/partner/partner.api';
-
-const eventFormSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title must be less than 100 characters'),
-  description: z.string().min(1, 'Description is required').max(100, 'Description must be less than 100 characters'),
-  eventBanner: z.string().min(1, 'Event banner is required'),
-  content: z.string().min(1, 'Content is required'),
-  participantFee: z
-    .string()
-    .transform((val) => Number(val))
-    .refine((val) => !isNaN(val), {
-      message: 'Must be a number',
-    })
-    .refine((val) => Number.isInteger(val), {
-      message: 'Must be an integer',
-    })
-    .refine((val) => val > 0, {
-      message: 'Must be greater than 0',
-    }),
-  date: z.string().min(1, 'Date is required'),
-  location: z.string().min(1, 'Location is required'),
-  partnerId: z.string().min(1, 'Partner ID is required'),
-});
-
-export type EventFormData = z.infer<typeof eventFormSchema>;
+import { eventValidationSchema, EventValidationType } from '~/validations/admin-validation';
+import { formatDateToYYYYMMDD, sanitizeNumberInput } from '~/lib/utils';
 
 export default function EventForm({ event }: { event?: Event }) {
   const { mutate: createEvent, isPending: isCreating } = useCreateEvent(() => {
@@ -65,25 +42,24 @@ export default function EventForm({ event }: { event?: Event }) {
     router.push(PATH.ADMIN.LIST_EVENT);
   });
   const { data: partners } = useGetPartners();
-  console.log(partners?.data);
 
   const router = useRouter();
   const dateInputRef = React.useRef<HTMLInputElement>(null);
-  const form = useForm<EventFormData>({
-    resolver: zodResolver(eventFormSchema),
+  const form = useForm<EventValidationType>({
+    resolver: zodResolver(eventValidationSchema),
     defaultValues: {
       title: event?.title || '',
       description: event?.description || '',
       eventBanner: event?.eventBanner || '',
       content: event?.content || '',
-      participantFee: event?.participantFee,
-      date: event?.date?.toString() || '',
+      participantFee: event?.participantFee || 0,
+      date: formatDateToYYYYMMDD(event?.date?.toString() || ''),
       location: event?.location || '',
       partnerId: event?.partnerId || '',
     },
   });
 
-  const onSubmit = async (data: EventFormData) => {
+  const onSubmit = async (data: EventValidationType) => {
     const payload = {
       ...data,
       participantFee: Number(data.participantFee),
@@ -118,7 +94,7 @@ export default function EventForm({ event }: { event?: Event }) {
                   label="らしの窓口名"
                   rows={1}
                   maxLength={100}
-                  helperText={form.formState.errors.title?.message}
+                  helperText={form.formState.errors.title?.message as string}
                   variant={form.formState.errors.title ? 'warning' : 'default'}
                   className="w-full"
                 />
@@ -133,7 +109,7 @@ export default function EventForm({ event }: { event?: Event }) {
                   label="らしの窓口の説明"
                   rows={3}
                   maxLength={100}
-                  helperText={form.formState.errors.description?.message}
+                  helperText={form.formState.errors.description?.message as string}
                   variant={form.formState.errors.description ? 'warning' : 'default'}
                   className="w-full"
                 />
@@ -155,10 +131,8 @@ export default function EventForm({ event }: { event?: Event }) {
                       }
                     }}
                     className="mx-auto h-40 w-full max-w-[512px] sm:h-60 md:h-72"
+                    errorMessage={form.formState.errors.eventBanner?.message as string}
                   />
-                  {form.formState.errors.eventBanner && (
-                    <span className="text-sm text-warning">{form.formState.errors.eventBanner.message}</span>
-                  )}
                 </div>
               )}
             />
@@ -169,6 +143,7 @@ export default function EventForm({ event }: { event?: Event }) {
                 <div className="flex flex-col gap-1">
                   <div>
                     <ReactQuill
+                      {...field}
                       value={field.value}
                       onChange={field.onChange}
                       theme="snow"
@@ -179,7 +154,7 @@ export default function EventForm({ event }: { event?: Event }) {
                     />
                   </div>
                   {form.formState.errors.content && (
-                    <span className="text-sm text-warning">{form.formState.errors.content.message}</span>
+                    <span className="text-sm text-warning">{form.formState.errors.content.message as string}</span>
                   )}
                 </div>
               )}
@@ -194,8 +169,17 @@ export default function EventForm({ event }: { event?: Event }) {
                     variant={form.formState.errors.participantFee ? 'warning' : 'outline'}
                     label="価格"
                     type="number"
+                    min={100}
+                    onKeyDown={(e) => {
+                      if (e.key === '-' || e.key === '.' || e.key === '+') {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) => {
+                      field.onChange(sanitizeNumberInput(field.value.toString(), e.target.value));
+                    }}
                     trailingIcon={<TagLineIcon />}
-                    helperText={form.formState.errors.participantFee?.message}
+                    helperText={form.formState.errors.participantFee?.message as string}
                     className="w-full"
                   />
                 )}
@@ -211,7 +195,7 @@ export default function EventForm({ event }: { event?: Event }) {
                     variant={form.formState.errors.date ? 'warning' : 'outline'}
                     label="イベントの日付"
                     trailingIcon={<CalendarLineIcon />}
-                    helperText={form.formState.errors.date?.message}
+                    helperText={form.formState.errors.date?.message as string}
                     className="w-full"
                     onClick={(e) => {
                       e.preventDefault();
@@ -231,7 +215,7 @@ export default function EventForm({ event }: { event?: Event }) {
                     variant={form.formState.errors.location ? 'warning' : 'outline'}
                     label="位置"
                     trailingIcon={<LocationLineIcon />}
-                    helperText={form.formState.errors.location?.message}
+                    helperText={form.formState.errors.location?.message as string}
                     className="w-full"
                   />
                 )}
@@ -244,8 +228,9 @@ export default function EventForm({ event }: { event?: Event }) {
                 <Select
                   {...field}
                   variant={form.formState.errors.partnerId ? 'warning' : 'default'}
-                  label="パートナーID"
-                  helperText={form.formState.errors.partnerId?.message}
+                  label="パートナーを選ぶ"
+                  placeholder="--パートナーを選択します--"
+                  helperText={form.formState.errors.partnerId?.message as string}
                   className="w-full"
                 >
                   {partners?.data.map((partner) => (

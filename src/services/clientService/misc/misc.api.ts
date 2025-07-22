@@ -11,6 +11,6 @@ export const uploadImage = async (file: File) => {
 };
 
 export const deleteImage = async (filename: string) => {
-  const res = await apiClient.delete<SuccessResponse<string>>(`/upload?filename=${filename}`);
+  const res = await apiClient.delete<SuccessResponse<string>>(`/uploads?filename=${filename}`);
   return res.data;
 };
