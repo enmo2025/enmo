@@ -12,7 +12,7 @@ export default function EventCard({ title, description, eventBanner, participant
 
   return (
     <div
-      className="flex h-[350px] w-full min-w-[150px] cursor-pointer flex-col justify-between overflow-hidden rounded-[5.81px] border border-red-600 max-xs:h-60 sm:min-w-60 sm:rounded-xl"
+      className="flex h-[350px] w-full min-w-[150px] cursor-pointer flex-col justify-between overflow-hidden rounded-[5.81px] border border-red-600 max-sm:h-60 sm:rounded-xl lg:min-w-56"
       onClick={handleClick}
     >
       <div className="w-full flex-1 overflow-hidden">
