@@ -5,7 +5,6 @@ import React from 'react';
 import { Input } from '~/components/ui/input';
 import { Button } from '~/components/ui/button';
 import { Textarea } from '~/components/ui/textarea';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { ImageUpload } from '~/components/ui/image-upload';
@@ -13,19 +12,7 @@ import { useCreatePartner } from '~/services/clientService/partner/partner.api';
 import { toast } from '~/hooks/use-toast';
 import { PATH } from '~/constants/routes';
 import { useRouter } from 'next/navigation';
-
-const partnerFormSchema = z.object({
-  hostName: z.string().min(1, 'Host name is required'),
-  companyName: z.string().min(1, 'Please enter company name'),
-  companyLogo: z.string().min(1, 'Please select company logo'),
-  companyField: z.string().min(1, 'Please enter company field'),
-  companyProfile: z
-    .string()
-    .min(1, 'Please enter company profile')
-    .max(100, 'Company profile must be less than 100 characters'),
-});
-
-export type PartnerFormData = z.infer<typeof partnerFormSchema>;
+import { partnerValidationSchema, PartnerValidationType } from '~/validations/admin-validation';
 
 export default function PartnerForm() {
   const router = useRouter();
@@ -36,8 +23,8 @@ export default function PartnerForm() {
     });
     router.push(PATH.ADMIN.CREATE_EVENT);
   });
-  const form = useForm<PartnerFormData>({
-    resolver: zodResolver(partnerFormSchema),
+  const form = useForm<PartnerValidationType>({
+    resolver: zodResolver(partnerValidationSchema),
     defaultValues: {
       hostName: '',
       companyName: '',
@@ -47,7 +34,7 @@ export default function PartnerForm() {
     },
   });
 
-  const onSubmit = async (data: PartnerFormData) => {
+  const onSubmit = async (data: PartnerValidationType) => {
     const payload = {
       ...data,
     };
@@ -94,10 +81,8 @@ export default function PartnerForm() {
                       }
                     }}
                     className="mx-auto aspect-square w-full max-w-[180px]"
+                    errorMessage={form.formState.errors.companyLogo?.message as string}
                   />
-                  {form.formState.errors.companyLogo && (
-                    <span className="text-sm text-warning">{form.formState.errors.companyLogo.message}</span>
-                  )}
                 </div>
               )}
             />

@@ -21,11 +21,9 @@ export default function ListEvent() {
   const router = useRouter();
   const ref = useClickOutside<HTMLDivElement>((e) => {
     setOpenMenuId(null);
-    setMenuPosition(null);
   });
   const [page, setPage] = useState(1);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const { data, isLoading } = useGetEvents(page, PAGE_SIZE);
   const { mutate: deleteEvent, isPending: isDeleting } = useDeleteEvent(() => {
@@ -98,45 +96,35 @@ export default function ListEvent() {
                 e.stopPropagation();
                 if (openMenuId === row.original.id) {
                   setOpenMenuId(null);
-                  setMenuPosition(null);
                 } else {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  setMenuPosition({ top: rect.bottom + window.scrollY, left: rect.right - 110 });
                   setOpenMenuId(row.original.id);
                 }
               }}
             >
               <MoreVerticalIcon size={18} />
             </Button>
-            {openMenuId === row.original.id && menuPosition && (
-              <div
-                className="fixed z-50 rounded bg-white shadow-lg"
-                style={{ top: menuPosition.top, left: menuPosition.left }}
-              >
-                <div ref={ref}>
-                  <AdminSubMenu
-                    item={[
-                      {
-                        title: '編集',
-                        onClick: () => {
-                          handleEdit(row.original);
-                          setOpenMenuId(null);
-                          setMenuPosition(null);
-                        },
-                        className: 'text-yellow-900',
+            {openMenuId === row.original.id && (
+              <div className="absolute right-0 top-full z-10 mt-2 rounded bg-white shadow-lg" ref={ref}>
+                <AdminSubMenu
+                  item={[
+                    {
+                      title: '編集',
+                      onClick: () => {
+                        handleEdit(row.original);
+                        setOpenMenuId(null);
                       },
-                      {
-                        title: '削除',
-                        onClick: () => {
-                          setConfirmDeleteId(row.original.id);
-                          setOpenMenuId(null);
-                          setMenuPosition(null);
-                        },
-                        className: 'text-warning',
+                      className: 'text-yellow-900',
+                    },
+                    {
+                      title: '削除',
+                      onClick: () => {
+                        setConfirmDeleteId(row.original.id);
+                        setOpenMenuId(null);
                       },
-                    ]}
-                  />
-                </div>
+                      className: 'text-warning',
+                    },
+                  ]}
+                />
               </div>
             )}
           </div>
@@ -144,24 +132,22 @@ export default function ListEvent() {
         size: 80,
       },
     ],
-    [openMenuId, menuPosition]
+    [openMenuId]
   );
 
   const isFetching = isLoading || isDeleting;
   return (
-    <div className="flex w-full flex-col overflow-x-auto max-md:h-[calc(100vh-80px)] md:overflow-visible">
-      <div className="min-w-[900px] gap-5 md:min-w-0">
-        <DynamicTable
-          isFetching={isFetching}
-          data={data?.data || []}
-          columns={columns}
-          canPaginate={true}
-          initialPageIndex={page}
-          initialPageSize={PAGE_SIZE}
-          rowCount={data?.pagination?.total ?? 0}
-          onPageChange={setPage}
-        />
-      </div>
+    <div className="w-full">
+      <DynamicTable
+        isFetching={isFetching}
+        data={data?.data || []}
+        columns={columns}
+        canPaginate={true}
+        initialPageIndex={page}
+        initialPageSize={PAGE_SIZE}
+        rowCount={data?.pagination?.total ?? 0}
+        onPageChange={setPage}
+      />
       {confirmDeleteId && (
         <ConfirmModal
           open={!!confirmDeleteId}
