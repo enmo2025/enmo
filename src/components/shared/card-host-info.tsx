@@ -4,7 +4,7 @@ export interface CardHostInfoProps {
   companyName: string;
   companyLogo: string;
   companyProfile: string;
-  description: string;
+  companyField: string;
   hostName: string;
 }
 
@@ -12,7 +12,7 @@ export default function CardHostInfo({
   companyName,
   companyLogo,
   companyProfile,
-  description,
+  companyField,
   hostName,
 }: CardHostInfoProps) {
   return (
@@ -26,10 +26,10 @@ export default function CardHostInfo({
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <span className="text-headline-lg font-bold text-red-700 max-lg:text-headline-md">{companyName}</span>
-          <span className="text-title-md font-bold text-black md:text-title-sm lg:text-title-md">{companyProfile}</span>
+          <span className="text-title-md font-bold text-black md:text-title-sm lg:text-title-md">{companyField}</span>
         </div>
       </div>
-      <div className="text-body-md text-brown-900 max-lg:text-body-sm">{description}</div>
+      <div className="text-body-md text-brown-900 max-lg:text-body-sm">{companyProfile}</div>
       <div className="flex items-center gap-5">
         <span className="text-body-lg text-brown-700 max-lg:text-body-md">担当者名:</span>
         <span className="text-body-lg text-brown-900">{hostName}</span>

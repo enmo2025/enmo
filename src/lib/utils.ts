@@ -100,3 +100,11 @@ export function stripHtmlTags(html: string): string {
       .trim()
   );
 }
+
+export const sanitizeNumberInput = (prev: string, next: string) => {
+  return prev === '0' && next.length > 1 ? next.slice(1) : next;
+};
+
+export const formatDateToYYYYMMDD = (date: string) => {
+  return date.split('T')[0];
+};
