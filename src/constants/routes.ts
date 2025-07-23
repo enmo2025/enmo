@@ -3,6 +3,7 @@ import { QUERY_PARAMS } from './common';
 export const PATH = {
   HOME: '/',
   REGISTER_BASIC_INFO: '/register/basic-info',
+  ADD_FRIEND: '/add-friend',
 
   AUTH: {
     LOGIN: '/login',

@@ -28,6 +28,8 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
   const isBasicInfoPage = currentPath === PATH.REGISTER_BASIC_INFO;
   const isAdmin = session.user?.role === Role.ADMIN;
   const adminPages = Object.values(PATH.ADMIN);
+  const isAddFriend = currentPath === PATH.ADD_FRIEND;
+  const isFriend = session.user?.isFriend;
 
   // Redirect authenticated users away from auth pages (login, register) to HOME
   if (isAuthenticated && isAuthenticationRoute) {
@@ -43,9 +45,13 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
   if (!isAuthenticated && !isPublicRoute) {
     return redirect(PATH.AUTH.LOGIN);
   }
+  // Redirect authenticated users to add friend page if they are not a friend
+  if (isAuthenticated && !isAddFriend && !isFriend) {
+    return redirect(PATH.ADD_FRIEND);
+  }
 
   // Handle incomplete profile for authenticated users (only for protected pages)
-  if (isAuthenticated && !isCheckFullInfo && !isBasicInfoPage) {
+  if (isAuthenticated && isFriend && !isCheckFullInfo && !isBasicInfoPage) {
     return redirect(PATH.REGISTER_BASIC_INFO);
   }
 

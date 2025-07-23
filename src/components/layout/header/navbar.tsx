@@ -21,7 +21,7 @@ export default function Navbar({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const path = usePathname();
   const router = useRouter();
-  const isAuth = [...Object.values(PATH.AUTH), PATH.REGISTER_BASIC_INFO].includes(
+  const isAuth = [...Object.values(PATH.AUTH), PATH.REGISTER_BASIC_INFO, PATH.ADD_FRIEND].includes(
     path as (typeof PATH.AUTH)[keyof typeof PATH.AUTH]
   );
   const style = {
