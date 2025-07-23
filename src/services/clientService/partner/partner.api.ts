@@ -4,7 +4,7 @@ import { SuccessResponse } from '../interface';
 import { queryClient } from '../query-client';
 import { partnerQueryKeys } from './partner.qkey';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { PartnerFormData } from '~/components/pages/admin/partner-form';
+import { PartnerValidationType } from '~/validations/admin-validation';
 
 export const invalidatePartnerQuery = () => {
   queryClient.invalidateQueries({
@@ -17,7 +17,7 @@ export const getPartners = async () => {
   return partners;
 };
 
-export const createPartner = async (partner: PartnerFormData) => {
+export const createPartner = async (partner: PartnerValidationType) => {
   const newPartner = await apiClient.post<SuccessResponse<Partner>>('/partner', partner);
   return newPartner;
 };
