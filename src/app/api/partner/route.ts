@@ -1,11 +1,11 @@
 import { HTTP_STATUS } from '~/constants/status-code';
 import { errorResponse, successResponse } from '~/lib/server/utils';
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '~/lib/server/db';
+import { createPartner, getPartners } from '~/services/serverService/partner/partner.service';
 
 export const GET = async () => {
   try {
-    const data = await prisma.partner.findMany();
+    const data = await getPartners();
 
     return NextResponse.json(
       successResponse({
@@ -24,9 +24,7 @@ export const GET = async () => {
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const partner = await prisma.partner.create({
-      data: body,
-    });
+    const partner = await createPartner(body);
     return NextResponse.json(
       successResponse({
         message: 'Partner created successfully',
