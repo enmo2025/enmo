@@ -96,6 +96,7 @@ export default {
         'body-xs': ['10px', { lineHeight: '16px', letterSpacing: '+0.4px' }],
       },
       screens: {
+        xxs: '350px',
         xs: '390px',
       },
       maxWidth: {

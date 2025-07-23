@@ -35,7 +35,7 @@ export default function CardEventInfo({ date, location, participantFee, id }: Ca
       <div className="flex items-center gap-3">
         <Button
           typeStyle="round"
-          className="font-bold"
+          className="w-full font-bold"
           size={isTablet ? 'lg' : 'xl'}
           onClick={() => router.push(PATH.PAYMENT.PAYMENT(id))}
         >
