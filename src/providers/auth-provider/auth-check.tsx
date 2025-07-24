@@ -46,7 +46,7 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
     return redirect(PATH.AUTH.LOGIN);
   }
   // Redirect authenticated users to add friend page if they are not a friend
-  if (isAuthenticated && !isAddFriend && !isFriend) {
+  if (isAuthenticated && !isAddFriend && !isFriend && !isAdmin && !isPublicRoute) {
     return redirect(PATH.ADD_FRIEND);
   }
 
