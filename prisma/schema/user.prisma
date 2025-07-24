@@ -9,6 +9,7 @@ model User {
   prefectures            String?
   sessions               Session[]
   emailVerificationCodes EmailVerificationCode[]
+  isFriend               Boolean                 @default(false)
   role                   Role                    @default(USER)
 
   lineId                 String?   @unique
