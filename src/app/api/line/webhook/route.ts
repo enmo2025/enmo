@@ -7,6 +7,7 @@ enum EventType {
   UNFOLLOW = 'unfollow',
 }
 
+// docs: https://developers.line.biz/en/docs/messaging-api/receiving-messages
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
 
@@ -15,26 +16,30 @@ export const POST = async (request: NextRequest) => {
   const lineId = event.source.userId;
   const eventType = event.type;
 
-  if (eventType === EventType.FOLLOW) {
-    await prisma.user.update({
-      where: {
-        lineId,
-      },
-      data: {
-        isFriend: true,
-      },
-    });
-  }
-
-  if (eventType === EventType.UNFOLLOW) {
-    await prisma.user.update({
-      where: {
-        lineId,
-      },
-      data: {
-        isFriend: false,
-      },
-    });
+  switch (eventType) {
+    case EventType.FOLLOW:
+      await prisma.user.update({
+        where: {
+          lineId,
+        },
+        data: {
+          isFriend: true,
+        },
+      });
+      break;
+    case EventType.UNFOLLOW:
+      await prisma.user.update({
+        where: {
+          lineId,
+        },
+        data: {
+          isFriend: false,
+        },
+      });
+      break;
+    // Add more cases later
+    default:
+      break;
   }
 
   return Response.json({ message: 'Webhook received' });

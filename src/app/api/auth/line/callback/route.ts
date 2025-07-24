@@ -9,14 +9,6 @@ import { PATH } from '~/constants/routes';
 import messageTemplate from '~/constants/message-template';
 import { lineService } from '~/services/serverService/lines/line.service';
 
-interface LineUser {
-  userId: string;
-  displayName: string;
-  pictureUrl?: string;
-  statusMessage?: string;
-  email?: string;
-}
-
 export const GET = async (request: Request) => {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
@@ -37,17 +29,7 @@ export const GET = async (request: Request) => {
   try {
     const tokens = await line.validateAuthorizationCode(code, codeVerifier);
 
-    const lineUserResponse = await fetch('https://api.line.me/v2/profile', {
-      headers: {
-        Authorization: `Bearer ${tokens.accessToken()}`,
-      },
-    });
-
-    if (!lineUserResponse.ok) {
-      throw new Error(`Failed to fetch LINE profile: ${lineUserResponse.statusText}`);
-    }
-
-    const lineUser: LineUser = await lineUserResponse.json();
+    const lineUser = await lineService.getProfile(tokens);
 
     const existingUser = await prisma.user.findFirst({
       where: {

@@ -1,3 +1,5 @@
+import { OAuth2Tokens } from 'arctic';
+
 interface LineMessage {
   type: 'text' | 'sticker' | 'image' | 'video' | 'audio' | 'file' | 'location' | 'imagemap' | 'template' | 'flex';
   text?: string;
@@ -26,6 +28,14 @@ interface LineErrorResponse {
     property: string;
     message: string;
   }>;
+}
+
+interface LineUser {
+  userId: string;
+  displayName: string;
+  pictureUrl?: string;
+  statusMessage?: string;
+  email?: string;
 }
 
 export class LineService {
@@ -72,6 +82,27 @@ export class LineService {
     } catch (error) {
       console.error('Failed to send LINE message:', error);
       return false;
+    }
+  }
+
+  async getProfile(tokens: OAuth2Tokens): Promise<LineUser> {
+    try {
+      const lineUserResponse = await fetch('https://api.line.me/v2/profile', {
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken()}`,
+        },
+      });
+
+      if (!lineUserResponse.ok) {
+        throw new Error(`Failed to fetch LINE profile: ${lineUserResponse.statusText}`);
+      }
+
+      const lineUser = await lineUserResponse.json();
+
+      return lineUser;
+    } catch (error) {
+      console.error('Failed to fetch LINE profile:', error);
+      throw error;
     }
   }
 }
