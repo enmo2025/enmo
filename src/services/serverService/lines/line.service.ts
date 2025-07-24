@@ -30,6 +30,14 @@ interface LineErrorResponse {
   }>;
 }
 
+interface LineUser {
+  userId: string;
+  displayName: string;
+  pictureUrl?: string;
+  statusMessage?: string;
+  email?: string;
+}
+
 export class LineService {
   private readonly accessToken: string;
   private readonly channelSecret: string;
@@ -77,7 +85,7 @@ export class LineService {
     }
   }
 
-  async getProfile(tokens: OAuth2Tokens) {
+  async getProfile(tokens: OAuth2Tokens): Promise<LineUser> {
     try {
       const lineUserResponse = await fetch('https://api.line.me/v2/profile', {
         headers: {
