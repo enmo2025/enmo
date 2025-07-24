@@ -10,9 +10,6 @@ const updateProfile = async (profile: UpdateProfileRequest) => {
 export const useUpdateProfile = () => {
   return useMutation({
     mutationFn: updateProfile,
-    onSuccess: () => {
-      // TODO: handle refetch session
-    },
   });
 };
 
