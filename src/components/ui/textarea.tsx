@@ -7,7 +7,7 @@ import { Label } from './label';
 import { cva } from 'class-variance-authority';
 
 const textareaVariants = cva(
-  'flex min-h-12 w-full resize-none gap-2 rounded bg-white py-2 pl-4 pr-2 text-body-lg placeholder:text-grey-300 hover:border-grey-500 focus:border-grey-600 focus:text-grey-800 focus:outline-none disabled:pointer-events-none disabled:bg-grey-700 disabled:text-black disabled:opacity-15 disabled:placeholder:text-black',
+  'flex min-h-12 w-full gap-2 rounded bg-white py-2 pl-4 pr-2 text-body-lg placeholder:text-grey-300 hover:border-grey-500 focus:border-grey-600 focus:text-grey-800 focus:outline-none disabled:pointer-events-none disabled:bg-grey-700 disabled:text-black disabled:opacity-15 disabled:placeholder:text-black',
   {
     variants: {
       variant: {

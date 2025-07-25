@@ -5,27 +5,31 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { useGetPurchases } from '~/services/clientService/purchase/purchase.api';
 import DynamicTable from '~/components/shared/dynamic-table';
 import { PurchaseExtend } from '~/services/clientService/purchase/interface.api';
-import { formatDate } from '~/lib/utils';
+import { cn, formatDate } from '~/lib/utils';
+// import { Button } from '~/components/ui/button';
+// import { LineIcon } from '~/components/shared/icons';
+// import { cn } from '~/lib/utils';
+// import { useConfirmPurchase } from '~/services/clientService/purchase/purchase.api';
+// import { toast } from '~/hooks/use-toast';
+import ModalSendMessage from './modal-send-message';
 import { Button } from '~/components/ui/button';
 import { LineIcon } from '~/components/shared/icons';
-import { cn } from '~/lib/utils';
-import { useConfirmPurchase } from '~/services/clientService/purchase/purchase.api';
-import { toast } from '~/hooks/use-toast';
 
 const PAGE_SIZE = 10;
 
 export default function ListUserPaid() {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetPurchases(page, PAGE_SIZE);
-  const { mutate: confirmPurchase } = useConfirmPurchase({
-    onSuccess: () => {
-      toast({
-        title: '購入確認しました',
-        description: 'ユーザーにLINEで連絡しました',
-      });
-      window.open(`https://chat.line.biz/Udf183546c57931e953339c8648038b13`, '_blank', 'noopener');
-    },
-  });
+  const [sendMessageData, setSendMessageData] = useState<PurchaseExtend>();
+  // const { mutate: confirmPurchase } = useConfirmPurchase({
+  //   onSuccess: () => {
+  //     toast({
+  //       title: '購入確認しました',
+  //       description: 'ユーザーにLINEで連絡しました',
+  //     });
+  //     window.open(`https://chat.line.biz/Udf183546c57931e953339c8648038b13`, '_blank', 'noopener');
+  //   },
+  // });
 
   const currentPage = data?.pagination?.page ?? page;
 
@@ -64,7 +68,7 @@ export default function ListUserPaid() {
               variant={isConfirmed ? 'solid' : 'outline'}
               className={cn(isConfirmed && 'bg-brown-700 text-white')}
               onClick={() => {
-                confirmPurchase({ id: row.original.id, lineId: row.original.lineId! });
+                setSendMessageData(row.original);
               }}
             >
               LINEで連絡する
@@ -74,7 +78,7 @@ export default function ListUserPaid() {
         size: 100,
       },
     ],
-    [confirmPurchase, currentPage]
+    [currentPage]
   );
 
   const handlePageChange = (newPage: number) => {
@@ -82,15 +86,18 @@ export default function ListUserPaid() {
   };
 
   return (
-    <DynamicTable
-      data={data?.data ?? []}
-      columns={columns}
-      isFetching={isLoading}
-      canPaginate={true}
-      initialPageIndex={currentPage}
-      initialPageSize={PAGE_SIZE}
-      rowCount={data?.pagination?.total ?? 0}
-      onPageChange={handlePageChange}
-    />
+    <>
+      <DynamicTable
+        data={data?.data ?? []}
+        columns={columns}
+        isFetching={isLoading}
+        canPaginate={true}
+        initialPageIndex={currentPage}
+        initialPageSize={PAGE_SIZE}
+        rowCount={data?.pagination?.total ?? 0}
+        onPageChange={handlePageChange}
+      />
+      <ModalSendMessage sendMessageData={sendMessageData} setSendMessageData={setSendMessageData} />
+    </>
   );
 }
