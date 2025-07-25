@@ -19,4 +19,10 @@ export const COOKIES = {
   LOCALE: 'locale',
 } as const;
 
+export const SUBDOMAIN = {
+  MAIN: '',
+  ADMIN: 'admin',
+  LANDING_PAGE: 'mimamori',
+};
+
 export const HEADER_HEIGHT = 88;
