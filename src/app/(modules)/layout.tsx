@@ -10,6 +10,7 @@ import '../globals.css';
 import { siteConfig, siteUrl } from '~/config/site';
 import AuthProvider from '~/providers/auth-provider';
 import 'react-quill-new/dist/quill.snow.css';
+import { getCurrentSession } from '~/lib/server/auth/session';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -84,13 +85,14 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
+  const { session } = await getCurrentSession();
   return (
     <html suppressHydrationWarning>
       <body className={cn('font-sans antialiased', fontSans.variable, fontHeading.variable)}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
             <AuthProvider>
-              <Header />
+              <Header session={session!} />
               <main>{children}</main>
               <Toaster />
             </AuthProvider>
