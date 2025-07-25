@@ -24,7 +24,6 @@ export const GET = async (request: Request) => {
 
   const stateDecoded = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
   codeVerifier = stateDecoded.codeVerifier;
-  redirect = stateDecoded.redirect ?? PATH.HOME;
 
   try {
     const tokens = await line.validateAuthorizationCode(code, codeVerifier);
@@ -36,6 +35,12 @@ export const GET = async (request: Request) => {
         OR: [{ lineId: lineUser.userId }, { email: lineUser.email }],
       },
     });
+
+    const isAdmin = existingUser?.role === 'ADMIN';
+
+    const redirectPath = isAdmin ? PATH.ADMIN.LIST_USER_PAID : PATH.HOME;
+
+    redirect = redirectPath;
 
     const user =
       existingUser ??
@@ -69,7 +74,7 @@ export const GET = async (request: Request) => {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: existingUser ? redirect : PATH.REGISTER_BASIC_INFO,
+        Location: redirect,
       },
     });
   } catch (e) {
