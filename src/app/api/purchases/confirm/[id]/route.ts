@@ -3,16 +3,20 @@ import { NextResponse } from 'next/server';
 import { HTTP_STATUS } from '~/constants/status-code';
 import { prisma } from '~/lib/server/db';
 import { lineService } from '~/services/serverService/lines/line.service';
-import messageTemplate from '~/constants/message-template';
 
 const POST = withAuth(async ({ context, request }) => {
   const id = await context?.params?.id;
-  const { lineId } = await request.json();
+  const body = await request.json();
+
   if (!id) {
-    return NextResponse.json(errorResponse({ message: 'Purchase not found', status: HTTP_STATUS.NOT_FOUND }));
+    return NextResponse.json(errorResponse({ message: 'Purchase not found', status: HTTP_STATUS.NOT_FOUND }), {
+      status: HTTP_STATUS.NOT_FOUND,
+    });
   }
-  if (!lineId) {
-    return NextResponse.json(errorResponse({ message: 'Line ID not found', status: HTTP_STATUS.NOT_FOUND }));
+  if (!body.lineId) {
+    return NextResponse.json(errorResponse({ message: 'Line ID not found', status: HTTP_STATUS.NOT_FOUND }), {
+      status: HTTP_STATUS.NOT_FOUND,
+    });
   }
 
   const purchase = await prisma.purchase.update({
@@ -24,10 +28,10 @@ const POST = withAuth(async ({ context, request }) => {
   });
 
   lineService
-    .sendMessage(lineId, [
+    .sendMessage(body.lineId, [
       {
         type: 'text',
-        text: messageTemplate(purchase.user!).confirmPurchase.text,
+        text: body.message,
       },
     ])
     .catch((error) => console.error('Failed to send LINE welcome message:', error));
