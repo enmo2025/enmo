@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getUser } from '~/services/clientService/user/user.api';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useGetUser } from '~/services/clientService/user/user.api';
 import { User } from '@prisma/client';
+import { PATH } from '~/constants/routes';
 
 interface AddFriendProps {
   user: User | null;
@@ -11,19 +12,19 @@ interface AddFriendProps {
 
 export default function AddFriend({ user }: AddFriendProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const prevPath = searchParams.get('prevPath');
+
+  const { data: userData } = useGetUser(user?.id, {
+    refetchInterval: 3000,
+  });
+
   useEffect(() => {
-    const fetchUser = async () => {
-      if (!user) return;
-      const userData = await getUser(user?.id ?? '');
-      const isFriend = userData?.data?.isFriend;
-      if (isFriend) {
-        window.location.reload();
-      }
-    };
-    fetchUser();
-    const interval = setInterval(fetchUser, 3000);
-    return () => clearInterval(interval);
-  }, [user, router]);
+    if (userData?.data?.isFriend) {
+      window.location.href = prevPath ?? PATH.HOME;
+    }
+  }, [userData?.data?.isFriend, prevPath, router]);
+
   return (
     <>
       <div className="flex h-[calc(100vh-200px)] flex-col items-center justify-center px-4 text-center">

@@ -1,10 +1,13 @@
-import { getCurrentSession } from '~/lib/server/auth/session';
-import Navbar from './navbar';
+'use client';
+
 import { PATH } from '~/constants/routes';
+import Navbar from './navbar';
+import { Session } from '@prisma/client';
+import { usePathname } from 'next/navigation';
 
-export default async function Header() {
-  const { session } = await getCurrentSession();
-
+export default function Header({ session }: { session: Session }) {
+  const pathname = usePathname();
+  const isAdmin = pathname.includes('/admin');
   const listMenuAuth = [
     {
       name: 'ホーム',
@@ -33,5 +36,5 @@ export default async function Header() {
 
   const listMenu = session ? listMenuAuth : listMenuUnAuth;
 
-  return <Navbar listMenu={listMenu} session={session!} />;
+  return <Navbar listMenu={isAdmin ? [] : listMenu} session={session!} />;
 }

@@ -1,10 +1,37 @@
 import { generateRandomString, type RandomReader } from '@oslojs/crypto/random';
 import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge } from 'tailwind-merge';
 import { EGender } from '~/services/clientService/profile/profile.enum';
 
+const customTwMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      'font-size': [
+        'text-display-lg',
+        'text-display-md',
+        'text-display-sm',
+        'text-headline-lg',
+        'text-headline-md',
+        'text-headline-sm',
+        'text-headline-xs',
+        'text-title-lg',
+        'text-title-md',
+        'text-title-sm',
+        'text-label-lg',
+        'text-label-md',
+        'text-label-sm',
+        'text-body-xl',
+        'text-body-lg',
+        'text-body-md',
+        'text-body-sm',
+        'text-body-xs',
+      ],
+    },
+  },
+});
+
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return customTwMerge(clsx(inputs));
 }
 
 export function nFormatter(num: number, digits?: number) {
