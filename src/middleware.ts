@@ -16,11 +16,11 @@ export async function middleware(request: NextRequest) {
 
   if (process.env.NODE_ENV === 'production') {
     if (subdomain?.startsWith(SUBDOMAIN.ADMIN)) {
-      return NextResponse.rewrite(new URL(`(modules)/admin${request.nextUrl.pathname}`, request.url));
+      return NextResponse.rewrite(new URL(`/admin${request.nextUrl.pathname}`, request.url));
     } else if (subdomain?.startsWith(SUBDOMAIN.LANDING_PAGE)) {
-      return NextResponse.rewrite(new URL(`(modules)/(landing-page)${request.nextUrl.pathname}`, request.url));
+      return NextResponse.rewrite(new URL(`/(landing-page)${request.nextUrl.pathname}`, request.url));
     } else if (subdomain?.startsWith(SUBDOMAIN.MAIN)) {
-      return NextResponse.rewrite(new URL(`(modules)/(user)${request.nextUrl.pathname}`, request.url));
+      return NextResponse.rewrite(new URL(`${request.nextUrl.pathname}`, request.url));
     }
   }
 
