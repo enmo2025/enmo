@@ -21,15 +21,6 @@ export default function ListUserPaid() {
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetPurchases(page, PAGE_SIZE);
   const [sendMessageData, setSendMessageData] = useState<PurchaseExtend>();
-  // const { mutate: confirmPurchase } = useConfirmPurchase({
-  //   onSuccess: () => {
-  //     toast({
-  //       title: '購入確認しました',
-  //       description: 'ユーザーにLINEで連絡しました',
-  //     });
-  //     window.open(`https://chat.line.biz/Udf183546c57931e953339c8648038b13`, '_blank', 'noopener');
-  //   },
-  // });
 
   const currentPage = data?.pagination?.page ?? page;
 
