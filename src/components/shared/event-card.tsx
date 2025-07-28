@@ -26,10 +26,10 @@ export default function EventCard({ title, description, eventBanner, participant
           </div>
           <div className="flex justify-between border-t border-grey-100 pt-3">
             <span className="flex items-center gap-2">
-              <span className="relative h-4 w-4 overflow-hidden rounded-full border border-red-800 sm:h-6 sm:w-6">
+              <span className="relative h-4 w-4 flex-shrink-0 overflow-hidden rounded-full border border-red-800 sm:h-6 sm:w-6">
                 <Image src={partner.companyLogo} alt="Event Card" fill className="object-cover" />
               </span>
-              <span className="text-body-xs text-red-800 sm:text-body-lg">{partner.companyName}</span>
+              <span className="line-clamp-1 text-body-xs text-red-800 sm:text-body-lg">{partner.companyName}</span>
             </span>
             <span className="text-body-xs text-brown-900 sm:text-body-lg">¥{participantFee}</span>
           </div>
