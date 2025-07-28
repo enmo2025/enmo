@@ -14,3 +14,5 @@ export { default as XMarkCircleLineIcon } from './x-mark-circle-line';
 export { default as TagLineIcon } from './tag-line';
 export { default as HomeIcon } from './home';
 export { default as JobIcon } from './job';
+export { default as HouseLineIcon } from './house-line';
+export { default as BuildingLineIcon } from './building-line';
