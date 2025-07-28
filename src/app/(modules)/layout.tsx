@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import Header from '~/components/layout/header';
 import ThemeProvider from '~/components/shared/theme-provider';
 import { Toaster } from '~/components/ui/toaster';
+import { TooltipProvider } from '~/components/ui/tooltip';
 import { QueryProvider } from '~/services/clientService/query-provider';
 import { cn } from '~/lib/utils';
 import '../globals.css';
@@ -92,9 +93,11 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
             <AuthProvider>
-              <Header session={session!} />
-              <main>{children}</main>
-              <Toaster />
+              <TooltipProvider>
+                <Header session={session!} />
+                <main>{children}</main>
+                <Toaster />
+              </TooltipProvider>
             </AuthProvider>
           </QueryProvider>
         </ThemeProvider>
