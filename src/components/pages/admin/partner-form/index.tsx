@@ -13,6 +13,8 @@ import { toast } from '~/hooks/use-toast';
 import { PATH } from '~/constants/routes';
 import { useRouter } from 'next/navigation';
 import { partnerValidationSchema, PartnerValidationType } from '~/validations/admin-validation';
+import { deleteImage } from '~/services/clientService/misc/misc.api';
+import { getLastPathSegment } from '~/lib/utils';
 
 export default function PartnerForm() {
   const router = useRouter();
@@ -38,7 +40,16 @@ export default function PartnerForm() {
     const payload = {
       ...data,
     };
-    createPartner(payload);
+    try {
+      await createPartner(payload);
+    } catch (error) {
+      await deleteImage(getLastPathSegment(payload.companyLogo));
+      throw error;
+    }
+  };
+
+  const handleCancel = () => {
+    router.push(PATH.ADMIN.CREATE_EVENT);
   };
 
   const isSubmitting = false;
@@ -131,7 +142,14 @@ export default function PartnerForm() {
           </div>
         </div>
         <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-5">
-          <Button type="button" variant="outline" className="w-full sm:w-1/2" typeStyle="round" size="xl">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full sm:w-1/2"
+            typeStyle="round"
+            size="xl"
+            onClick={handleCancel}
+          >
             キャンセル
           </Button>
           <Button type="submit" className="w-full sm:w-1/2" typeStyle="round" size="xl" disabled={isSubmitting}>

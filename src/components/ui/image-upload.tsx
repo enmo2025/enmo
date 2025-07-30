@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useEffect } from 'react';
 import { useDropzone, type Accept, type FileRejection } from 'react-dropzone';
 import { cn } from '~/lib/utils';
 import { Button } from '~/components/ui/button';
@@ -8,6 +9,8 @@ import { PictureLineIcon, PicturePlusLineIcon, XMarkCircleLineIcon } from '../sh
 import { Spinner } from './spinner';
 import Image from 'next/image';
 import { deleteImage, uploadImage } from '~/services/clientService/misc/misc.api';
+import { getLastPathSegment } from '~/lib/utils';
+import { useNavigationCleanup } from '~/hooks/use-navigation-cleanup';
 
 export interface ImageUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   preview?: string;
@@ -16,9 +19,15 @@ export interface ImageUploadProps extends React.HTMLAttributes<HTMLDivElement> {
   maxSize?: number;
   multiple?: boolean;
   errorMessage?: string;
+  isDisabledDelete?: boolean;
+  onFormSubmit?: () => void;
 }
 
-const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
+export interface ImageUploadRef {
+  handleFormSubmit: () => Promise<void>;
+}
+
+const ImageUpload = React.forwardRef<ImageUploadRef, ImageUploadProps>(
   (
     {
       className,
@@ -31,6 +40,8 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       maxSize = 3 * 1024 * 1024,
       multiple = false,
       errorMessage: errorMessageProp,
+      isDisabledDelete = false,
+      onFormSubmit,
       ...props
     },
     ref
@@ -39,6 +50,24 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
     const [filename, setFilename] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | undefined>(undefined);
+
+    const [originalImage, setOriginalImage] = React.useState<{ url: string; filename: string } | null>(null);
+    const [tempImage, setTempImage] = React.useState<{ url: string; filename: string } | null>(null);
+
+    useEffect(() => {
+      console.log(previews);
+      if (previews) {
+        const newFilename = getLastPathSegment(previews);
+        setFilename(newFilename);
+
+        if (preview && !originalImage) {
+          setOriginalImage({
+            url: preview,
+            filename: newFilename,
+          });
+        }
+      }
+    }, [previews, preview, originalImage]);
 
     const uploadFile = async (file: File) => {
       const res = await uploadImage(file);
@@ -57,18 +86,25 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
         setLoading(true);
         setErrorMessage(undefined);
         try {
-          if (filename) await deleteFile(filename);
           const file = files[0];
           const url = await uploadFile(file);
           if (url) {
+            const newFilename = getLastPathSegment(url);
+
+            setTempImage({
+              url: url,
+              filename: newFilename,
+            });
+
             setPreviews(url);
+            setFilename(newFilename);
             if (onFilesAccepted) onFilesAccepted([file], url);
           }
         } finally {
           setLoading(false);
         }
       },
-      [onFilesAccepted, filename]
+      [onFilesAccepted]
     );
 
     const handleDropRejected = React.useCallback((fileRejections: FileRejection[]) => {
@@ -83,7 +119,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       }
     }, []);
 
-    const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
+    const { getRootProps, getInputProps, open } = useDropzone({
       onDrop: handleDrop,
       onDropRejected: handleDropRejected,
       accept,
@@ -93,23 +129,52 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
       noKeyboard: true,
     });
 
-    React.useEffect(() => {
-      const handleBeforeUnload = async () => {
-        if (filename) await deleteFile(filename);
-      };
-      window.addEventListener('beforeunload', handleBeforeUnload);
-      return () => {
-        window.removeEventListener('beforeunload', handleBeforeUnload);
-      };
-    }, [filename, previews]);
+    const cleanupTempImage = React.useCallback(async () => {
+      if (tempImage) {
+        await deleteFile(tempImage.filename);
+      }
+    }, [tempImage]);
+
+    useNavigationCleanup(cleanupTempImage);
 
     const handleRemove = async () => {
-      if (filename) await deleteFile(filename);
-      setPreviews('');
-      setFilename(null);
+      if (tempImage) {
+        await deleteFile(tempImage.filename);
+        setTempImage(null);
+      }
+
+      if (originalImage) {
+        setPreviews(originalImage.url);
+        setFilename(originalImage.filename);
+        if (onFilesAccepted) onFilesAccepted([], originalImage.url);
+      } else {
+        setPreviews('');
+        setFilename(null);
+        if (onFilesAccepted) onFilesAccepted([], undefined);
+      }
+
       setErrorMessage(undefined);
-      if (onFilesAccepted) onFilesAccepted([], undefined);
     };
+
+    const handleFormSubmit = React.useCallback(async () => {
+      if (tempImage && originalImage) {
+        await deleteFile(originalImage.filename);
+        setOriginalImage(null);
+        setTempImage(null);
+      }
+
+      if (onFormSubmit) {
+        onFormSubmit();
+      }
+    }, [tempImage, originalImage, onFormSubmit]);
+
+    React.useImperativeHandle(
+      ref,
+      () => ({
+        handleFormSubmit,
+      }),
+      [handleFormSubmit]
+    );
 
     return (
       <div>
@@ -156,7 +221,7 @@ const ImageUpload = React.forwardRef<HTMLDivElement, ImageUploadProps>(
                   leadingIcon={<XMarkCircleLineIcon />}
                   className="w-full border-warning text-warning"
                   typeStyle="round"
-                  disabled={loading}
+                  disabled={loading || isDisabledDelete}
                   onClick={handleRemove}
                 >
                   消去
