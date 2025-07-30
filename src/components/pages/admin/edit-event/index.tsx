@@ -11,5 +11,5 @@ export default function EditEvent({ id }: { id: string }) {
   const event = data?.data;
   if (isLoading) return <LoadingOverlay />;
   if (!event) return <NoDataPlaceholder />;
-  return <EventForm event={event} />;
+  return <EventForm event={event} isEdit />;
 }

@@ -135,3 +135,8 @@ export const sanitizeNumberInput = (prev: string, next: string) => {
 export const formatDateToYYYYMMDD = (date: string) => {
   return date.split('T')[0];
 };
+
+export const getLastPathSegment = (url: string) => {
+  const segments = new URL(url).pathname.split('/').filter(Boolean);
+  return segments.at(-1) || '';
+};
