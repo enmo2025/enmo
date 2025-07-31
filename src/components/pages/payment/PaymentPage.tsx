@@ -11,6 +11,7 @@ import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import { formatDate } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
+import { createCheckoutSession } from '~/services/clientService/stripe/stripe.api';
 
 interface PriceRowProps {
   label: string;
@@ -29,7 +30,6 @@ interface EventDetailProps {
 
 interface PriceDetailsProps {
   participantFee: number;
-  serviceCharge: number;
   totalAmount: number;
 }
 
@@ -39,29 +39,20 @@ export default function PaymentPage({ id, userId }: { id: string; userId: string
   const event = data?.data;
   if (isLoading) return <LoadingOverlay />;
   if (!event) return <NoDataPlaceholder />;
-  const totalAmount = Number(event.participantFee) + Number(event.serviceCharge);
+  const totalAmount = Number(event.participantFee);
 
   const handlePayment = async () => {
-    const res = await fetch('/api/stripe/checkout', {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: totalAmount,
-        userId: userId,
-        event: event,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (data.url) {
-      router.push(data.url);
-    } else {
-      console.error('Failed to create checkout session.', data);
-    }
+    await createCheckoutSession({
+      amount: totalAmount,
+      userId: userId,
+      event: event,
+    })
+      .then((res) => {
+        router.push(res.url);
+      })
+      .catch((err) => {
+        console.error('Failed to create checkout session.', err);
+      });
   };
 
   return (
@@ -70,11 +61,7 @@ export default function PaymentPage({ id, userId }: { id: string; userId: string
       <Card className="bg-white">
         <CardContent>
           <EventSummary event={event} />
-          <PriceDetails
-            participantFee={event.participantFee}
-            serviceCharge={event.serviceCharge}
-            totalAmount={totalAmount}
-          />
+          <PriceDetails participantFee={event.participantFee} totalAmount={totalAmount} />
         </CardContent>
       </Card>
       <Button className="mt-10 w-full" onClick={handlePayment} size="xl" typeStyle="round">
@@ -117,14 +104,13 @@ function EventDetail({ label, value }: EventDetailProps) {
   );
 }
 
-function PriceDetails({ participantFee, serviceCharge, totalAmount }: PriceDetailsProps) {
+function PriceDetails({ participantFee, totalAmount }: PriceDetailsProps) {
   return (
     <div className="text-left">
       <h1 className="mt-5 text-headline-sm font-bold text-brown-900">価格詳細</h1>
       <Divider />
       <div>
         <PriceRow label="参加費" amount={participantFee} />
-        <PriceRow label="サービス料" amount={serviceCharge} />
       </div>
       <Divider />
       <PriceRow label="合計料金" amount={totalAmount} isTotal />

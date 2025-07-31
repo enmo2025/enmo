@@ -7,6 +7,7 @@ model Purchase {
   event           Event?    @relation(fields: [eventId], references: [id], onDelete: SetNull)
   user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   isConfirmed     Boolean  @default(false)
+  isReplied       Boolean  @default(false)
   lineId          String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

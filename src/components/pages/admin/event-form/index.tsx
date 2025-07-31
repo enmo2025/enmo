@@ -15,7 +15,7 @@ const ReactQuill = dynamic(() => import('react-quill-new'), {
 import 'react-quill-new/dist/quill.snow.css';
 import '~/assets/css/react-quill.css';
 import { REACT_QUILL_TOOLBAR_OPTIONS } from '~/constants';
-import { ImageUpload } from '~/components/ui/image-upload';
+import { ImageUpload, ImageUploadRef } from '~/components/ui/image-upload';
 import { useRouter } from 'next/navigation';
 import { toast } from '~/hooks/use-toast';
 import { useCreateEvent, useUpdateEvent } from '~/services/clientService/event/event.api';
@@ -24,9 +24,10 @@ import { PATH } from '~/constants/routes';
 import { Select } from '~/components/ui/select';
 import { useGetPartners } from '~/services/clientService/partner/partner.api';
 import { eventValidationSchema, EventValidationType } from '~/validations/admin-validation';
-import { formatDateToYYYYMMDD, sanitizeNumberInput } from '~/lib/utils';
+import { formatDateToYYYYMMDD, getLastPathSegment, sanitizeNumberInput } from '~/lib/utils';
+import { deleteImage } from '~/services/clientService/misc/misc.api';
 
-export default function EventForm({ event }: { event?: Event }) {
+export default function EventForm({ event, isEdit = false }: { event?: Event; isEdit?: boolean }) {
   const { mutate: createEvent, isPending: isCreating } = useCreateEvent(() => {
     toast({
       title: '作成しました',
@@ -45,6 +46,7 @@ export default function EventForm({ event }: { event?: Event }) {
 
   const router = useRouter();
   const dateInputRef = React.useRef<HTMLInputElement>(null);
+  const imageUploadRef = React.useRef<ImageUploadRef>(null);
   const form = useForm<EventValidationType>({
     resolver: zodResolver(eventValidationSchema),
     defaultValues: {
@@ -66,10 +68,25 @@ export default function EventForm({ event }: { event?: Event }) {
       date: new Date(data.date),
     };
     if (event) {
-      updateEvent({ event: payload, id: event.id });
+      try {
+        await updateEvent({ event: payload, id: event.id });
+        imageUploadRef.current?.handleFormSubmit();
+      } catch (error) {
+        await deleteImage(getLastPathSegment(payload.eventBanner));
+        throw error;
+      }
     } else {
-      createEvent(payload);
+      try {
+        await createEvent(payload);
+      } catch (error) {
+        await deleteImage(getLastPathSegment(payload.eventBanner));
+        throw error;
+      }
     }
+  };
+
+  const handleCancel = () => {
+    router.push(PATH.ADMIN.LIST_EVENT);
   };
 
   const isSubmitting = isCreating || isUpdating;
@@ -122,6 +139,7 @@ export default function EventForm({ event }: { event?: Event }) {
                 <div className="flex flex-col gap-1">
                   <ImageUpload
                     {...field}
+                    ref={imageUploadRef}
                     preview={field.value}
                     onFilesAccepted={(_, url) => {
                       if (url) {
@@ -132,6 +150,7 @@ export default function EventForm({ event }: { event?: Event }) {
                     }}
                     className="mx-auto h-40 w-full max-w-[512px] sm:h-60 md:h-72"
                     errorMessage={form.formState.errors.eventBanner?.message as string}
+                    isDisabledDelete={isEdit}
                   />
                 </div>
               )}
@@ -244,7 +263,14 @@ export default function EventForm({ event }: { event?: Event }) {
           </div>
         </div>
         <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-5">
-          <Button type="button" variant="outline" className="w-full sm:w-1/2" typeStyle="round" size="xl">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full sm:w-1/2"
+            typeStyle="round"
+            size="xl"
+            onClick={handleCancel}
+          >
             キャンセル
           </Button>
           <Button type="submit" className="w-full sm:w-1/2" typeStyle="round" size="xl" disabled={isSubmitting}>

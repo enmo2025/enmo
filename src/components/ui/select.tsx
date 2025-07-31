@@ -12,7 +12,7 @@ const selectVariants = cva(
     variants: {
       variant: {
         default:
-          'border border-grey-200 hover:border-grey-500 focus:border-grey-600 disabled:bg-grey-700 disabled:text-black disabled:placeholder:text-black disabled:opacity-15 disabled:pointer-events-none',
+          'border border-brown-900 hover:border-grey-500 focus:border-grey-600 disabled:bg-grey-700 disabled:text-black disabled:placeholder:text-black disabled:opacity-15 disabled:pointer-events-none',
         warning: 'border border-warning',
         success: 'border border-success',
       },
