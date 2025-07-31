@@ -55,7 +55,7 @@ export default function AuthCheck({ session, children }: AuthCheckProps) {
   }
 
   // Handle incomplete profile for authenticated users (only for protected pages)
-  if (isAuthenticated && isFriend && !isCheckFullInfo && !isBasicInfoPage) {
+  if (isAuthenticated && !isCheckFullInfo && !isBasicInfoPage) {
     return redirect(PATH.REGISTER_BASIC_INFO);
   }
 
