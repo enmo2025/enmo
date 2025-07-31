@@ -61,7 +61,6 @@ export default function ListUserPaid() {
           const isConfirmed = row.original.isConfirmed;
           return (
             <Button
-              disabled={!row.original?.user?.isFriend}
               leadingIcon={<LineIcon color={isConfirmed ? 'white' : 'brown'} />}
               variant={isConfirmed ? 'solid' : 'outline'}
               className={cn(isConfirmed && 'bg-brown-700 text-white')}
