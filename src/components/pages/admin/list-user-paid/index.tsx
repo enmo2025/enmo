@@ -49,12 +49,19 @@ export default function ListUserPaid() {
         cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
       },
       {
+        header: 'LINEを返信しました',
+        accessorKey: 'isReplied',
+        cell: ({ row }) => <div>{row.original.isReplied ? '返信済み' : '未返信'}</div>,
+        size: 100,
+      },
+      {
         header: '',
         accessorKey: 'sendLine',
         cell: ({ row }) => {
           const isConfirmed = row.original.isConfirmed;
           return (
             <Button
+              disabled={!row.original?.user?.isFriend}
               leadingIcon={<LineIcon color={isConfirmed ? 'white' : 'brown'} />}
               variant={isConfirmed ? 'solid' : 'outline'}
               className={cn(isConfirmed && 'bg-brown-700 text-white')}

@@ -37,6 +37,16 @@ export const POST = async (request: NextRequest) => {
         },
       });
       break;
+    case EventType.MESSAGE:
+      await prisma.purchase.update({
+        where: {
+          id: event.message.id,
+        },
+        data: {
+          isReplied: true,
+        },
+      });
+      break;
     // Add more cases later
     default:
       break;
