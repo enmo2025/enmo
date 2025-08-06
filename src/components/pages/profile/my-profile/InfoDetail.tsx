@@ -6,6 +6,7 @@ import React from 'react';
 import { EditIcon } from '~/components/shared/icons';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent } from '~/components/ui/card';
+import { PATH } from '~/constants/routes';
 import { formatDate, genderList } from '~/lib/utils';
 
 interface InfoDetailProps {
@@ -42,7 +43,7 @@ export default function InfoDetail({ user }: InfoDetailProps) {
               variant="outline"
               typeStyle="round"
               size="lg"
-              onClick={() => router.push('/profile/info/edit')}
+              onClick={() => router.push(PATH.PROFILE.EDIT)}
             >
               編集
             </Button>

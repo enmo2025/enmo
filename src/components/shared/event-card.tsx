@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { PATH } from '~/constants/routes';
 import { EventDetail } from '~/services/clientService/event/event.interface';
 import TruncatedText from './truncated-text';
+import { formatNumber } from '~/lib/utils';
 
 export default function EventCard({ title, description, eventBanner, participantFee, id, partner }: EventDetail) {
   const router = useRouter();
@@ -29,16 +30,18 @@ export default function EventCard({ title, description, eventBanner, participant
               <TruncatedText maxLines={3}>{description}</TruncatedText>
             </span>
           </div>
-          <div className="flex justify-between border-t border-grey-100 pt-3">
-            <span className="flex items-center gap-2">
+          <div className="flex justify-between gap-8 border-t border-grey-100 pt-3">
+            <span className="flex min-w-0 flex-1 items-center gap-2">
               <span className="relative h-4 w-4 flex-shrink-0 overflow-hidden rounded-full border border-red-800 sm:h-6 sm:w-6">
                 <Image src={partner.companyLogo} alt="Event Card" fill className="object-cover" />
               </span>
-              <span className="text-body-xs text-red-800 sm:text-body-lg">
+              <span className="w-full text-body-xs text-red-800 sm:text-body-lg">
                 <TruncatedText maxLines={1}>{partner.companyName}</TruncatedText>
               </span>
             </span>
-            <span className="text-body-xs text-brown-900 sm:text-body-lg">¥{participantFee}</span>
+            <span className="flex-shrink-0 text-body-xs text-brown-900 sm:text-body-lg">
+              ¥{formatNumber(participantFee)}
+            </span>
           </div>
         </div>
       </div>

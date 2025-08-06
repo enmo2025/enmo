@@ -2,7 +2,7 @@
 
 import { Button } from '~/components/ui/button';
 import { useIsBreakpoint } from '~/hooks/use-breakpoint';
-import { formatDate } from '~/lib/utils';
+import { formatDate, formatNumber } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
 import { PATH } from '~/constants/routes';
 
@@ -29,7 +29,7 @@ export default function CardEventInfo({ date, location, participantFee, id }: Ca
         </div>
         <div className="flex items-center gap-5">
           <span className="text-body-md text-brown-700 md:text-body-lg">参加費:</span>
-          <span className="text-body-lg text-brown-900 md:text-body-xl">{participantFee} ¥</span>
+          <span className="text-body-lg text-brown-900 md:text-body-xl">¥{formatNumber(participantFee)}</span>
         </div>
       </div>
       <div className="flex items-center gap-3">
