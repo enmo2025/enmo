@@ -1,9 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { COOKIES, SUBDOMAIN } from './constants/common';
+import { COOKIES } from './constants/common';
 
 export async function middleware(request: NextRequest) {
-  const hostname = request.headers.get('host')!;
-  const subdomain = hostname.match(/^([^.]+)\./)?.[1];
+  // const hostname = request.headers.get('host')!;
+  // const subdomain = hostname.match(/^([^.]+)\./)?.[1];
   const response = NextResponse.next();
 
   // Get session token from cookies
@@ -14,13 +14,13 @@ export async function middleware(request: NextRequest) {
     response.headers.set('x-session-token', sessionToken);
   }
 
-  if (process.env.NODE_ENV === 'production') {
-    if (subdomain?.startsWith(SUBDOMAIN.LANDING_PAGE)) {
-      return NextResponse.rewrite(new URL(`/(landing-page)${request.nextUrl.pathname}`, request.url));
-    } else if (subdomain?.startsWith(SUBDOMAIN.MAIN)) {
-      return NextResponse.rewrite(new URL(`${request.nextUrl.pathname}`, request.url));
-    }
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   if (subdomain?.startsWith(SUBDOMAIN.LANDING_PAGE)) {
+  //     return NextResponse.rewrite(new URL(`/(landing-page)${request.nextUrl.pathname}`, request.url));
+  //   } else if (subdomain?.startsWith(SUBDOMAIN.MAIN)) {
+  //     return NextResponse.rewrite(new URL(`${request.nextUrl.pathname}`, request.url));
+  //   }
+  // }
 
   return response;
 }
