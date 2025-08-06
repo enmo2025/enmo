@@ -72,6 +72,9 @@
     --brown-600: #b5aa94;
     --brown-700: #8d8574;
     --brown-900: #544f44;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
   }
 }
 
