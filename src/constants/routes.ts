@@ -13,6 +13,7 @@ export const PATH = {
   PROFILE: {
     VIEW: '/profile',
     INFO: '/profile/info',
+    EDIT: '/profile/info/edit',
     SETTING: '/profile/setting',
     TERM: '/profile/term-of-use',
     DELETE_ACCOUNT: '/delete-account/confirm',

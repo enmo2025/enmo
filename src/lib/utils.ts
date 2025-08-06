@@ -140,3 +140,7 @@ export const getLastPathSegment = (url: string) => {
   const segments = new URL(url).pathname.split('/').filter(Boolean);
   return segments.at(-1) || '';
 };
+
+export const formatNumber = (number: number) => {
+  return number.toLocaleString();
+};

@@ -74,6 +74,11 @@ export default {
         'brown-600': 'var(--brown-600)',
         'brown-700': 'var(--brown-700)',
         'brown-900': 'var(--brown-900)',
+
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
       },
       fontSize: {
         'display-lg': ['57px', { lineHeight: '64px', letterSpacing: '-0.25px' }],

@@ -61,31 +61,49 @@ const useActiveNavItem = (listNav: NavItem[]) => {
 const getSidenavStyles = (isMobile: boolean) => ({
   width: isMobile ? '100%' : `${WIDTH_SIDE_NAV}px`,
   top: `${HEADER_HEIGHT}px`,
-  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  height: `calc(100dvh - ${HEADER_HEIGHT}px)`,
 });
 
 const getMarginStyle = (isMobile: boolean) => (isMobile ? {} : { marginRight: `${WIDTH_SIDE_NAV}px` });
 
 // ========== COMPONENTS ==========
 const SideNavHeader: React.FC<SideNavHeaderProps> = React.memo(
-  ({ title, isMobile, onToggle, children, openSideNav }) => (
-    <div className="flex flex-col items-center gap-2 px-3 md:flex-row md:justify-center">
-      <div className={cn('flex w-full items-center justify-center gap-2 p-4', openSideNav && 'p-0')}>
-        {isMobile && (
-          <button
-            onClick={onToggle}
-            className="cursor-pointer"
-            aria-label={openSideNav ? 'Close sidebar' : 'Open sidebar'}
+  ({ title, isMobile, onToggle, children, openSideNav }) => {
+    const pathname = usePathname();
+    const isEditProfile = pathname === PATH.PROFILE.EDIT;
+
+    return (
+      <div className="flex flex-col items-center gap-2 px-3 md:flex-row md:justify-center">
+        <div
+          className={cn(
+            'flex w-full items-center gap-2 py-4',
+            openSideNav && 'p-0',
+            isMobile && 'relative mt-3',
+            !isMobile && 'justify-center'
+          )}
+        >
+          {isMobile && (
+            <button
+              onClick={onToggle}
+              className="cursor-pointer"
+              aria-label={openSideNav ? 'Close sidebar' : 'Open sidebar'}
+            >
+              <ChevronRightIcon />
+            </button>
+          )}
+          <h1
+            className={cn(
+              'text-center text-body-xl font-bold text-brown-900 md:text-display-sm',
+              isMobile && 'absolute right-[50%] translate-x-[50%]'
+            )}
           >
-            <ChevronRightIcon />
-          </button>
-        )}
-        <h1 className="text-center text-body-xl font-bold text-brown-900 md:text-display-sm">{title}</h1>
-        {isMobile && <ChevronRightIcon className="opacity-0" />}
+            {isEditProfile ? '編集' : title}
+          </h1>
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
-  )
+    );
+  }
 );
 SideNavHeader.displayName = 'SideNavHeader';
 
