@@ -6,6 +6,7 @@ import { SuccessResponse } from '../interface';
 import { queryClient } from '../query-client';
 import { CreateEventInput } from '~/services/serverService/event/event.service';
 import { EventDetail } from './event.interface';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export const invalidateEventQuery = () => {
   queryClient.invalidateQueries({
@@ -13,8 +14,12 @@ export const invalidateEventQuery = () => {
   });
 };
 
-export const getEvent = async (id: string) => {
-  const event = await apiClient.get<SuccessResponse<EventDetail>>(`/events/${id}`);
+export const getEvent = async (id: string, cookie?: ReadonlyRequestCookies) => {
+  const event = await apiClient.get<SuccessResponse<EventDetail>>(`/events/${id}`, {
+    headers: {
+      Cookie: cookie?.toString()!,
+    },
+  });
   return event;
 };
 

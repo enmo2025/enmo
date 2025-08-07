@@ -5,6 +5,7 @@ import { purchaseQueryKeys } from './purchase.qkey';
 import { PurchaseExtend } from './interface.api';
 import { Purchase } from '@prisma/client';
 import queryClient from '../query-client';
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export const invalidatePurchaseQuery = () => {
   queryClient.invalidateQueries({
@@ -55,8 +56,12 @@ export const useCreatePurchase = (userId: string, eventId: string, options?: Cus
   });
 };
 
-const getPurchaseByStripeSessionId = async (sessionId: string) => {
-  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchases/stripe-session/${sessionId}`);
+export const getPurchaseByStripeSessionId = async (sessionId: string, cookie?: ReadonlyRequestCookies) => {
+  const response = await apiClient.get<SuccessResponse<PurchaseExtend>>(`/purchases/stripe-session/${sessionId}`, {
+    headers: {
+      Cookie: cookie?.toString()!,
+    },
+  });
   return response;
 };
 
