@@ -7,12 +7,11 @@ import Divider from '~/components/ui/divider';
 import { Button } from '~/components/ui/button';
 import eventBanner from '~/assets/images/event-banner.png';
 import CheckCircle from '~/components/shared/icons/check-circle';
-import { useGetPurchaseByStripeSessionId } from '~/services/clientService/purchase/purchase.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
-import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import { formatDate } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
 import { PATH } from '~/constants/routes';
+import { PurchaseExtend } from '~/services/clientService/purchase/interface.api';
 
 interface EventDetailProps {
   label: string;
@@ -28,12 +27,9 @@ function EventDetail({ label, value }: EventDetailProps) {
   );
 }
 
-export default function PaymentSuccess({ id }: { id: string }) {
-  const { data, isLoading } = useGetPurchaseByStripeSessionId(id);
-  const purchase = data?.data;
+export default function PaymentSuccess({ purchase }: { purchase: PurchaseExtend }) {
   const router = useRouter();
 
-  if (isLoading) return <LoadingOverlay />;
   if (!purchase) return <NoDataPlaceholder />;
 
   return (

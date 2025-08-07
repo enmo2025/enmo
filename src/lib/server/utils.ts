@@ -47,6 +47,7 @@ interface ArgWithAuth {
 export function withAuth(handler: (args: ArgWithAuth) => Promise<Response>) {
   return async (request: NextRequest, context?: any) => {
     const { session, user } = await getCurrentSession();
+
     if (!session || !user) {
       return NextResponse.json(
         errorResponse({

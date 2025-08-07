@@ -6,9 +6,7 @@ import Image from 'next/image';
 import Divider from '~/components/ui/divider';
 import { Event } from '@prisma/client';
 import { Button } from '~/components/ui/button';
-import { useGetEvent } from '~/services/clientService/event/event.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
-import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
 import { formatDate, formatNumber } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
 import { createCheckoutSession } from '~/services/clientService/stripe/stripe.api';
@@ -33,11 +31,8 @@ interface PriceDetailsProps {
   totalAmount: number;
 }
 
-export default function PaymentPage({ id, userId }: { id: string; userId: string }) {
+export default function PaymentPage({ userId, event }: { userId: string; event: Event }) {
   const router = useRouter();
-  const { data, isLoading } = useGetEvent(id);
-  const event = data?.data;
-  if (isLoading) return <LoadingOverlay />;
   if (!event) return <NoDataPlaceholder />;
   const totalAmount = Number(event.participantFee);
 
