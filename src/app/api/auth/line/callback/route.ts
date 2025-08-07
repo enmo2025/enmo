@@ -13,7 +13,6 @@ export const GET = async (request: Request) => {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
-  const friendshipStatusChanged = url.searchParams.get('friendship_status_changed');
 
   if (!code || !state) {
     return new Response('Invalid request - missing code or state', { status: 400 });
@@ -27,6 +26,8 @@ export const GET = async (request: Request) => {
 
   try {
     const tokens = await line.validateAuthorizationCode(code, codeVerifier);
+
+    const checkFriend = await lineService.checkFriendStatus(tokens);
 
     const lineUser = await lineService.getProfile(tokens);
 
@@ -50,9 +51,27 @@ export const GET = async (request: Request) => {
           fullName: lineUser.displayName,
           picture: lineUser.pictureUrl,
           email: lineUser.email,
-          isFriend: Boolean(friendshipStatusChanged),
+          isFriend: checkFriend.friendFlag,
         },
       }));
+
+    // if user has purchases, update the user id to the existing user
+    const existingUserPurchases = await prisma.purchase.findMany({
+      where: {
+        lineId: lineUser.userId,
+      },
+    });
+
+    if (existingUserPurchases.length > 0 && !existingUser?.id) {
+      await prisma.purchase.updateMany({
+        where: {
+          lineId: existingUserPurchases[0].lineId,
+        },
+        data: {
+          userId: user?.id,
+        },
+      });
+    }
 
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, user.id);

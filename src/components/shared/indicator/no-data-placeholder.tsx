@@ -10,7 +10,7 @@ const NoDataPlaceholder = ({
 }) => {
   const combinedMainContent = mainContent ?? (
     <div className="flex w-full flex-col items-center justify-center p-5">
-      <span className="font-semibold">No data</span>
+      <span className="font-semibold">データがありません</span>
     </div>
   );
   return !enableDefaultLayout ? combinedMainContent : <Card>{combinedMainContent}</Card>;

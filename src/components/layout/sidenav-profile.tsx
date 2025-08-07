@@ -20,7 +20,7 @@ const listNav = [
 
 export default function SidenavProfile({ children }: { children: React.ReactNode }) {
   return (
-    <Sidenav title="プロフィール" listNav={listNav}>
+    <Sidenav title="プロフィール" listNav={listNav} linkTermOfUse={PATH.PROFILE.TERM}>
       {children}
     </Sidenav>
   );

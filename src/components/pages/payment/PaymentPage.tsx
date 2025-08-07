@@ -9,7 +9,7 @@ import { Button } from '~/components/ui/button';
 import { useGetEvent } from '~/services/clientService/event/event.api';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import LoadingOverlay from '~/components/shared/indicator/loading-overlay';
-import { formatDate } from '~/lib/utils';
+import { formatDate, formatNumber } from '~/lib/utils';
 import { useRouter } from 'next/navigation';
 import { createCheckoutSession } from '~/services/clientService/stripe/stripe.api';
 
@@ -129,7 +129,7 @@ function PriceRow({ label, amount, isTotal = false }: PriceRowProps) {
   return (
     <div className="flex justify-between">
       <span className={labelClassName}>{label}:</span>
-      <span className={amountClassName}>{amount}¥</span>
+      <span className={amountClassName}>{formatNumber(amount)}¥</span>
     </div>
   );
 }

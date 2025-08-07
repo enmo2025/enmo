@@ -18,7 +18,7 @@ export default function CardHostInfo({
   return (
     <div className="flex w-full max-w-100 flex-col gap-7 rounded-xl border border-brown-300 bg-yellow-50 p-5">
       <span className="text-title-lg font-bold text-red-700 md:text-title-md lg:text-title-lg">
-        くらしパートナーについて
+        くらしパートナーを作成
       </span>
       <div className="flex flex-shrink-0 items-start gap-5 max-lg:flex-col">
         <div className="relative h-20 w-20 overflow-hidden rounded-full border-2 border-red-500">

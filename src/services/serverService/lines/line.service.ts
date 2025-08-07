@@ -105,6 +105,18 @@ export class LineService {
       throw error;
     }
   }
+
+  async checkFriendStatus(tokens: OAuth2Tokens) {
+    const response = await fetch('https://api.line.me/friendship/v1/status', {
+      headers: {
+        Authorization: `Bearer ${tokens.accessToken()}`,
+      },
+    });
+
+    const friendStatus: { friendFlag: boolean } = await response.json();
+
+    return friendStatus;
+  }
 }
 
 export const lineService = new LineService();

@@ -26,6 +26,7 @@ import { useGetPartners } from '~/services/clientService/partner/partner.api';
 import { eventValidationSchema, EventValidationType } from '~/validations/admin-validation';
 import { formatDateToYYYYMMDD, getLastPathSegment, sanitizeNumberInput } from '~/lib/utils';
 import { deleteImage } from '~/services/clientService/misc/misc.api';
+import { Label } from '~/components/ui/label';
 
 export default function EventForm({ event, isEdit = false }: { event?: Event; isEdit?: boolean }) {
   const { mutate: createEvent, isPending: isCreating } = useCreateEvent(() => {
@@ -92,192 +93,193 @@ export default function EventForm({ event, isEdit = false }: { event?: Event; is
   const isSubmitting = isCreating || isUpdating;
 
   return (
-    <div className="flex flex-col gap-8 overflow-x-hidden sm:gap-10 md:gap-15">
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto flex w-full max-w-[900px] flex-col gap-8 sm:gap-12 md:gap-20"
-      >
-        <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
-          <div className="flex flex-col gap-6 rounded-xl border border-brown-700 p-4 sm:gap-8 sm:p-8 md:gap-10 md:p-10">
-            <span className="flex justify-center text-title-lg font-bold text-brown-900">
-              ライフスタイルウィンドウについて
-            </span>
-            <Controller
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <Textarea
-                  {...field}
-                  label="らしの窓口名"
-                  rows={1}
-                  maxLength={100}
-                  helperText={form.formState.errors.title?.message as string}
-                  variant={form.formState.errors.title ? 'warning' : 'default'}
-                  className="w-full"
-                />
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <Textarea
-                  {...field}
-                  label="らしの窓口の説明"
-                  rows={3}
-                  maxLength={100}
-                  helperText={form.formState.errors.description?.message as string}
-                  variant={form.formState.errors.description ? 'warning' : 'default'}
-                  className="w-full"
-                />
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="eventBanner"
-              render={({ field }) => (
-                <div className="flex flex-col gap-1">
-                  <ImageUpload
+    <>
+      {isEdit && <div className="mb-7 text-center text-title-lg font-bold text-brown-900">編集</div>}
+      <div className="flex flex-col gap-8 overflow-x-hidden sm:gap-10 md:gap-15">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col gap-8 sm:gap-12 md:gap-20">
+          <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
+            <div className="flex flex-col gap-6 rounded-xl border border-brown-700 p-4 sm:gap-8 sm:p-8 md:gap-10 md:p-10">
+              <span className="flex justify-center text-title-lg font-bold text-brown-900">くらしの窓口を作成</span>
+              <Controller
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <Textarea
                     {...field}
-                    ref={imageUploadRef}
-                    preview={field.value}
-                    onFilesAccepted={(_, url) => {
-                      if (url) {
-                        field.onChange(url);
-                      } else {
-                        field.onChange('');
-                      }
-                    }}
-                    className="mx-auto h-40 w-full max-w-[512px] sm:h-60 md:h-72"
-                    errorMessage={form.formState.errors.eventBanner?.message as string}
-                    isDisabledDelete={isEdit}
+                    label="タイトル"
+                    rows={1}
+                    maxLength={100}
+                    helperText={form.formState.errors.title?.message as string}
+                    variant={form.formState.errors.title ? 'warning' : 'default'}
+                    className="w-full"
                   />
-                </div>
-              )}
-            />
-            <Controller
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <div className="flex flex-col gap-1">
-                  <div>
-                    <ReactQuill
+                )}
+              />
+              <Controller
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    label="サマリー"
+                    rows={3}
+                    maxLength={100}
+                    helperText={form.formState.errors.description?.message as string}
+                    variant={form.formState.errors.description ? 'warning' : 'default'}
+                    className="w-full"
+                  />
+                )}
+              />
+              <Controller
+                control={form.control}
+                name="eventBanner"
+                render={({ field }) => (
+                  <div className="flex flex-col gap-1">
+                    <Label>サムネイル画像</Label>
+                    <ImageUpload
                       {...field}
-                      value={field.value}
-                      onChange={field.onChange}
-                      theme="snow"
-                      modules={{
-                        toolbar: REACT_QUILL_TOOLBAR_OPTIONS,
+                      ref={imageUploadRef}
+                      preview={field.value}
+                      onFilesAccepted={(_, url) => {
+                        if (url) {
+                          field.onChange(url);
+                        } else {
+                          field.onChange('');
+                        }
                       }}
-                      className="min-h-[120px] w-full sm:min-h-[180px] md:min-h-[220px]"
+                      className="mx-auto h-40 w-full max-w-[512px] sm:h-60 md:h-72"
+                      errorMessage={form.formState.errors.eventBanner?.message as string}
+                      isDisabledDelete={isEdit}
                     />
                   </div>
-                  {form.formState.errors.content && (
-                    <span className="text-sm text-warning">{form.formState.errors.content.message as string}</span>
+                )}
+              />
+              <Controller
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <div className="flex flex-col gap-1">
+                    <Label>内容</Label>
+                    <div>
+                      <ReactQuill
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                        theme="snow"
+                        modules={{
+                          toolbar: REACT_QUILL_TOOLBAR_OPTIONS,
+                        }}
+                        className="min-h-[120px] w-full sm:min-h-[180px] md:min-h-[220px]"
+                      />
+                    </div>
+                    {form.formState.errors.content && (
+                      <span className="text-sm text-warning">{form.formState.errors.content.message as string}</span>
+                    )}
+                  </div>
+                )}
+              />
+              <div className="flex w-full flex-col gap-4 sm:flex-row sm:gap-5">
+                <Controller
+                  control={form.control}
+                  name="participantFee"
+                  render={({ field }) => (
+                    <Input
+                      leadingIcon={<>¥</>}
+                      {...field}
+                      variant={form.formState.errors.participantFee ? 'warning' : 'outline'}
+                      label="価格"
+                      type="number"
+                      min={100}
+                      onKeyDown={(e) => {
+                        if (e.key === '-' || e.key === '.' || e.key === '+') {
+                          e.preventDefault();
+                        }
+                      }}
+                      onChange={(e) => {
+                        field.onChange(sanitizeNumberInput(field.value.toString(), e.target.value));
+                      }}
+                      trailingIcon={<TagLineIcon />}
+                      helperText={form.formState.errors.participantFee?.message as string}
+                      className="w-full"
+                    />
                   )}
-                </div>
-              )}
-            />
-            <div className="flex w-full flex-col gap-4 sm:flex-row sm:gap-5">
-              <Controller
-                control={form.control}
-                name="participantFee"
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    variant={form.formState.errors.participantFee ? 'warning' : 'outline'}
-                    label="価格"
-                    type="number"
-                    min={100}
-                    onKeyDown={(e) => {
-                      if (e.key === '-' || e.key === '.' || e.key === '+') {
+                />
+                <Controller
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      type="date"
+                      ref={dateInputRef}
+                      variant={form.formState.errors.date ? 'warning' : 'outline'}
+                      label="イベントの日付"
+                      trailingIcon={<CalendarLineIcon />}
+                      helperText={form.formState.errors.date?.message as string}
+                      className="w-full"
+                      onClick={(e) => {
                         e.preventDefault();
-                      }
-                    }}
-                    onChange={(e) => {
-                      field.onChange(sanitizeNumberInput(field.value.toString(), e.target.value));
-                    }}
-                    trailingIcon={<TagLineIcon />}
-                    helperText={form.formState.errors.participantFee?.message as string}
-                    className="w-full"
-                  />
-                )}
-              />
+                        e.stopPropagation();
+                        dateInputRef.current?.showPicker?.();
+                        dateInputRef.current?.focus();
+                      }}
+                    />
+                  )}
+                />
+                <Controller
+                  control={form.control}
+                  name="location"
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      variant={form.formState.errors.location ? 'warning' : 'outline'}
+                      label="位置"
+                      trailingIcon={<LocationLineIcon />}
+                      helperText={form.formState.errors.location?.message as string}
+                      className="w-full"
+                    />
+                  )}
+                />
+              </div>
               <Controller
                 control={form.control}
-                name="date"
+                name="partnerId"
                 render={({ field }) => (
-                  <Input
+                  <Select
                     {...field}
-                    type="date"
-                    ref={dateInputRef}
-                    variant={form.formState.errors.date ? 'warning' : 'outline'}
-                    label="イベントの日付"
-                    trailingIcon={<CalendarLineIcon />}
-                    helperText={form.formState.errors.date?.message as string}
+                    variant={form.formState.errors.partnerId ? 'warning' : 'default'}
+                    label="パートナーを選ぶ"
+                    placeholder="--パートナーを選択します--"
+                    helperText={form.formState.errors.partnerId?.message as string}
                     className="w-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      dateInputRef.current?.showPicker?.();
-                      dateInputRef.current?.focus();
-                    }}
-                  />
-                )}
-              />
-              <Controller
-                control={form.control}
-                name="location"
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    variant={form.formState.errors.location ? 'warning' : 'outline'}
-                    label="位置"
-                    trailingIcon={<LocationLineIcon />}
-                    helperText={form.formState.errors.location?.message as string}
-                    className="w-full"
-                  />
+                  >
+                    {partners?.data.map((partner) => (
+                      <option key={partner.id} value={partner.id}>
+                        {partner.companyName}
+                      </option>
+                    ))}
+                  </Select>
                 )}
               />
             </div>
-            <Controller
-              control={form.control}
-              name="partnerId"
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  variant={form.formState.errors.partnerId ? 'warning' : 'default'}
-                  label="パートナーを選ぶ"
-                  placeholder="--パートナーを選択します--"
-                  helperText={form.formState.errors.partnerId?.message as string}
-                  className="w-full"
-                >
-                  {partners?.data.map((partner) => (
-                    <option key={partner.id} value={partner.id}>
-                      {partner.companyName}
-                    </option>
-                  ))}
-                </Select>
-              )}
-            />
           </div>
-        </div>
-        <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-5">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full sm:w-1/2"
-            typeStyle="round"
-            size="xl"
-            onClick={handleCancel}
-          >
-            キャンセル
-          </Button>
-          <Button type="submit" className="w-full sm:w-1/2" typeStyle="round" size="xl" disabled={isSubmitting}>
-            {isSubmitting ? '作成中...' : '作成する'}
-          </Button>
-        </div>
-      </form>
-    </div>
+          <div className="flex flex-col justify-center gap-3 sm:flex-row sm:gap-5">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full sm:w-1/2"
+              typeStyle="round"
+              size="xl"
+              onClick={handleCancel}
+            >
+              キャンセル
+            </Button>
+            <Button type="submit" className="w-full sm:w-1/2" typeStyle="round" size="xl" disabled={isSubmitting}>
+              {isSubmitting ? '作成中...' : '作成する'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }

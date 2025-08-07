@@ -66,7 +66,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </Label>
         <div className="flex w-full flex-col gap-1">
           <div className="relative w-full">
-            {leadingIcon && <span className="absolute inset-y-0 left-2 flex items-center gap-2">{leadingIcon}</span>}
+            {leadingIcon && <span className="absolute inset-y-0 left-5 flex items-center gap-2">{leadingIcon}</span>}
             <input
               type={type}
               className={cn(

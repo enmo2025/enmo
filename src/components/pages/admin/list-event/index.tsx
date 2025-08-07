@@ -128,6 +128,7 @@ export default function ListEvent() {
             )}
           </div>
         ),
+        size: 80,
       },
     ],
     [openMenuId]

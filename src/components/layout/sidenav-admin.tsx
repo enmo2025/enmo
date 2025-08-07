@@ -30,8 +30,8 @@ const listNav = [
 
 export default function SidenavAdmin({ children }: { children: React.ReactNode }) {
   return (
-    <Sidenav title="管理者" className="bg-red-100" listNav={listNav}>
-      {children}
+    <Sidenav title="管理者" className="bg-red-100" listNav={listNav} linkTermOfUse={PATH.ADMIN.TERM_OF_USE}>
+      <div>{children}</div>
     </Sidenav>
   );
 }

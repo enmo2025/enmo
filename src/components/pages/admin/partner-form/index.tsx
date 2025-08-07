@@ -56,13 +56,10 @@ export default function PartnerForm() {
 
   return (
     <div className="flex flex-col gap-8 overflow-x-hidden sm:gap-10 md:gap-15">
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto flex w-full max-w-[900px] flex-col gap-8 sm:gap-12 md:gap-20"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col gap-8 sm:gap-12 md:gap-20">
         <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
           <div className="flex flex-col gap-6 rounded-xl border border-brown-700 p-4 sm:gap-8 sm:p-8 md:gap-10 md:p-10">
-            <span className="flex justify-center text-title-lg font-bold text-brown-900">くらしパートナーについて</span>
+            <span className="flex justify-center text-title-lg font-bold text-brown-900">くらしパートナーを作成</span>
             <Controller
               control={form.control}
               name="companyName"

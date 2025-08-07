@@ -202,7 +202,7 @@ function DynamicTable<TData, TFilter>({
       return (
         <tr>
           <td colSpan={table.getAllColumns().length} className={cn(tableClassNameMap[variant].bodyCell)}>
-            {renderNoDataComponent?.() ?? <NoDataPlaceholder />}
+            {renderNoDataComponent?.() || isFetching ? renderNoDataComponent?.() : <NoDataPlaceholder />}
           </td>
         </tr>
       );
@@ -271,6 +271,7 @@ function DynamicTable<TData, TFilter>({
                     colSpan={header.colSpan}
                     style={getColumnWidth(header.column)}
                     className={cn(
+                      'overflow-hidden text-ellipsis whitespace-nowrap',
                       index === 0 && 'pl-6',
                       index === headerGroup.headers.length - 1 && 'pr-6',
                       tableClassNameMap[variant].headerCell
@@ -294,7 +295,7 @@ function DynamicTable<TData, TFilter>({
           <TableBody className="bg-brown-100 text-base">{renderTableBody()}</TableBody>
         </Table>
         {canPaginate && (
-          <div className="mt-20 flex w-full justify-center">
+          <div className="mt-10 flex w-full justify-center">
             <Pagination
               totalItems={rowCount ?? 0}
               itemsPerPage={pagination.pageSize}
