@@ -25,6 +25,7 @@ interface SidenavProps {
   listNav: NavItem[];
   className?: string;
   children?: React.ReactNode;
+  linkTermOfUse: string;
 }
 
 interface SideNavHeaderProps {
@@ -97,7 +98,7 @@ const SideNavHeader: React.FC<SideNavHeaderProps> = React.memo(
               isMobile && 'absolute right-[50%] translate-x-[50%]'
             )}
           >
-            {isEditProfile ? '編集' : title}
+            {isMobile && isEditProfile ? '編集' : title}
           </h1>
         </div>
         {children}
@@ -109,7 +110,6 @@ SideNavHeader.displayName = 'SideNavHeader';
 
 const NavigationList: React.FC<{ listNav: NavItem[]; onToggle?: () => void }> = React.memo(({ listNav, onToggle }) => {
   const { isActive, getIconColor, navigateTo } = useNavigation();
-
   return (
     <div className="flex flex-col gap-4 py-10">
       {listNav.map((item) => {
@@ -120,7 +120,10 @@ const NavigationList: React.FC<{ listNav: NavItem[]; onToggle?: () => void }> = 
             key={item.name}
             onClick={() => {
               navigateTo(item.href);
-              onToggle?.();
+
+              setTimeout(() => {
+                onToggle?.();
+              }, 500);
             }}
             className={cn(
               'w-full bg-white text-title-lg font-bold text-brown-900',
@@ -139,11 +142,11 @@ const NavigationList: React.FC<{ listNav: NavItem[]; onToggle?: () => void }> = 
 });
 NavigationList.displayName = 'NavigationList';
 
-const SideNavFooter: React.FC = React.memo(() => (
+const SideNavFooter: React.FC<{ linkTermOfUse: string }> = React.memo(({ linkTermOfUse }) => (
   <div className="mt-auto">
     <div className="mb-4 flex w-full items-center justify-center gap-2">
       <InformationCircleIcon />
-      <Link href={PATH.PROFILE.TERM} className="text-body-lg text-brown-700">
+      <Link href={linkTermOfUse} className="text-body-lg text-brown-700">
         利用規約
       </Link>
     </div>
@@ -158,11 +161,12 @@ const SideNavContent: React.FC<{
   isMobile: boolean;
   openSideNav?: boolean;
   onToggle?: () => void;
-}> = ({ title, listNav, isMobile, openSideNav, onToggle }) => (
+  linkTermOfUse: string;
+}> = ({ title, listNav, isMobile, openSideNav, onToggle, linkTermOfUse }) => (
   <div className="flex h-full flex-col">
     <SideNavHeader title={title} isMobile={isMobile} openSideNav={openSideNav} onToggle={onToggle} />
     <NavigationList listNav={listNav} onToggle={onToggle} />
-    <SideNavFooter />
+    <SideNavFooter linkTermOfUse={linkTermOfUse} />
   </div>
 );
 
@@ -174,7 +178,8 @@ const SideNavContainer: React.FC<{
   openSideNav?: boolean;
   onToggle?: () => void;
   children?: React.ReactNode;
-}> = ({ title, listNav, className, isMobile, openSideNav, onToggle, children }) => {
+  linkTermOfUse: string;
+}> = ({ title, listNav, className, isMobile, openSideNav, onToggle, children, linkTermOfUse }) => {
   const sidenavStyles = getSidenavStyles(isMobile);
   const marginStyle = getMarginStyle(isMobile);
 
@@ -183,6 +188,7 @@ const SideNavContainer: React.FC<{
       <div style={marginStyle}>
         <div className={cn('fixed bottom-0 overflow-y-auto bg-brown-100 p-4 md:p-8', className)} style={sidenavStyles}>
           <SideNavContent
+            linkTermOfUse={linkTermOfUse}
             title={title}
             listNav={listNav}
             isMobile={isMobile}
@@ -197,7 +203,7 @@ const SideNavContainer: React.FC<{
 };
 
 // ========== MOBILE/DESKTOP VARIANTS ==========
-const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children }) => {
+const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children, linkTermOfUse }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleSidebar = () => setIsOpen((prev) => !prev);
   const activeNavItem = useActiveNavItem(listNav);
@@ -207,7 +213,14 @@ const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children }) => 
 
   if (isOpen) {
     return (
-      <SideNavContainer title={mobileTitle} listNav={listNav} isMobile openSideNav={isOpen} onToggle={toggleSidebar}>
+      <SideNavContainer
+        title={mobileTitle}
+        listNav={listNav}
+        isMobile
+        openSideNav={isOpen}
+        onToggle={toggleSidebar}
+        linkTermOfUse={linkTermOfUse}
+      >
         {children}
       </SideNavContainer>
     );
@@ -215,19 +228,25 @@ const SideNavMobile: React.FC<SidenavProps> = ({ title, listNav, children }) => 
 
   return (
     <SideNavHeader openSideNav={isOpen} title={mobileTitle} isMobile onToggle={toggleSidebar}>
-      {children}
+      <div className="w-full">{children}</div>
     </SideNavHeader>
   );
 };
 
-const SideNavDesktop: React.FC<SidenavProps> = ({ title, listNav, className, children }) => (
-  <SideNavContainer title={title} listNav={listNav} className={className} isMobile={false}>
+const SideNavDesktop: React.FC<SidenavProps> = ({ title, listNav, className, children, linkTermOfUse }) => (
+  <SideNavContainer
+    title={title}
+    listNav={listNav}
+    className={className}
+    isMobile={false}
+    linkTermOfUse={linkTermOfUse}
+  >
     {children}
   </SideNavContainer>
 );
 
 // ========== MAIN COMPONENT ==========
-const Sidenav: React.FC<SidenavProps> = ({ title, listNav, className, children }) => {
+const Sidenav: React.FC<SidenavProps> = ({ title, listNav, className, children, linkTermOfUse }) => {
   const isMobile = useIsMobile();
 
   if (isMobile === undefined) {
@@ -239,11 +258,11 @@ const Sidenav: React.FC<SidenavProps> = ({ title, listNav, className, children }
   }
 
   return isMobile ? (
-    <SideNavMobile title={title} listNav={listNav}>
+    <SideNavMobile linkTermOfUse={linkTermOfUse} title={title} listNav={listNav}>
       {children}
     </SideNavMobile>
   ) : (
-    <SideNavDesktop title={title} listNav={listNav} className={className}>
+    <SideNavDesktop linkTermOfUse={linkTermOfUse} title={title} listNav={listNav} className={className}>
       {children}
     </SideNavDesktop>
   );

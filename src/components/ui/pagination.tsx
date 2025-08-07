@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Button } from "~/components/ui/button";
+import { useIsMobile } from "~/hooks/use-mobile";
 
 export interface PaginationProps {
   totalItems: number;
@@ -10,6 +11,7 @@ export interface PaginationProps {
 
 const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
   ({ totalItems, itemsPerPage, currentPage, onPageChange, ...props }, ref) => {
+    const isMobile = useIsMobile();
     const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
     const handlePrevious = () => {
       if (currentPage > 1) {
@@ -28,7 +30,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
       <div className="flex items-center gap-2">
         <Button 
           variant="outline" 
-          size="lg" 
+          size={isMobile ? 'md' : 'lg'} 
           onClick={handlePrevious}
           disabled={currentPage === 1}
         >
@@ -39,7 +41,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
         </div>
         <Button 
           variant="outline" 
-          size="lg" 
+          size={isMobile ? 'md' : 'lg'} 
           onClick={handleNext}
           disabled={currentPage >= totalPages}
         >

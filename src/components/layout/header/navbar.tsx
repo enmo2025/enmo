@@ -24,6 +24,13 @@ export default function Navbar({
   const isAuth = [...Object.values(PATH.AUTH), PATH.REGISTER_BASIC_INFO, PATH.ADD_FRIEND].includes(
     path as (typeof PATH.AUTH)[keyof typeof PATH.AUTH]
   );
+  const isActive = (href: string) => {
+    if (path === PATH.HOME) {
+      return href === PATH.HOME;
+    }
+    return href.includes(path.split('/')[1]);
+  };
+
   const style = {
     header: isAuth ? 'bg-primary text-white' : 'bg-white text-brown-700',
   };
@@ -39,7 +46,7 @@ export default function Navbar({
             {!isAuth &&
               listMenu.map((item) => (
                 <Button
-                  variant={item.href !== PATH.AUTH.REGISTER ? 'outline' : 'solid'}
+                  variant={item.href !== PATH.AUTH.REGISTER && !isActive(item.href) ? 'outline' : 'solid'}
                   key={item.name}
                   size="lg"
                   onClick={() => router.push(item.href)}

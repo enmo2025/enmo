@@ -142,17 +142,15 @@ const ImageUpload = React.forwardRef<ImageUploadRef, ImageUploadProps>(
         await deleteFile(tempImage.filename);
         setTempImage(null);
       }
-
+    
       if (originalImage) {
-        setPreviews(originalImage.url);
-        setFilename(originalImage.filename);
-        if (onFilesAccepted) onFilesAccepted([], originalImage.url);
-      } else {
-        setPreviews('');
-        setFilename(null);
-        if (onFilesAccepted) onFilesAccepted([], undefined);
+        await deleteFile(originalImage.filename);
+        setOriginalImage(null);
       }
-
+    
+      setPreviews('');
+      setFilename(null);
+      if (onFilesAccepted) onFilesAccepted([], undefined);
       setErrorMessage(undefined);
     };
 
@@ -201,10 +199,10 @@ const ImageUpload = React.forwardRef<ImageUploadRef, ImageUploadProps>(
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-brown-900">
                   <PicturePlusLineIcon className="text-red" />
                 </div>
-                <div className="text-sm text-brown-700">
-                  <span className="text-sm font-semibold text-brown-900">Click to upload </span>or drag and drop
+                <div className="text-sm text-brown-700 mt-2">
+                  画像をアップロード
                 </div>
-                <div className="text-xs text-brown-700">PNG, JPG (max. 3MB)</div>
+                <div className="text-[9px] text-brown-700">PNG、JPG（最大5MB）</div>
               </div>
             </div>
           ) : (

@@ -14,6 +14,7 @@ import { useDeleteEvent } from '~/services/clientService/event/event.api';
 import { useGetEvents } from '~/services/clientService/event/event.api';
 import { PATH } from '~/constants/routes';
 import { useClickOutside } from '~/components/shared/use-click-outside';
+import TruncatedText from '~/components/shared/truncated-text';
 
 const PAGE_SIZE = 10;
 
@@ -61,9 +62,7 @@ export default function ListEvent() {
       {
         header: '説明',
         accessorKey: 'description',
-        cell: ({ row }: any) => (
-          <div className="line-clamp-1 text-ellipsis whitespace-nowrap">{row.original.description}</div>
-        ),
+        cell: ({ row }: any) => <TruncatedText>{row.original.description}</TruncatedText>,
         size: 200,
       },
       {

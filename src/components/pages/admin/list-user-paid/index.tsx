@@ -14,6 +14,7 @@ import { cn, formatDate } from '~/lib/utils';
 import ModalSendMessage from './modal-send-message';
 import { Button } from '~/components/ui/button';
 import { LineIcon } from '~/components/shared/icons';
+import TruncatedText from '~/components/shared/truncated-text';
 
 const PAGE_SIZE = 10;
 
@@ -30,23 +31,25 @@ export default function ListUserPaid() {
         header: '番号順',
         accessorKey: 'id',
         cell: ({ row }) => <div>{(currentPage - 1) * PAGE_SIZE + row.index + 1}</div>,
-        size: 80,
+        size: 100,
       },
       {
         header: 'ユーザー名',
         accessorKey: 'user.fullName',
         cell: ({ row }) => <div>{row.original.user?.fullName ?? '-'}</div>,
+        size: 100,
       },
       {
         header: '購入したプロジェクト名',
-        accessorKey: 'event.title',
-        cell: ({ row }) => <div>{row.original.event?.title}</div>,
-        size: 100,
+        accessorKey: 'eventTitle',
+        cell: ({ row }) => <TruncatedText maxLines={1}>{row.original.event?.title}</TruncatedText>,
+        size: 300,
       },
       {
         header: '購入日',
         accessorKey: 'createdAt',
-        cell: ({ row }) => <div>{formatDate(row.original.createdAt)}</div>,
+        cell: ({ row }) => <div>{formatDate(row.original.createdAt, false)}</div>,
+        size: 110,
       },
       {
         header: 'LINEを返信しました',
@@ -60,19 +63,21 @@ export default function ListUserPaid() {
         cell: ({ row }) => {
           const isConfirmed = row.original.isConfirmed;
           return (
-            <Button
-              leadingIcon={<LineIcon color={isConfirmed ? 'white' : 'brown'} />}
-              variant={isConfirmed ? 'solid' : 'outline'}
-              className={cn(isConfirmed && 'bg-brown-700 text-white')}
-              onClick={() => {
-                setSendMessageData(row.original);
-              }}
-            >
-              LINEで連絡する
-            </Button>
+            <div className="flex justify-end">
+              <Button
+                leadingIcon={<LineIcon color={isConfirmed ? 'white' : 'brown'} />}
+                variant={isConfirmed ? 'solid' : 'outline'}
+                className={cn(isConfirmed && 'bg-brown-700 text-white')}
+                onClick={() => {
+                  setSendMessageData(row.original);
+                }}
+              >
+                LINEで連絡する
+              </Button>
+            </div>
           );
         },
-        size: 100,
+        size: 200,
       },
     ],
     [currentPage]

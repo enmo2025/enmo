@@ -21,7 +21,7 @@ export default function CardEventInfo({ date, location, participantFee, id }: Ca
       <div className="flex flex-col gap-5">
         <div className="flex items-center gap-5">
           <span className="text-body-md text-brown-700 md:text-body-lg">時間:</span>
-          <span className="text-body-lg text-brown-900 md:text-body-xl">{formatDate(date)}</span>
+          <span className="text-body-lg text-brown-900 md:text-body-xl">{formatDate(date, false)}</span>
         </div>
         <div className="flex items-center gap-5">
           <span className="text-body-md text-brown-700 md:text-body-lg">地域:</span>
