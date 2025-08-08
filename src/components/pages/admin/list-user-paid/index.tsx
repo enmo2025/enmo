@@ -51,12 +51,12 @@ export default function ListUserPaid() {
         cell: ({ row }) => <div>{formatDate(row.original.createdAt, false)}</div>,
         size: 110,
       },
-      {
-        header: 'LINEを返信しました',
-        accessorKey: 'isReplied',
-        cell: ({ row }) => <div>{row.original.isReplied ? '返信済み' : '未返信'}</div>,
-        size: 100,
-      },
+      // {
+      //   header: 'LINEを返信しました',
+      //   accessorKey: 'isReplied',
+      //   cell: ({ row }) => <div>{row.original.isReplied ? '返信済み' : '未返信'}</div>,
+      //   size: 100,
+      // },
       {
         header: '',
         accessorKey: 'sendLine',
