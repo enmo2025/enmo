@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Sidenav from '~/components/layout/sidenav';
-import { BuildingLineIcon, FilePlusLineIcon, HouseLineIcon, JobIcon } from '~/components/shared/icons';
+import { HouseLineIcon } from '~/components/shared/icons';
 import { PATH } from '~/constants/routes';
 
 const listNav = [
@@ -11,21 +11,21 @@ const listNav = [
     href: PATH.ADMIN.LIST_USER_PAID,
     icon: HouseLineIcon,
   },
-  {
-    name: 'イベント一覧',
-    href: PATH.ADMIN.LIST_EVENT,
-    icon: JobIcon,
-  },
-  {
-    name: 'くらしの窓口追加',
-    href: PATH.ADMIN.CREATE_EVENT,
-    icon: FilePlusLineIcon,
-  },
-  {
-    name: 'パートナー追加',
-    href: PATH.ADMIN.CREATE_PARTNER,
-    icon: BuildingLineIcon,
-  },
+  // {
+  //   name: 'イベント一覧',
+  //   href: PATH.ADMIN.LIST_EVENT,
+  //   icon: JobIcon,
+  // },
+  // {
+  //   name: 'くらしの窓口追加',
+  //   href: PATH.ADMIN.CREATE_EVENT,
+  //   icon: FilePlusLineIcon,
+  // },
+  // {
+  //   name: 'パートナー追加',
+  //   href: PATH.ADMIN.CREATE_PARTNER,
+  //   icon: BuildingLineIcon,
+  // },
 ];
 
 export default function SidenavAdmin({ children }: { children: React.ReactNode }) {
