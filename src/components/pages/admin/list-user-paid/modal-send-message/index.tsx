@@ -75,7 +75,7 @@ export default function ModalSendMessage({ sendMessageData, setSendMessageData }
                 )}
               />
             </DialogHeader>
-            <DialogFooter className="mt-5 w-full">
+            <DialogFooter className="mt-5 w-full space-y-2">
               <Button
                 onClick={() => setSendMessageData(undefined)}
                 typeStyle="round"
