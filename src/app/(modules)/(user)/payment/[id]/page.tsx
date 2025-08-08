@@ -13,10 +13,9 @@ export const metadata: Metadata = {
 };
 
 export default async function page({ params }: { params: { id: string } }) {
-  const { id } = await params;
   const { user } = await getCurrentSession();
   const cookieStore = await cookies();
-  const event = (await getEvent(id, cookieStore)).data;
+  const event = (await getEvent(params.id, cookieStore)).data;
 
   if (!user) {
     redirect('/login');

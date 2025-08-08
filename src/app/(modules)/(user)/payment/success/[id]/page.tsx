@@ -10,9 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default async function PaymentSuccessPage({ params }: { params: { id: string } }) {
-  const { id } = params;
   const cookieStore = await cookies();
-  const purchase = (await getPurchaseByStripeSessionId(id, cookieStore)).data;
+  const purchase = (await getPurchaseByStripeSessionId(params.id, cookieStore)).data;
 
   return <PaymentSuccess purchase={purchase} />;
 }
