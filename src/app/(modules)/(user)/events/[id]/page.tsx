@@ -1,6 +1,7 @@
 import EventDetailPage from '~/components/pages/event/even-detail';
 import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 import { getEventById } from '~/services/serverService/event/event.service';
+import { prisma } from '~/lib/server/db';
 
 export async function generateStaticParams() {
   const events = await prisma?.event.findMany({
