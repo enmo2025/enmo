@@ -41,8 +41,8 @@ export default function PaymentSuccess({ purchase }: { purchase: PurchaseExtend 
 
       {/* Thank you message */}
       <h1 className="mb-4 text-headline-lg font-bold text-red-700">お支払いありがとうございます。</h1>
-      <p className="mb-10 text-body-lg text-brown-700">
-        みまもり窓口の参加方法について、LINEにてご連絡いたします。
+      <p className="mb-20 text-body-lg text-brown-900">
+        みまもり窓口の参加方法について、<b>LINE</b>にてご連絡いたします。
         <br />
         しばらくお待ち下さい。
       </p>
@@ -59,7 +59,7 @@ export default function PaymentSuccess({ purchase }: { purchase: PurchaseExtend 
               alt="event banner"
             />
             <div className="w-full text-left text-brown-900">
-              <div className="text-headline-sm font-bold text-brown-700">{purchase.event.title}</div>
+              <div className="text-headline-sm font-bold">{purchase.event.title}</div>
               <div className="mt-2 text-body-md">{purchase.event.description}</div>
               <Divider />
               <div className="mt-3 w-full space-y-2 text-body-sm">
@@ -72,14 +72,14 @@ export default function PaymentSuccess({ purchase }: { purchase: PurchaseExtend 
       </Card>
 
       {/* Order Information */}
-      <div className="mb-8 text-left">
-        <div className="mb-2 flex justify-between text-body-md text-brown-700">
-          <span>注文番号:</span>
-          <span className="text-title-lg font-medium">{purchase.amount}</span>
+      <div className="mb-20 text-left">
+        <div className="mb-2 flex justify-between">
+          <span className="text-body-lg text-brown-700">注文番号:</span>
+          <span className="text-title-lg font-bold text-brown-900">{purchase.amount}</span>
         </div>
-        <div className="flex justify-between text-body-md text-brown-700">
-          <span>注文日:</span>
-          <span className="text-title-lg font-medium">{formatDate(purchase.createdAt, false)}</span>
+        <div className="flex justify-between">
+          <span className="text-body-lg text-brown-700">注文日:</span>
+          <span className="text-title-lg font-bold text-brown-900">{formatDate(purchase.createdAt, false)}</span>
         </div>
       </div>
 
@@ -88,9 +88,9 @@ export default function PaymentSuccess({ purchase }: { purchase: PurchaseExtend 
         ホームに戻る
       </Button>
 
-      <div className="my-20 mt-10 text-body-sm text-brown-700">
+      <div className="my-20 mt-20 text-body-lg text-black">
         <span>利用規約</span>
-        <span className="ml-2"> プライバシーポリシー</span>
+        <span className="ml-10"> プライバシーポリシー</span>
       </div>
     </div>
   );

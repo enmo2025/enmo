@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import PaymentSuccess from '~/components/pages/payment/PaymentSuccess';
-import { getPurchaseByStripeSessionId } from '~/services/clientService/purchase/purchase.api';
+import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
+import { PurchaseExtend } from '~/services/clientService/purchase/interface.api';
+import { getPurchaseByStripeSessionId } from '~/services/serverService/purchase/purchase.service';
 
 export const metadata: Metadata = {
   title: '支払い成功',
@@ -10,8 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default async function PaymentSuccessPage({ params }: { params: { id: string } }) {
-  const cookieStore = await cookies();
-  const purchase = (await getPurchaseByStripeSessionId(params.id, cookieStore)).data;
+  const { id } = await params;
+  const purchase = (await getPurchaseByStripeSessionId(id)) as PurchaseExtend;
+
+  if (!purchase) {
+    return <NoDataPlaceholder />;
+  }
 
   return <PaymentSuccess purchase={purchase} />;
 }
