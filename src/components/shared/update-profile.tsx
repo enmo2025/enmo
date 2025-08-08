@@ -15,8 +15,8 @@ import { useGetPrefectures } from '~/services/clientService/prefecture/prefectur
 import { User } from '@prisma/client';
 import dayjs from 'dayjs';
 import { EGender } from '~/services/clientService/profile/profile.enum';
-import { Spinner } from '../ui/spinner';
 import { useRouter } from 'next/navigation';
+import LoadingOverlay from './indicator/loading-overlay';
 
 interface UpdateProfileProps {
   user?: User;
@@ -122,47 +122,197 @@ export default function UpdateProfile({
   }, [form, user]);
 
   return (
-    <div className="relative">
-      {isPending && (
-        <div className="absolute left-0 top-0 z-50 flex h-full w-full items-center justify-center">
-          <Spinner className="size-10" show={isPending} />
-        </div>
-      )}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          {/* 氏名 (Name) */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
+    <>
+      {isPending && <LoadingOverlay />}
+      <div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            {/* 氏名 (Name) */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          label="氏名"
+                          placeholder="山田"
+                          variant={form.formState.errors.lastName ? 'warning' : 'default'}
+                        />
+                      </FormControl>
+                      <div className="min-h-[20px]">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="太郎"
+                          variant={form.formState.errors.firstName ? 'warning' : 'default'}
+                        />
+                      </FormControl>
+                      <div className="min-h-[20px]">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* 氏名（カナ） (Name in Katakana) */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="lastNameKana"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          label="氏名(カナ)"
+                          placeholder="ヤマダ"
+                          variant={form.formState.errors.lastNameKana ? 'warning' : 'default'}
+                        />
+                      </FormControl>
+                      <div className="min-h-[20px]">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="firstNameKana"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="タロウ"
+                          variant={form.formState.errors.firstNameKana ? 'warning' : 'default'}
+                        />
+                      </FormControl>
+                      <div className="min-h-[20px]">
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            {/* 生年月日 (Date of Birth) */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900">生年月日</h3>
+              <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
+                <div className="flex w-full items-center gap-4">
+                  <FormField
+                    control={form.control}
+                    name="birthYear"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Select {...field} variant={form.formState.errors.birthYear ? 'warning' : 'default'}>
+                            <option value="">-</option>
+                            {years.map((year) => (
+                              <option key={year} value={year.toString()}>
+                                {year}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <div className="min-h-[20px]">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <div>年</div>
+                </div>
+                <div className="flex w-full items-center gap-4">
+                  <FormField
+                    control={form.control}
+                    name="birthMonth"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Select {...field} variant={form.formState.errors.birthMonth ? 'warning' : 'default'}>
+                            <option value="">-</option>
+                            {months.map((month) => (
+                              <option key={month} value={month.toString()}>
+                                {month}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <div className="min-h-[20px]">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <div>月</div>
+                </div>
+
+                <div className="flex w-full items-center gap-4">
+                  <FormField
+                    control={form.control}
+                    name="birthDay"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Select {...field} variant={form.formState.errors.birthDay ? 'warning' : 'default'}>
+                            <option value="">-</option>
+                            {days.map((day) => (
+                              <option key={day} value={day.toString()}>
+                                {day}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <div className="min-h-[20px]">
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <div>日</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 都道府県 (Prefecture) */}
+            <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="lastName"
+                name="prefecture"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="flex-1">
                     <FormControl>
-                      <Input
+                      <Select
                         {...field}
-                        label="氏名"
-                        placeholder="山田"
-                        variant={form.formState.errors.lastName ? 'warning' : 'default'}
-                      />
-                    </FormControl>
-                    <div className="min-h-[20px]">
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="太郎"
-                        variant={form.formState.errors.firstName ? 'warning' : 'default'}
-                      />
+                        label="都道府県"
+                        placeholder="選択してくださ"
+                        variant={form.formState.errors.prefecture ? 'warning' : 'default'}
+                      >
+                        {prefectures?.map((prefecture) => (
+                          <option key={prefecture.id} value={prefecture.nameJP}>
+                            {prefecture.nameJP}
+                          </option>
+                        ))}
+                      </Select>
                     </FormControl>
                     <div className="min-h-[20px]">
                       <FormMessage />
@@ -171,41 +321,25 @@ export default function UpdateProfile({
                 )}
               />
             </div>
-          </div>
 
-          {/* 氏名（カナ） (Name in Katakana) */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-2">
+            {/* 性別 (Gender) */}
+            <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="lastNameKana"
+                name="gender"
                 render={({ field }) => (
                   <FormItem>
+                    <FormLabel className="text-lg font-semibold text-gray-900">性別</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        label="氏名(カナ)"
-                        placeholder="ヤマダ"
-                        variant={form.formState.errors.lastNameKana ? 'warning' : 'default'}
-                      />
-                    </FormControl>
-                    <div className="min-h-[20px]">
-                      <FormMessage />
-                    </div>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="firstNameKana"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="タロウ"
-                        variant={form.formState.errors.firstNameKana ? 'warning' : 'default'}
-                      />
+                      <RadioGroup
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        className="flex flex-row flex-wrap space-x-6"
+                      >
+                        <RadioGroupItem value={EGender.MALE} id="male" title="男性" />
+                        <RadioGroupItem value={EGender.FEMALE} id="female" title="女性" />
+                        <RadioGroupItem value={EGender.OTHER} id="other" title="その他" />
+                      </RadioGroup>
                     </FormControl>
                     <div className="min-h-[20px]">
                       <FormMessage />
@@ -214,164 +348,28 @@ export default function UpdateProfile({
                 )}
               />
             </div>
-          </div>
 
-          {/* 生年月日 (Date of Birth) */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">生年月日</h3>
-            <div className="flex w-full flex-col items-center gap-4 lg:flex-row">
-              <div className="flex w-full items-center gap-4">
-                <FormField
-                  control={form.control}
-                  name="birthYear"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormControl>
-                        <Select {...field} variant={form.formState.errors.birthYear ? 'warning' : 'default'}>
-                          <option value="">-</option>
-                          {years.map((year) => (
-                            <option key={year} value={year.toString()}>
-                              {year}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <div className="min-h-[20px]">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <div>年</div>
-              </div>
-              <div className="flex w-full items-center gap-4">
-                <FormField
-                  control={form.control}
-                  name="birthMonth"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormControl>
-                        <Select {...field} variant={form.formState.errors.birthMonth ? 'warning' : 'default'}>
-                          <option value="">-</option>
-                          {months.map((month) => (
-                            <option key={month} value={month.toString()}>
-                              {month}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <div className="min-h-[20px]">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <div>月</div>
-              </div>
-
-              <div className="flex w-full items-center gap-4">
-                <FormField
-                  control={form.control}
-                  name="birthDay"
-                  render={({ field }) => (
-                    <FormItem className="flex-1">
-                      <FormControl>
-                        <Select {...field} variant={form.formState.errors.birthDay ? 'warning' : 'default'}>
-                          <option value="">-</option>
-                          {days.map((day) => (
-                            <option key={day} value={day.toString()}>
-                              {day}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                      <div className="min-h-[20px]">
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <div>日</div>
-              </div>
-            </div>
-          </div>
-
-          {/* 都道府県 (Prefecture) */}
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="prefecture"
-              render={({ field }) => (
-                <FormItem className="flex-1">
-                  <FormControl>
-                    <Select
-                      {...field}
-                      label="都道府県"
-                      placeholder="選択してくださ"
-                      variant={form.formState.errors.prefecture ? 'warning' : 'default'}
-                    >
-                      {prefectures?.map((prefecture) => (
-                        <option key={prefecture.id} value={prefecture.nameJP}>
-                          {prefecture.nameJP}
-                        </option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <div className="min-h-[20px]">
-                    <FormMessage />
-                  </div>
-                </FormItem>
+            {/* Submit Button */}
+            <div className="flex flex-wrap justify-center gap-6">
+              {hasCancelButton && (
+                <Button
+                  className="w-full lg:w-auto"
+                  disabled={isPending}
+                  onClick={() => router.back()}
+                  typeStyle="round"
+                  variant="outline"
+                  size="xl"
+                >
+                  キャンセル
+                </Button>
               )}
-            />
-          </div>
-
-          {/* 性別 (Gender) */}
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg font-semibold text-gray-900">性別</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      className="flex flex-row flex-wrap space-x-6"
-                    >
-                      <RadioGroupItem value={EGender.MALE} id="male" title="男性" />
-                      <RadioGroupItem value={EGender.FEMALE} id="female" title="女性" />
-                      <RadioGroupItem value={EGender.OTHER} id="other" title="その他" />
-                    </RadioGroup>
-                  </FormControl>
-                  <div className="min-h-[20px]">
-                    <FormMessage />
-                  </div>
-                </FormItem>
-              )}
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className="flex flex-wrap justify-center gap-6">
-            {hasCancelButton && (
-              <Button
-                className="w-full lg:w-auto"
-                disabled={isPending}
-                onClick={() => router.back()}
-                typeStyle="round"
-                variant="outline"
-                size="xl"
-              >
-                キャンセル
+              <Button className="w-full lg:w-auto" disabled={isPending} typeStyle="round" type="submit" size="xl">
+                {titleSubmitButton}
               </Button>
-            )}
-            <Button className="w-full lg:w-auto" disabled={isPending} typeStyle="round" type="submit" size="xl">
-              {titleSubmitButton}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </>
   );
 }
