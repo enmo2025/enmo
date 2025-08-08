@@ -17,3 +17,15 @@ export const createPurchase = async (
     },
   });
 };
+
+export async function getPurchaseByStripeSessionId(sessionId: string) {
+  return await prisma.purchase.findUnique({
+    where: {
+      stripeSessionId: sessionId,
+    },
+    include: {
+      event: true,
+      user: true,
+    },
+  });
+}

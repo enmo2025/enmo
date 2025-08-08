@@ -3,8 +3,8 @@ import PaymentPage from '~/components/pages/payment/PaymentPage';
 import { getCurrentSession } from '~/lib/server/auth/session';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
-import { getEvent } from '~/services/clientService/event/event.api';
+import { getEventById } from '~/services/serverService/event/event.service';
+import NoDataPlaceholder from '~/components/shared/indicator/no-data-placeholder';
 
 export const metadata: Metadata = {
   title: '支払い',
@@ -13,12 +13,16 @@ export const metadata: Metadata = {
 };
 
 export default async function page({ params }: { params: { id: string } }) {
+  const { id } = await params;
   const { user } = await getCurrentSession();
-  const cookieStore = await cookies();
-  const event = (await getEvent(params.id, cookieStore)).data;
+  const event = await getEventById(id);
 
   if (!user) {
     redirect('/login');
+  }
+
+  if (!event) {
+    return <NoDataPlaceholder />;
   }
 
   return <PaymentPage event={event} userId={user.id} />;

@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import EventsPage from '~/components/pages/event';
-import { getEvents } from '~/services/clientService/event/event.api';
+import { getEventsPagination } from '~/services/serverService/event/event.service';
 
 export const metadata: Metadata = {
   title: 'イベント',
@@ -11,8 +11,9 @@ export const metadata: Metadata = {
 const PAGE_SIZE = 12;
 
 export default async function pages({ searchParams }: { searchParams: { page: string } }) {
-  const pageNumber = Number(searchParams.page) || 1;
-  const data = await getEvents(pageNumber, PAGE_SIZE);
+  const { page } = await searchParams;
+  const pageNumber = Number(page) || 1;
+  const data = await getEventsPagination(pageNumber, PAGE_SIZE);
   const eventList = data?.data ?? [];
   const totalItems = data?.pagination?.total ?? 0;
   const totalPage = Math.ceil(totalItems / PAGE_SIZE);

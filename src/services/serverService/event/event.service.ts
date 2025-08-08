@@ -1,4 +1,5 @@
 import { prisma } from '~/lib/server/db';
+import { getPagination } from '~/lib/server/utils';
 
 export interface CreateEventInput {
   title: string;
@@ -18,6 +19,16 @@ export async function getEvents(skip: number, limit: number) {
   ]);
 
   return { data, total };
+}
+
+export async function getEventsPagination(page: number, limit: number) {
+  const { skip } = getPagination(Number(page), Number(limit), 100);
+  const [data, total] = await Promise.all([
+    prisma.event.findMany({ skip, take: limit, include: { partner: true } }),
+    prisma.event.count(),
+  ]);
+
+  return { data, pagination: { page, limit, total } };
 }
 
 export async function getEventById(id: string) {
